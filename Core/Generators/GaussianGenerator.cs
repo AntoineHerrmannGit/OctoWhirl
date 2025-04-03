@@ -9,7 +9,7 @@ namespace OctoWhirl.Core.Generators
 
     public class GaussianGenerator : IGenerator<double>
     {
-        public GaussianGenerator(int? seed = null, double mean = 0, double sigma = 1)
+        public GaussianGenerator(double mean = 0, double sigma = 1, int? seed = null)
         {
             _random = seed == null ? new Random() : new Random(seed);
 

@@ -6,12 +6,12 @@ namespace OctoWhirl.Core.Generators
     {
         private readonly Random _random;
         private double _lambda;
-        public PoissonGenerator(double lambda = 1)
+        public PoissonGenerator(double lambda = 1, int? seed = null)
         {
             if (lambda <= 0)
                 throw new ArgumentException("Lambda must be strictly positive");
             
-            _random = new Random();
+            _random = seed == null ? new Random() : new Random(seed);
             _lambda = lambda;
         }
 
