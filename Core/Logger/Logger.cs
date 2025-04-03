@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using System;
 using System.IO;
 
@@ -5,6 +6,8 @@ namespace OctoWhirl.Core.Logger
 {
     public class Logger : ILogger
     {
+        private readonly SystemAcl.Threading.Lock _lock = new System.Threading.Lock();
+
         private string _logFile;
         private LogLevel _level;
 
@@ -39,7 +42,7 @@ namespace OctoWhirl.Core.Logger
         #region Private Methods
         private void Write(string message)
         {
-            lock
+            lock(_lock)
             {
                 using (StreamWriter outputFile = new StreamWriter(_logFile, true))
                 {
