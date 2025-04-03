@@ -1,11 +1,21 @@
 # OctoWhirl Project
 
+Overall :
+---------
+
+This project aims at building a long-term maintainable solution that is not meant open-source. 
+
+To contribute to this project, submit a pull request and follow reviews and comments. Discussion is encouraged. The owner 
+    holds full rights to approve, remove and require change.
+
+
 Developers note :
 -----------------
 
 General organisation of the project and coding good practices :
 
     This project is organized in four main parts:
+    
         - Core contains all common structures that will be used in all parts of the code.
             - Models is a particuliar part where models are defined. 
                 A model is just a container that carries data and information. It can have fields, attributes and accessors
@@ -26,9 +36,5 @@ General organisation of the project and coding good practices :
 
         - Tests contains all tests and must follow the same organization than Core, and Services.
 
+
     
-    This project aims at building a long-term maintainable solution that is not meant open-source. 
-
-    To contribute to this project, submit a pull request and follow reviews and comments. Discussion is encouraged. The owner 
-        holds full rights to approve, remove and require change.
-
