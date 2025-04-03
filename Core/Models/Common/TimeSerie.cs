@@ -14,7 +14,7 @@ namespace OctoWhirl.Core.Models.Common
         #endregion Accessors
 
         public TimeSerie<T>(IEnumerable<KeyValuePair<DateTime, T>> enumerable):
-            base(enumerable)
+            base(enumerable.ToDictionary())
         {
         }
 
