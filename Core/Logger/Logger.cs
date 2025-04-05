@@ -1,6 +1,7 @@
 using System.Security.AccessControl;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace OctoWhirl.Core.Logger
 {
@@ -16,7 +17,7 @@ namespace OctoWhirl.Core.Logger
             _level = level;
 
             _logFile = logFile ?? Path.Combine(GetRootPath(), "log.log");
-            if (!File.Exist(_logFile))
+            if (!File.Exists(_logFile))
                 File.Create(_logFile);
             
             _writer = new StreamWriter(_logFile, true);
@@ -25,19 +26,19 @@ namespace OctoWhirl.Core.Logger
         #region ILogger Methods
         public void Debug(string message)
         {
-            Write($"[Info] : {DateTime.Now} : {message}");
+            Write($"[DEBUG] : {DateTime.Now} : {message}");
         }
 
         public void Log(string message)
         {
             if (_level >= LogLevel.Info)
-                Write($"[Info] : {DateTime.Now} : {message}");
+                Write($"[INFO] : {DateTime.Now} : {message}");
         }
 
         public void Error(string message)
         {
             if (_level >= LogLevel.Error)
-                Write($"[Info] : {DateTime.Now} : {message}");
+                Write($"[ERROR] : {DateTime.Now} : {message}");
         }
         #endregion ILogger Methods
         
@@ -52,9 +53,9 @@ namespace OctoWhirl.Core.Logger
 
         private string GetRootPath()
         {
-            var currentDir = Directory.GetCurrentDirectory()
+            var currentDir = Directory.GetCurrentDirectory();
             var paths = currentDir.Split('\\');
-            var rootDir = paths[..paths.IndexOf("OctoWhirl")]
+            var rootDir = paths.Take(paths.IndexOf("OctoWhirl"));
 
             var root = string.Join("\\", rootDir);
             return root;
