@@ -10,7 +10,7 @@ namespace OctoWhirl.Core.Generators
         private double _reversion;
         private double _sigma;
 
-        private double _state;
+        private double _step;
         private double _state;
 
         public OrnsteinGenerator(double mean = 0, double sigma = 1, double reversion = 1, double initialState = 0, double step = 0.01, int? seed = null)
