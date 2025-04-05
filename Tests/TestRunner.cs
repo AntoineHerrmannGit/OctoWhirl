@@ -18,7 +18,7 @@ namespace OctoWhirl.Tests
         {
         }
 
-        private void RunTests()
+        public void RunTests()
         {
             Parallel.ForEach(_tests, test => 
             {
