@@ -50,7 +50,7 @@ namespace OctoWhirl.Services.Data.Clients.FinnHubClient
 
             var symbol = BuildOptionSymbol(reference, strike, maturity, optionType);
 
-            string url = $"options/candle?symbol={reference}&resolution={resolution}&from={from}&to={to}&token={_apiKey}";
+            string url = $"options/candle?symbol={symbol}&resolution={resolution}&from={from}&to={to}&token={_apiKey}";
 
             var response = await CallClient<CandleResponse>(url);
 
