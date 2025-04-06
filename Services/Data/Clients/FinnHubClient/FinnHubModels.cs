@@ -1,6 +1,6 @@
-namespace OctoWhirl.Services.Clients.FinnHubClient
+namespace OctoWhirl.Services.Data.Clients.FinnHubClient
 {
-    public class CandleResponse
+    internal class CandleResponse
     {
         public List<float> c { get; set; } 
         public List<float> h { get; set; }
@@ -11,7 +11,7 @@ namespace OctoWhirl.Services.Clients.FinnHubClient
         public string s { get; set; }       // status
     }
 
-    public class OptionContractResponse
+    internal class OptionContractResponse
     {
         public string contractType { get; set; }
         public string symbol { get; set; }
@@ -19,14 +19,14 @@ namespace OctoWhirl.Services.Clients.FinnHubClient
         public float lastPrice { get; set; }
     }
 
-    public class OptionExpirationResponse
+    internal class OptionExpirationResponse
     {
         public string expirationDate { get; set; }
         public List<OptionContractResponse> calls { get; set; }
         public List<OptionContractResponse> puts { get; set; }
     }
 
-    public class OptionChainResponse
+    internal class OptionChainResponse
     {
         public string code { get; set; }
         public List<OptionExpirationResponse> optionChain { get; set; }
