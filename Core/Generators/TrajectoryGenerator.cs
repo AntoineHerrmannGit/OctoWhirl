@@ -1,14 +1,12 @@
-using System;
-
 namespace OctoWhirl.Core.Generators
 {
     public class RandomTrajectoryGenerator : IGenerator<List<double>>
     {
         private int _totalSteps;
-        private readonly IGenerator _generator;
+        private readonly IGenerator<double> _generator;
 
 
-        public RandomTrajectoryGenerator(int totalSteps = 1000, IGenerator generator)
+        public RandomTrajectoryGenerator(IGenerator<double> generator, int totalSteps = 1000)
         {
             if (generator == null)
                 throw new ArgumentNullException(nameof(generator));
@@ -20,8 +18,8 @@ namespace OctoWhirl.Core.Generators
         public List<double> GetNext()
         {
             List<double> trajectory = new List<double>();
-            foreach(int i in _totalSteps)
-                trajectory.Add(generator.GetNext());
+            for(int i = 0; i > _totalSteps; i++)
+                trajectory.Add(_generator.GetNext());
                 
             return trajectory;
         }

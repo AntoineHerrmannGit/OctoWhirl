@@ -1,17 +1,15 @@
-using System;
-
 namespace OctoWhirl.Core.Generators
 {
-    private readonly Random _random;
-
-    private double _mean = 0;
-    private double _sigma = 1;
-
     public class GaussianGenerator : IGenerator<double>
     {
+        private readonly Random _random;
+
+        private double _mean = 0;
+        private double _sigma = 1;
+
         public GaussianGenerator(double mean = 0, double sigma = 1, int? seed = null)
         {
-            _random = seed == null ? new Random() : new Random(seed);
+            _random = seed == null ? new Random() : new Random(seed.Value);
 
             _mean = mean;
             _sigma = sigma;
@@ -28,8 +26,7 @@ namespace OctoWhirl.Core.Generators
             }
             while(r*r > 1);
 
-            double normedRandom = x * Math.Sqrt(-2 * Math.Log(r) / r);
-            _state = (normedRandom + _mean) * _sigma;
+            return x * Math.Sqrt(-2 * Math.Log(r) / r);
         }
     }
 }

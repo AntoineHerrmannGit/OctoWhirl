@@ -1,5 +1,3 @@
-using System;
-
 namespace OctoWhirl.Core.Models.Common
 {
     public class Candle

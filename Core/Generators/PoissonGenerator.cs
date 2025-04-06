@@ -1,5 +1,3 @@
-using System;
-
 namespace OctoWhirl.Core.Generators
 {
     public class PoissonGenerator : IGenerator<double>
@@ -11,14 +9,14 @@ namespace OctoWhirl.Core.Generators
             if (lambda <= 0)
                 throw new ArgumentException("Lambda must be strictly positive");
             
-            _random = seed == null ? new Random() : new Random(seed);
+            _random = seed == null ? new Random() : new Random(seed.Value);
             _lambda = lambda;
         }
 
         public double GetNext()
         {
             double x = 0;
-            double p = Match.Exp(-_lambda);
+            double p = Math.Exp(-_lambda);
             double s = p;
             double r = _random.NextDouble();
             while(r > s)

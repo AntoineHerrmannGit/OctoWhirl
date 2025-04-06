@@ -5,9 +5,9 @@ namespace OctoWhirl.Core.Generators
         private Random _random;
         private Func<double, double> _distribution;
 
-        public CustomRandomGenerator<T>(Func<double, double> distribution, int? seed = null)
+        public CustomRandomGenerator(Func<double, double> distribution, int? seed = null)
         {
-            _random = seed = null ? new Random() : new Random(seed);
+            _random = seed == null ? new Random() : new Random(seed.Value);
             _distribution = distribution;
         }
 
@@ -18,9 +18,9 @@ namespace OctoWhirl.Core.Generators
             {
                 x = _random.NextDouble();
                 y = _random.NextDouble();
-                f = _distribution(x)
+                f = _distribution(x);
             }
-            while (y > f)
+            while (y > f);
             return x;
         }
     }

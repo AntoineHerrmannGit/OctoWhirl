@@ -1,5 +1,3 @@
-using System;
-
 namespace OctoWhirl.Core.Extensions
 {
     public static class DateTimeExtension

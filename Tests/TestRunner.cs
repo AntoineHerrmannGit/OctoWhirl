@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using OctoWhirl.Core.Logger;
 
 namespace OctoWhirl.Tests
 {

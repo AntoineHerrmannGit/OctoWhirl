@@ -1,7 +1,4 @@
-using System.Security.AccessControl;
-using System;
 using System.IO;
-using System.Linq;
 
 namespace OctoWhirl.Core.Logger
 {
@@ -54,7 +51,7 @@ namespace OctoWhirl.Core.Logger
         private string GetRootPath()
         {
             var currentDir = Directory.GetCurrentDirectory();
-            var paths = currentDir.Split('\\');
+            var paths = currentDir.Split('\\').ToList();
             var rootDir = paths.Take(paths.IndexOf("OctoWhirl"));
 
             var root = string.Join("\\", rootDir);
