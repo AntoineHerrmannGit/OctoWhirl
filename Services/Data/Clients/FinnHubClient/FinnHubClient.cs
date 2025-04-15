@@ -1,32 +1,46 @@
+using System.Configuration;
 using System.Net.Http;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Technicals;
 
 namespace OctoWhirl.Services.Data.Clients.FinnHubClient
 {
-    public class FinnHubClient
+    public class FinnHubClient : BaseClient, IFinanceClient
     {
-        private readonly string _apiKey = "cvp7muhr01qve7in8ev0cvp7muhr01qve7in8evg";
-        private readonly string _acknowledgeSecret = "cvp7muhr01qve7in8f0g";    // For real time updates events
-        private readonly HttpClient _httpClient;
+        private readonly string _apiKey;
+        private readonly string _acknowledgeSecret;    // For real time updates events
 
-        public FinnHubClient()
+        public FinnHubClient(HttpClient httpClient, IConfiguration configuration) : base(httpClient)
         {
-            _httpClient = new HttpClient
-            {
-                BaseAddress = new Uri("https://finnhub.io/api/v1/"),
-            };
+            _apiKey = configuration.GetRequiredSection("FinnHub").GetRequiredSection("ApiKey").Get<string>() ?? throw new ConfigurationErrorsException("FinnHub:ApiKey");
+            _acknowledgeSecret = configuration.GetRequiredSection("FinnHub").GetRequiredSection("RTApiCheckKey").Get<string>() ?? throw new ConfigurationErrorsException("FinnHub:RTApiCheckKey");
+
+            InitializeClient(configuration);
         }
 
+        #region BaseClient Methods
+        protected override void InitializeClient(IConfiguration configuration)
+        {
+            var baseUrl = configuration.GetRequiredSection("FinnHub").GetRequiredSection("BaseUrl").Get<string>();
+            if (baseUrl.IsNullOrEmpty())
+                throw new ArgumentNullException(nameof(baseUrl), "Base URL cannot be null or empty.");
+
+            _httpClient.BaseAddress = new Uri(baseUrl);
+        }
+        #endregion BaseClient Methods
+
+        #region FinnHubClient Methods
         /// <summary>
         /// Retrieves stocks spots from FinnHub
         /// </summary>
-        public async Task<List<Candle>> GetStockAsync(string reference, DateTime startDate, DateTime endDate, APIResolution resolution = APIResolution.Day)
+        public async Task<List<Candle>> GetStock(string reference, DateTime startDate, DateTime endDate, ResolutionInterval interval = ResolutionInterval.Day)
         {
             long from = startDate.ToUnixTimestamp();
             long to = endDate.ToUnixTimestamp();
+
+            string resolution = FinnHubResolutionIntervalParser.ToString(interval);
 
             string url = $"stock/candle?symbol={reference}&resolution={resolution}&from={from}&to={to}&token={_apiKey}";
 
@@ -43,10 +57,12 @@ namespace OctoWhirl.Services.Data.Clients.FinnHubClient
         /// <summary>
         /// Retrieves options spots from FinnHub
         /// </summary>
-        public async Task<List<Candle>> GetOptionAsync(string reference, double strike, DateTime maturity, OptionType optionType, DateTime startDate, DateTime endDate, APIResolution resolution = APIResolution.Day)
+        public async Task<List<Candle>> GetOption(string reference, double strike, DateTime maturity, OptionType optionType, DateTime startDate, DateTime endDate, ResolutionInterval interval = ResolutionInterval.Day)
         {
             long from = startDate.ToUnixTimestamp();
             long to = endDate.ToUnixTimestamp();
+
+            string resolution = FinnHubResolutionIntervalParser.ToString(interval);
 
             var symbol = BuildOptionSymbol(reference, strike, maturity, optionType);
 
@@ -65,7 +81,7 @@ namespace OctoWhirl.Services.Data.Clients.FinnHubClient
         /// <summary>
         /// Retrieve the list of available options on market
         /// </summary>
-        public async Task<List<Option>> GetListedOptionsAsync(string symbol, DateTime date)
+        public async Task<List<Option>> GetListedOptions(string symbol, DateTime date)
         {
             string formattedDate = date.ToString("yyyy-MM-dd");
             string url = $"stock/option-chain?symbol={symbol}&date={formattedDate}&token={_apiKey}";
@@ -79,20 +95,9 @@ namespace OctoWhirl.Services.Data.Clients.FinnHubClient
 
             return options;
         }
+        #endregion FinnHubClient Methods
 
         #region Private Methods
-        private async Task<T> CallClient<T>(string url)
-        {
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-
-            var content = await response.Content.ReadAsStringAsync();
-
-            var objects = JsonConvert.DeserializeObject<T>(content);
-
-            return objects;
-        }
-
         /// <summary>
         /// Follows OOC naming
         /// </summary>
