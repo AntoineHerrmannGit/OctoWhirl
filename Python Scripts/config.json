@@ -1,0 +1,15 @@
+{
+    "FinnHub": {
+        "ApiKey": "cvtmv39r01qjg1353dsgcvtmv39r01qjg1353dt0",
+        "RTApiCheckKey": "cvp7muhr01qve7in8f0g"
+    },
+    "DataBaseFileNames": {
+        "StockIntraday" : "StockIntraday",
+        "StockDaily" : "StockDaily",
+        "Dividends" : "Dividends",
+        "Splits" : "Splits"
+    },
+    "LocalBasePath": "DataBase",
+    "Intervals": ["1m", "1d"],
+    "Tickers": ["AAPL"]
+}
