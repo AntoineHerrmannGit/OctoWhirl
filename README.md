@@ -22,6 +22,8 @@ General organisation of the project and coding good practices :
                 but no intelligence.
                 If a model is required to be business-oriented and necessitates to have intelligence embded, then it must be 
                 written as an extension.
+                The only exception is if the model represents a strongly-featured object that carries intelligence. 
+                Therefore, this model must not be exposed and treated as internal to the application and technical
 
         - GUI contains Views, Models and ViewModels which are only responsible of the display of informations.
             - code-behind is allowed to be overridden in ViewModels for very specific tasks like display or calls
@@ -37,4 +39,20 @@ General organisation of the project and coding good practices :
         - Tests contains all tests and must follow the same organization than Core, and Services.
 
 
+
+Python Scripts :
+-----------------
+
+Python scripts are implemented to historize data from the sources.
+This implementation must match several constraints :
+
+    - Models:
+
+        - Python models are base models of historizing data. They must match a DBModel on C# side to access database.
+        - Unlike C# models (even if it does not match the good practices), Python models must not contain any logics, they are just containers for the data. 
+
     
+Accessing Local Database :
+-----------------
+
+The projects assumes that a local database is accessible. The path to access the database is set in the appsettings.json.
