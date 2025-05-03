@@ -1,4 +1,4 @@
-from Objects import ConfigReader, YFStock
+from Core import ConfigReader, YFStock
 from logging import Logger
 import os
 
