@@ -4,6 +4,7 @@ using LiveCharts;
 using MvvmHelpers;
 using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Enums;
+using OctoWhirl.Core.Models.Technicals;
 using OctoWhirl.GUI.ViewModels.Technical;
 using OctoWhirl.Services.Data;
 
@@ -136,7 +137,7 @@ namespace OctoWhirl.GUI.ViewModels
             var data = new Dictionary<string, SeriesCollection>();
             foreach (var instrument in instruments)
             {
-                var instrumentCandles = await _dataLoader.GetStocks(instrument, startDate, endDate, DataSource).ConfigureAwait(false);
+                var instrumentCandles = await _dataLoader.GetStocks(instrument, startDate, endDate, DataSource, ResolutionInterval.Day).ConfigureAwait(false);
                 data[instrument] = new SeriesCollection(instrumentCandles);
             }
             return data;

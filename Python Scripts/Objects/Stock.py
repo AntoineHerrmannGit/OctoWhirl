@@ -1,6 +1,6 @@
 from datetime import datetime
 from Models import Spot, CorporateAction
-from MarketDataArchiver import MarketDataArchiver
+from .MarketDataArchiver import MarketDataArchiver
 
 
 class Stock(MarketDataArchiver):

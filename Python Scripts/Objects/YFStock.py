@@ -2,10 +2,9 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from pandas import DataFrame
-from ConfigReader import ConfigReader
 from Models import Spot, CorporateAction, CorporateActionType
 from Models import Interval, IntradayInterval, DataSource
-from Stock import Stock
+from .Stock import Stock
 
 class YFStock(Stock):
     def __init__(self, ticker: str) -> None:
@@ -157,20 +156,3 @@ class YFStock(Stock):
                 value=row["Value"]
             ))
         return sorted(corpactions, key=lambda action: action.timestamp)
-    
-
-if __name__ == "__main__":
-    config = ConfigReader()
-    if config is None:
-        raise Exception("Failed to load config.")
-    
-    tickers = config.get_configuration("Historization", "Tickers")
-    for ticker in tickers:
-        try:
-            stock = YFStock(ticker)
-            stock.save_to_json()
-            print(f"Stock {ticker} data saved.")
-        except Exception as e:
-            print(f"Failed to save stock {ticker} data: {e}")
-    
-    print("All stocks processed.")

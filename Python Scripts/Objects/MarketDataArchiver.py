@@ -2,7 +2,7 @@ import json
 import os
 from datetime import datetime
 from Models import Spot, CorporateAction, DataSource
-from ConfigReader import ConfigReader
+from .ConfigReader import ConfigReader
 from Exceptions import MissingConfigurationException
 
 
@@ -26,7 +26,7 @@ class MarketDataArchiver(ConfigReader):
         if "LocalBasePath" not in self.configuration:
             MissingConfigurationException("LocalBasePath")
         
-        local_base_path = os.path.join(os.path.dirname(os.getcwd()), self.get_configuration("DataBase", "LocalBasePath"), source)
+        local_base_path = os.path.join(os.path.basename(self.find_filepath(filename="OctoWhirl.sln")), self.get_configuration("DataBase", "LocalBasePath"), source)
         stocks_intraday_filename = self.get_configuration("DataBase", "DataBaseFileNames", "StockIntraday")
         stocks_daily_filename = self.get_configuration("DataBase", "DataBaseFileNames", "StockDaily")
         dividends_filename = self.get_configuration("DataBase", "DataBaseFileNames", "Dividends")
