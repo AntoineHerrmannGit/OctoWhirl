@@ -1,3 +1,5 @@
+using System;
+
 namespace OctoWhirl.Core.Generators
 {
     public class RandomTrajectoryGenerator : IGenerator<List<double>>

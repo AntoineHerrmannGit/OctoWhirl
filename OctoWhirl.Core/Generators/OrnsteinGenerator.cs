@@ -29,5 +29,10 @@ namespace OctoWhirl.Core.Generators
         {
             return _reversion * (_mean - _state) * _step + _sigma * _random.GetNext();
         }
+
+        public void Reset()
+        {
+            _random.Reset();
+        }
     }
 }

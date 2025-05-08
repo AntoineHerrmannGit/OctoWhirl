@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using OctoWhirl.GUI.ViewModels;
 
 namespace OctoWhirl.GUI.Views
 {
@@ -7,9 +9,10 @@ namespace OctoWhirl.GUI.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
+            DataContext = mainViewModel;
         }
     }
 }

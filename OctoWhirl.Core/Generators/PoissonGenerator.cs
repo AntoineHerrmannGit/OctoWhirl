@@ -2,8 +2,8 @@ namespace OctoWhirl.Core.Generators
 {
     public class PoissonGenerator : IGenerator<double>
     {
-        private readonly Random _random;
-        private double _lambda;
+        private Random _random;
+        private readonly double _lambda;
         public PoissonGenerator(double lambda = 1, int? seed = null)
         {
             if (lambda <= 0)

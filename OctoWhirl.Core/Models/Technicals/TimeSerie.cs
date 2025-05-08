@@ -1,4 +1,4 @@
-namespace OctoWhirl.Core.Models.Common
+namespace OctoWhirl.Core.Models.Technicals
 {
     public class TimeSerie<T> : SortedDictionary<DateTime, T>
     {
@@ -9,6 +9,11 @@ namespace OctoWhirl.Core.Models.Common
         public DateTime LastDate => Dates.Any() ? Dates.Last() : throw new ArgumentOutOfRangeException(nameof(Dates));
         public T LastValue => Values.Any() ? Values.Last() : throw new ArgumentOutOfRangeException(nameof(Values));
         #endregion Accessors
+
+        public TimeSerie() :
+            base()
+        {
+        }
 
         public TimeSerie(IEnumerable<KeyValuePair<DateTime, T>> enumerable) : 
             base(enumerable.ToDictionary())
@@ -28,7 +33,7 @@ namespace OctoWhirl.Core.Models.Common
                 throw new ArgumentNullException(nameof(values));
             if (!dates.Any() && !values.Any())
                 return new Dictionary<DateTime, T>();
-            if ((!dates.Any() && values.Any()) || (dates.Any() && !values.Any()))
+            if (!dates.Any() && values.Any() || dates.Any() && !values.Any())
                 throw new ArgumentException("Dates and Values must have the same length or be both empty.");
 
 

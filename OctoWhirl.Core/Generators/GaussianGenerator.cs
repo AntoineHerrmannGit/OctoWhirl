@@ -2,7 +2,7 @@ namespace OctoWhirl.Core.Generators
 {
     public class GaussianGenerator : IGenerator<double>
     {
-        private readonly Random _random;
+        private Random _random;
 
         private double _mean = 0;
         private double _sigma = 1;
@@ -26,7 +26,7 @@ namespace OctoWhirl.Core.Generators
             }
             while(r*r > 1);
 
-            return x * Math.Sqrt(-2 * Math.Log(r) / r);
+            return _mean + _sigma * x * Math.Sqrt(-2 * Math.Log(r) / r);
         }
     }
 }

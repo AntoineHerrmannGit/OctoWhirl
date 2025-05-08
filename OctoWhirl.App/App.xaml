@@ -1,9 +1,8 @@
-﻿<Application x:Class="OctoWhirl.App"
+﻿<Application x:Class="OctoWhirl.App.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:OctoWhirl"
-             StartupUri="MainWindow.xaml">
+             StartupUri="GUI/Views/MainWindow.xaml">
     <Application.Resources>
-         
+        
     </Application.Resources>
 </Application>
