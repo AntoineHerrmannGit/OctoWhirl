@@ -116,7 +116,7 @@ class YFStock(Stock):
         Fetch stock data for the given tickers from source.
         """
         if self.data is None:
-            self.data = yf.Ticker(self.ticker)
+            self.data = yf.Ticker(self.yf_ticker)
         return self.data
     
     def __convert_stocks_dataframe_to_Spots(self, stock_data: DataFrame) -> list[Spot]:
