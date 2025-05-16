@@ -25,5 +25,10 @@ namespace OctoWhirl.Core.Generators
                 
             return trajectory;
         }
+
+        public void Reset()
+        {
+            _generator.Reset();
+        }
     }
 }
