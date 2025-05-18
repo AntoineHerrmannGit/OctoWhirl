@@ -6,30 +6,19 @@ namespace OctoWhirl.GUI.ViewModels.Technical
 {
     public class InstrumentItem : BaseViewModel, INotifyPropertyChanged
     {
-        private string _name;
-        private bool _isSelected;
-
         public string Name
         {
             get => _name;
-            set { _name = value; OnPropertyChanged(); }
+            set => SetProperty(ref _name, value);
         }
+        string _name = string.Empty;
 
         public bool IsSelected
         {
             get => _isSelected;
-            set { _isSelected = value; OnPropertyChanged(); }
+            set => SetProperty(ref _isSelected, value);
         }
-
-        public InstrumentItem()
-        {
-            Name = string.Empty;
-            IsSelected = false;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        bool _isSelected;
     }
 
 }
