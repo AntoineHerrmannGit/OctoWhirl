@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OctoWhirl.GUI.ViewModels;
@@ -17,12 +18,13 @@ namespace OctoWhirl.App
     {
         public ServiceProvider ServiceProvider { get; private set; }
 
-        protected override void OnStartup(StartupEventArgs e)
+        private void OnStartup(object sender, StartupEventArgs e)
         {
-            var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
+            var services = new ServiceCollection();
 
-            ServiceProvider = serviceCollection.BuildServiceProvider();
+            ConfigureServices(services);
+
+            ServiceProvider = services.BuildServiceProvider();
 
             var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
