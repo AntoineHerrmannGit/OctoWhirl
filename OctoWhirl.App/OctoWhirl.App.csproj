@@ -13,5 +13,17 @@
 		<ProjectReference Include="..\OctoWhirl.GUI\OctoWhirl.GUI.csproj" />
 		<ProjectReference Include="..\OctoWhirl.Services\OctoWhirl.Services.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+		<None Update="appsettings.app.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="appsettings.gui.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="appsettings.services.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>
