@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Configuration;
+using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Common;
@@ -16,9 +17,8 @@ namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
         #region BaseClient Methods
         protected override void InitializeClient(IConfiguration configuration)
         {
-            var baseUrl = configuration.GetRequiredSection("YahooFinance").GetRequiredSection("BaseUrl").Get<string>();
-            if (baseUrl.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(baseUrl), "Base URL cannot be null or empty.");
+            var baseUrl = configuration.GetRequiredSection("Services").GetRequiredSection("YahooFinance").GetRequiredSection("BaseUrl").Get<string>()
+                ?? throw new ConfigurationErrorsException("Services:YahooFinance:BaseUrl");
 
             _httpClient.BaseAddress = new Uri(baseUrl);
         }

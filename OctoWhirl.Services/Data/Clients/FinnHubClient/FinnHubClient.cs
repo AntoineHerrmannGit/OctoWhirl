@@ -14,8 +14,10 @@ namespace OctoWhirl.Services.Data.Clients.FinnHubClient
 
         public FinnHubClient(HttpClient httpClient, IConfiguration configuration) : base(httpClient)
         {
-            _apiKey = configuration.GetRequiredSection("FinnHub").GetRequiredSection("ApiKey").Get<string>() ?? throw new ConfigurationErrorsException("FinnHub:ApiKey");
-            _acknowledgeSecret = configuration.GetRequiredSection("FinnHub").GetRequiredSection("RTApiCheckKey").Get<string>() ?? throw new ConfigurationErrorsException("FinnHub:RTApiCheckKey");
+            _apiKey = configuration.GetRequiredSection("Services").GetRequiredSection("FinnHub").GetRequiredSection("ApiKey").Get<string>() 
+                    ?? throw new ConfigurationErrorsException("Services:FinnHub:ApiKey");
+            _acknowledgeSecret = configuration.GetRequiredSection("Services").GetRequiredSection("FinnHub").GetRequiredSection("RTApiCheckKey").Get<string>() 
+                    ?? throw new ConfigurationErrorsException("Services:FinnHub:RTApiCheckKey");
 
             InitializeClient(configuration);
         }
@@ -23,7 +25,7 @@ namespace OctoWhirl.Services.Data.Clients.FinnHubClient
         #region BaseClient Methods
         protected override void InitializeClient(IConfiguration configuration)
         {
-            var baseUrl = configuration.GetRequiredSection("FinnHub").GetRequiredSection("BaseUrl").Get<string>();
+            var baseUrl = configuration.GetRequiredSection("Services").GetRequiredSection("FinnHub").GetRequiredSection("BaseUrl").Get<string>();
             if (baseUrl.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(baseUrl), "Base URL cannot be null or empty.");
 
