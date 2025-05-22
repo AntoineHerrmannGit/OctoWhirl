@@ -1,10 +1,10 @@
 using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Enums;
-using OctoWhirl.Core.Models.Technicals;
 using OctoWhirl.Services.Data.Clients.FinnHubClient;
 using OctoWhirl.Services.Data.Clients.YahooFinanceClient;
+using OctoWhirl.Services.Models.Requests;
 
-namespace OctoWhirl.Services.Data
+namespace OctoWhirl.Services.Data.Loaders
 {
     public class DataLoader : IDataService
     {
@@ -17,16 +17,16 @@ namespace OctoWhirl.Services.Data
             _yahooFinanceClient = yahooFinanceClient;
         }
 
-        public async Task<List<Candle>> GetStocks(string reference, DateTime startDate, DateTime endDate, ClientSource source, ResolutionInterval interval)
+        public async Task<List<Candle>> GetStocks(GetStocksRequest request)
         {
-            switch (source)
+            switch (request.Source)
             {
                 case ClientSource.FinnHub:
-                    return await _finnHubClient.GetStock(reference, startDate, endDate, interval).ConfigureAwait(false);
+                    return await _finnHubClient.GetStocks(request).ConfigureAwait(false);
                 case ClientSource.YahooFinance:
-                    return await _yahooFinanceClient.GetStock(reference, startDate, endDate, interval).ConfigureAwait(false);
+                    return await _yahooFinanceClient.GetStocks(request).ConfigureAwait(false);
                 default:
-                    throw new NotSupportedException($"The source '{source}' is not supported.");
+                    throw new NotSupportedException($"The source '{request.Source}' is not supported.");
             }
         }
     }

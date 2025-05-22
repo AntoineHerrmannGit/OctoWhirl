@@ -6,7 +6,8 @@ using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Enums;
 using OctoWhirl.Core.Models.Technicals;
 using OctoWhirl.GUI.ViewModels.Technical;
-using OctoWhirl.Services.Data;
+using OctoWhirl.Services.Data.Loaders;
+using OctoWhirl.Services.Models.Requests;
 
 namespace OctoWhirl.GUI.ViewModels
 {
@@ -134,12 +135,17 @@ namespace OctoWhirl.GUI.ViewModels
 
         private async Task<Dictionary<string, SeriesCollection>> LoadHistoricalData(List<string> instruments, DateTime startDate, DateTime endDate)
         {
-            var data = new Dictionary<string, SeriesCollection>();
-            foreach (var instrument in instruments)
+            var request = new GetStocksRequest
             {
-                var instrumentCandles = await _dataLoader.GetStocks(instrument, startDate, endDate, DataSource, ResolutionInterval.Day).ConfigureAwait(false);
-                data[instrument] = new SeriesCollection(instrumentCandles);
-            }
+                Tickers = instruments.Distinct().ToList(),
+                StartDate = startDate,
+                EndDate = endDate,
+                Interval = ResolutionInterval.Day,
+                Source = ClientSource.YahooFinance,
+            };
+
+            var candles = await _dataLoader.GetStocks(request).ConfigureAwait(false);
+            var data = candles.GroupBy(c => c.Reference).ToDictionary(x => x.Key, x => new SeriesCollection(x.OrderBy(c => c.Timestamp).ToList()));
             return data;
         }
         #endregion Private Methods

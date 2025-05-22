@@ -1,12 +1,12 @@
-﻿using System.IO;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Enums;
 using OctoWhirl.Core.Models.Technicals;
 using OctoWhirl.Core.Tools;
 using OctoWhirl.Services.Data.DataBaseModels;
+using OctoWhirl.Services.Models.Requests;
 
-namespace OctoWhirl.Services.Data
+namespace OctoWhirl.Services.Data.Loaders
 {
     public class DataBaseLoader : IDataService
     {
@@ -14,13 +14,19 @@ namespace OctoWhirl.Services.Data
         {
         }
 
-        public async Task<List<Candle>> GetStocks(string reference, DateTime startDate, DateTime endDate, ClientSource source, ResolutionInterval interval = ResolutionInterval.Minute1)
+        public async Task<List<Candle>> GetStocks(GetStocksRequest request)
         {
-            var historizedMarketDataType = interval == ResolutionInterval.Minute1 ? HistorizedMarketDataType.StockIntraday : HistorizedMarketDataType.StockDaily;
-            var filename = GetFileName(reference, historizedMarketDataType, source);
-            var dbSpots = (await File.ReadAllTextAsync(filename).ConfigureAwait(false)).Deserialize<List<DBSpot>>();
-            var candles = MapDBSpotToCandle(dbSpots);
-            return candles;
+            var historizedMarketDataType = request.Interval == ResolutionInterval.Minute1 ? HistorizedMarketDataType.StockIntraday : HistorizedMarketDataType.StockDaily;
+            var tasks = request.Tickers.Distinct().Select(async ticker =>
+            {
+                var filename = GetFileName(ticker, historizedMarketDataType, request.Source);
+                var dbSpots = (await File.ReadAllTextAsync(filename).ConfigureAwait(false)).Deserialize<List<DBSpot>>();
+                var candles = MapDBSpotToCandle(dbSpots);
+                return candles;
+            }).ToList();
+
+            var stocks = await Task.WhenAll(tasks).ConfigureAwait(false);
+            return stocks.SelectMany(stock =>  stock).ToList();
         }
 
         #region Private File Methods

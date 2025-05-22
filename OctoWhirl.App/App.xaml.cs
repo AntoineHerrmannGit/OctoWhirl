@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using OctoWhirl.GUI.ViewModels;
 using OctoWhirl.GUI.ViewModels.Technical;
 using OctoWhirl.GUI.Views;
-using OctoWhirl.Services.Data;
 using OctoWhirl.Services.Data.Clients.FinnHubClient;
 using OctoWhirl.Services.Data.Clients.YahooFinanceClient;
+using OctoWhirl.Services.Data.Loaders;
 
 namespace OctoWhirl.App
 {
