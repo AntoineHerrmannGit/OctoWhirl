@@ -12,5 +12,6 @@
         //YahooFinanceHistorical,
         //YahooFinanceRealTime,
         //YahooFinanceOptions
+        Synthetic,
     }
 }

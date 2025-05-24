@@ -1,9 +1,9 @@
 using System.Configuration;
-using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Technicals;
+using OctoWhirl.Services.Models.Requests;
 
 namespace OctoWhirl.Services.Data.Clients.FinnHubClient
 {
@@ -37,21 +37,21 @@ namespace OctoWhirl.Services.Data.Clients.FinnHubClient
         /// <summary>
         /// Retrieves stocks spots from FinnHub
         /// </summary>
-        public async Task<List<Candle>> GetStock(string reference, DateTime startDate, DateTime endDate, ResolutionInterval interval = ResolutionInterval.Day)
+        public async Task<List<Candle>> GetStocks(GetStocksRequest request)
         {
-            long from = startDate.ToUnixTimestamp();
-            long to = endDate.ToUnixTimestamp();
+            long from = request.StartDate.ToUnixTimestamp();
+            long to = request.EndDate.ToUnixTimestamp();
 
-            string resolution = FinnHubResolutionIntervalParser.ToString(interval);
+            string resolution = FinnHubResolutionIntervalParser.ToString(request.Interval);
 
-            string url = $"stock/candle?symbol={reference}&resolution={resolution}&from={from}&to={to}&token={_apiKey}";
+            string url = $"stock/candle?symbol={request.Tickers.Stringify(",")}&resolution={resolution}&from={from}&to={to}&token={_apiKey}";
 
             var response = await CallClient<CandleResponse>(url);
 
             if (response?.s != "ok" || response.t == null)
                 return new List<Candle>();
 
-            var candles = MapCandles(response, reference);
+            var candles = MapCandles(response, request.Tickers.First());
 
             return candles;
         }

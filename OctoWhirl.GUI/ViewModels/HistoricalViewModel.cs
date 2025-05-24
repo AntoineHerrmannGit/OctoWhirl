@@ -1,12 +1,16 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
-using LiveCharts;
+﻿using LiveCharts;
+using LiveCharts.Wpf;
 using MvvmHelpers;
 using OctoWhirl.Core.Extensions;
+using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Enums;
 using OctoWhirl.Core.Models.Technicals;
+using OctoWhirl.GUI.GUIHelpers;
 using OctoWhirl.GUI.ViewModels.Technical;
-using OctoWhirl.Services.Data;
+using OctoWhirl.Services.Data.Loaders;
+using OctoWhirl.Services.Models.Requests;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace OctoWhirl.GUI.ViewModels
 {
@@ -110,7 +114,7 @@ namespace OctoWhirl.GUI.ViewModels
         }
         #endregion Adds instruments
 
-        #region Private Methods
+        #region Private Data Methods
         private async Task LoadData()
         {
             var selectedInstruments = GetSelectedInstrumentNames();
@@ -122,7 +126,17 @@ namespace OctoWhirl.GUI.ViewModels
                 var end = EndDate?.ToDateTime() ?? DateTime.Today;
 
                 var series = await LoadHistoricalData(selectedInstruments, start, end).ConfigureAwait(false);
-                GraphSeries = series?.Values.FirstOrDefault() ?? new SeriesCollection();
+
+                ThreadingHelper.ExecuteInGUI(() => 
+                {
+                    GraphSeries = new SeriesCollection(
+                        series.Select(kvp => new LineSeries
+                        {
+                            Title = kvp.Key,
+                            Values = new ChartValues<double>(kvp.Value)
+                        })
+                    );
+                });
 
                 _statusService.SetStatus("Data loaded.");
             }
@@ -132,16 +146,31 @@ namespace OctoWhirl.GUI.ViewModels
             }
         }
 
-        private async Task<Dictionary<string, SeriesCollection>> LoadHistoricalData(List<string> instruments, DateTime startDate, DateTime endDate)
+        private async Task<Dictionary<string, List<double>>> LoadHistoricalData(List<string> instruments, DateTime startDate, DateTime endDate)
         {
-            var data = new Dictionary<string, SeriesCollection>();
-            foreach (var instrument in instruments)
+            var request = new GetStocksRequest
             {
-                var instrumentCandles = await _dataLoader.GetStocks(instrument, startDate, endDate, DataSource, ResolutionInterval.Day).ConfigureAwait(false);
-                data[instrument] = new SeriesCollection(instrumentCandles);
-            }
-            return data;
+                Tickers = instruments.Distinct().ToList(),
+                StartDate = startDate,
+                EndDate = endDate,
+                Interval = ResolutionInterval.Day,
+                Source = ClientSource.YahooFinance,
+            };
+
+            var candles = await _dataLoader.GetStocks(request).ConfigureAwait(false);
+            return FormatCandlesForChart(candles);
         }
-        #endregion Private Methods
+        #endregion Private Data Methods
+
+        #region Private Technical Methods
+        private Dictionary<string, List<double>> FormatCandlesForChart(List<Candle> candles)
+        {
+            return candles.GroupBy(c => c.Reference)
+                          .ToDictionary(
+                              g => g.Key,
+                              g => g.OrderBy(c => c.Timestamp).Select(c => c.Close).ToList()
+                          );
+        }
+        #endregion Private Technical Methods
     }
 }

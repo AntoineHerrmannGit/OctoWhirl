@@ -58,7 +58,8 @@
         <!-- ⬜ Centre : graphe -->
         <Border Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                 Margin="10" Background="White" BorderBrush="Gray" BorderThickness="1">
-            <lvc:CartesianChart Series="{Binding GraphSeries}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <lvc:CartesianChart Series="{Binding GraphSeries}" LegendLocation="Right" 
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>
 
         <!-- ➡️ Droite : zone à remplir plus tard -->
