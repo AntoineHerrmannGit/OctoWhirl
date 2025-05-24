@@ -1,17 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Technicals;
 using OctoWhirl.Services.Models.Requests;
-using System;
 using System.Configuration;
-using System.Net.Http;
 
 namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
 {
     public class YahooFinanceClient : BaseClient, IFinanceClient
     {
-        private string _baseUrl;
         private string _chartUrl;
 
         public YahooFinanceClient(HttpClient httpClient, IConfiguration configuration) : base(httpClient)
@@ -24,7 +20,6 @@ namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
         {
             var section = configuration.GetRequiredSection("Services").GetRequiredSection("YahooFinance");
 
-            _baseUrl = section.GetRequiredSection("BaseUrl").Get<string>() ?? throw new ConfigurationErrorsException("Services:YahooFinance:BaseUrl");
             _chartUrl = section.GetRequiredSection("ChartUrl").Get<string>() ?? throw new ConfigurationErrorsException("Services:YahooFinance:ChartUrl");
         }
         #endregion BaseClient Methods
@@ -63,11 +58,11 @@ namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
         #region Private Methods
         private async Task<List<Candle>> GetSingleStock(string ticker, long startDate, long endDate, string interval)
         {
-            var url = $"{_baseUrl}{_chartUrl}{ticker}?interval=1d&period1={startDate}&period2={endDate}";
+            var url = $"{_chartUrl}/{ticker}?period1={startDate}&period2={endDate}&interval={interval}";
 
             try
             {
-                var result = await CallClient< YahooChartResponse >(url).ConfigureAwait(false);
+                var result = await CallClient<YahooChartResponse>(url).ConfigureAwait(false);
 
                 var timestamps = result?.Chart?.Result?.FirstOrDefault()?.Timestamp;
                 var indicators = result?.Chart?.Result?.FirstOrDefault()?.Indicators?.Quote?.FirstOrDefault();
@@ -81,6 +76,7 @@ namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
                     quotes.Add(new Candle
                     {
                         Timestamp = DateTimeOffset.FromUnixTimeSeconds(timestamps[i]).DateTime,
+                        Reference = ticker,
                         Open = indicators.Open?[i] ?? 0,
                         High = indicators.High?[i] ?? 0,
                         Low = indicators.Low?[i] ?? 0,
