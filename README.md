@@ -21,6 +21,9 @@ General organisation of the project :
                 The intelligence and the logic is defined in other projects (GUI, Services and Core) defined below.
             - App.xaml.cs contains the ServiceProvider of the whole application, responsible of injecting all class.
                 This is its only purpose as there is no way to inject services directly from WPF guis.
+            - .json config files naming should follow the convention:
+                "appsettings.{project}.json"
+                and contain a general section with project's name.
     
         - Core contains all common structures that will be used in all parts of the code.
             - Models is a particuliar part where models are defined. 
@@ -107,4 +110,4 @@ This implementation must match several constraints :
 Accessing Local Database :
 -----------------
 
-The projects assumes that a local database is accessible. The path to access the database is set in the appsettings.json.
+The projects assumes that a local database is accessible. The path to access the database is set in the appsettings.services.json.
