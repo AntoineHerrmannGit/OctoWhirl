@@ -45,6 +45,52 @@ General organisation of the project :
         - Tests contains all tests and must follow the same organization than Core, and Services.
 
 
+Good coding practices :
+    
+    This project is based on clean, commented and stronly architectured code following the good practices:
+
+        - Naming:
+            - Explicitely name the variables according to the concept they represent.
+            - Explicitely name the functions and methods according to the task they do.
+            - Naming is unique. If you have multiple variables with the same name, rethink your code.
+        
+        - Informations containers and models:
+            - Any representation of an information must be:
+                - Accurately named.
+                - relie on purely technicals models for purely technical concepts.
+                - relie on combination of technical models for business concepts.
+                - No dupplicates, if your model is just slightly different, think of the concept it represents.
+                
+            - Information elements / contents must be :
+                - unique.
+                - self-sufficient.
+                - atomic.
+                - complete (no need of multiple instances to represent one concept).
+                - deletable (if information lack, it should not affect the execution).
+                
+            - Technical models:
+                - represents technical concepts (TimeSeries, Points, Slope, DateTime, KeyValuePair, Interpolator...)
+                    and must not be exposed directly to the GUI or a client.
+                - are empty of any business intelligence and, as much as possible, of any logics.
+                - if contains logics, must clearly make the required task and never fail.
+                
+            - Business models:
+                - can derive from technical models.
+                - must only represent a business concept, not a technical concept exported to the business.
+                - can contain some logics but not on a property exposed to the GUI or to a client.
+                - can embark transformers or special methods to help clean the code and make it more readable.
+                    As much as possible, this logics must be written in an extension.
+                - must be deletable.
+                - must show a representation of a business error (e.g a NaN price for instance) in case of failure.
+
+        - Methods:
+            - Privilegy readability over shortness
+            - Make it removable if necessary.
+            - Must follow naming good practices.
+            - The name of the inner variables should be explicit to describe the logics inside.
+            - If part of the code has strong assumptions, hypothesis or requirements, leave a comment! 
+
+
 
 Python Scripts :
 -----------------
