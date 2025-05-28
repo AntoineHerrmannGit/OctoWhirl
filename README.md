@@ -12,9 +12,15 @@ To contribute to this project, submit a pull request and follow reviews and comm
 Developers note :
 -----------------
 
-General organisation of the project and coding good practices :
+General organisation of the project :
 
     This project is organized in four main parts:
+
+        - App contains the main entry point of the application and relative configurations to each project.
+            - App.xaml contains the Startup Window definition which is meant to be as minimalist as possible. 
+                The intelligence and the logic is defined in other projects (GUI, Services and Core) defined below.
+            - App.xaml.cs contains the ServiceProvider of the whole application, responsible of injecting all class.
+                This is its only purpose as there is no way to inject services directly from WPF guis.
     
         - Core contains all common structures that will be used in all parts of the code.
             - Models is a particuliar part where models are defined. 
