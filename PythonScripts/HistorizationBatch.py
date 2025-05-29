@@ -1,6 +1,11 @@
+import sys
+import os
+
+# Add the PythonScripts directory to sys.path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from Core import ConfigReader, YFStock
 from logging import Logger
-import os
 
 
 def main() -> None:
