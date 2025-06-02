@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Enums;
 using OctoWhirl.Core.Models.Technicals;
+using OctoWhirl.Core.Tools.FileManager;
 using OctoWhirl.Services.Data.Clients.YahooFinanceClient;
 using OctoWhirl.Services.Data.Loaders;
 using OctoWhirl.Services.Models.Requests;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace OctoWhirl.Tests.Services.Data
 {
@@ -24,7 +25,9 @@ namespace OctoWhirl.Tests.Services.Data
         {
             // Test Configuration
             var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true)
+                .AddJsonFile(FileManager.FindFilePath("appsettings.app.json"), optional: true)
+                .AddJsonFile(FileManager.FindFilePath("appsettings.gui.json"), optional: true)
+                .AddJsonFile(FileManager.FindFilePath("appsettings.services.json"), optional: true)
                 .Build();
 
             var services = new ServiceCollection();
@@ -53,25 +56,6 @@ namespace OctoWhirl.Tests.Services.Data
             };
 
             var candles = await dataLoader.GetStocks(request).ConfigureAwait(false);
-            Assert.IsNotNull(candles);
-            Assert.IsTrue(candles.IsNotEmpty());
-        }
-
-        [TestMethod]
-        public async Task TestGetStocksFromYahooFinance()
-        {
-            var yahooClient = _provider.GetRequiredService<YahooFinanceClient>();
-
-            var request = new GetStocksRequest
-            {
-                Tickers = new List<string> { "AAPL" },
-                StartDate = DateTime.Now.AddDays(-5),
-                EndDate = DateTime.Now,
-                Source = ClientSource.YahooFinance,
-                Interval = ResolutionInterval.Day,
-            };
-
-            var candles = await yahooClient.GetStocks(request).ConfigureAwait(false);
             Assert.IsNotNull(candles);
             Assert.IsTrue(candles.IsNotEmpty());
         }

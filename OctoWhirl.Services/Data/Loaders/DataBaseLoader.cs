@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
+using OctoWhirl.Core.Exceptions;
 using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Enums;
 using OctoWhirl.Core.Models.Technicals;
 using OctoWhirl.Core.Tools;
+using OctoWhirl.Core.Tools.FileManager;
 using OctoWhirl.Services.Data.DataBaseModels;
 using OctoWhirl.Services.Models.Requests;
 
@@ -10,8 +12,12 @@ namespace OctoWhirl.Services.Data.Loaders
 {
     public class DataBaseLoader : IDataService
     {
+        private readonly string _dataBasePath;
+
         public DataBaseLoader(IConfiguration configuration)
         {
+            var dbPath = configuration.GetRequiredSection("App").GetRequiredSection("DataBaseName").Get<string>() ?? throw new MissingSectionException("DataBaseName");
+            _dataBasePath = FileManager.FindDirPath(dbPath);
         }
 
         public async Task<List<Candle>> GetStocks(GetStocksRequest request)
@@ -30,11 +36,9 @@ namespace OctoWhirl.Services.Data.Loaders
         }
 
         #region Private File Methods
-        private static string GetFileName(string reference, HistorizedMarketDataType historizedMarketDataType, ClientSource source)
+        private string GetFileName(string reference, HistorizedMarketDataType historizedMarketDataType, ClientSource source)
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var filename = Path.Combine(currentDirectory, source.ToString(), historizedMarketDataType.ToString(), reference, ".json");
-            return filename;
+            return Path.Combine(_dataBasePath, source.ToString(), historizedMarketDataType.ToString(), $"{reference}.json");
         }
 
         private static List<Candle> MapDBSpotToCandle(List<DBSpot> dbSpots)
