@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OctoWhirl.GUI.ViewModels;
 using OctoWhirl.GUI.ViewModels.Technical;
@@ -8,6 +6,7 @@ using OctoWhirl.GUI.Views;
 using OctoWhirl.Services.Data.Clients.FinnHubClient;
 using OctoWhirl.Services.Data.Clients.YahooFinanceClient;
 using OctoWhirl.Services.Data.Loaders;
+using System.Windows;
 
 namespace OctoWhirl.App
 {

@@ -1,4 +1,5 @@
 ﻿using LiveCharts;
+using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using MvvmHelpers;
 using OctoWhirl.Core.Extensions;
@@ -23,14 +24,14 @@ namespace OctoWhirl.GUI.ViewModels
         public string StartDate
         {
             get => _startDate;
-            set { _startDate = value; OnPropertyChanged(); }
+            set { SetProperty(ref _startDate, value); }
         }
 
         private string _endDate;
         public string EndDate
         {
             get => _endDate;
-            set { _endDate = value; OnPropertyChanged(); }
+            set { SetProperty(ref _endDate, value); }
         }
 
         public IEnumerable<ClientSource> AvailableDataSources => Enum.GetValues(typeof(ClientSource)).Cast<ClientSource>();
@@ -46,7 +47,14 @@ namespace OctoWhirl.GUI.ViewModels
         public SeriesCollection GraphSeries
         {
             get => _graphSeries;
-            set { _graphSeries = value; OnPropertyChanged(); }
+            set { SetProperty(ref _graphSeries, value); }
+        }
+
+        private List<string> _graphLabels;
+        public List<string> GraphLabels
+        {
+            get => _graphLabels;
+            set => SetProperty(ref _graphLabels, value);
         }
 
         private string _newInstrumentName;
@@ -86,6 +94,7 @@ namespace OctoWhirl.GUI.ViewModels
             Instruments.Add(new InstrumentItem { Name = "AAPL" });
             Instruments.Add(new InstrumentItem { Name = "GOOG" });
             Instruments.Add(new InstrumentItem { Name = "TSLA" });
+            Instruments.Add(new InstrumentItem { Name = "NVDA" });
         }
 
         private List<string> GetSelectedInstrumentNames()
@@ -93,7 +102,7 @@ namespace OctoWhirl.GUI.ViewModels
             return Instruments.Where(i => i.IsSelected).Select(i => i.Name).ToList();
         }
 
-        #region Adds instruments
+        #region Adds Instruments
         private void AddInstrument()
         {
             if (CanAddInstrument())
@@ -101,7 +110,7 @@ namespace OctoWhirl.GUI.ViewModels
                 Instruments.Add(new InstrumentItem
                 {
                     Name = NewInstrumentName.Trim(),
-                    IsSelected = true
+                    IsSelected = false
                 });
 
                 NewInstrumentName = string.Empty;
@@ -112,7 +121,7 @@ namespace OctoWhirl.GUI.ViewModels
         {
             return !string.IsNullOrWhiteSpace(NewInstrumentName);
         }
-        #endregion Adds instruments
+        #endregion Adds Instruments
 
         #region Private Data Methods
         private async Task LoadData()
@@ -125,16 +134,22 @@ namespace OctoWhirl.GUI.ViewModels
                 var start = StartDate?.ToDateTime() ?? DateTime.Today.AddMonths(-1);
                 var end = EndDate?.ToDateTime() ?? DateTime.Today;
 
-                var series = await LoadHistoricalData(selectedInstruments, start, end).ConfigureAwait(false);
+                var series = await LoadHistoricalData(selectedInstruments, start, end).ConfigureAwait(false) ?? new Dictionary<string, List<Candle>>();
+                var dates = series?.Values.FirstOrDefault()?.Select(c => c.Timestamp.ToString("yyyy-MM-dd")).ToList() ?? new List<string>();
 
                 ThreadingHelper.ExecuteInGUI(() => 
                 {
+                    ClearGraph();
+
+                    GraphLabels = dates;
                     GraphSeries = new SeriesCollection(
                         series.Select(kvp => new LineSeries
                         {
                             Title = kvp.Key,
-                            Values = new ChartValues<double>(kvp.Value)
-                        })
+                            Values = new ChartValues<DateTimePoint>(
+                                kvp.Value.Select(c => new DateTimePoint(c.Timestamp, c.Close)).ToList()
+                            )
+                        }).ToList()
                     );
                 });
 
@@ -146,7 +161,7 @@ namespace OctoWhirl.GUI.ViewModels
             }
         }
 
-        private async Task<Dictionary<string, List<double>>> LoadHistoricalData(List<string> instruments, DateTime startDate, DateTime endDate)
+        private async Task<Dictionary<string, List<Candle>>> LoadHistoricalData(List<string> instruments, DateTime startDate, DateTime endDate)
         {
             var request = new GetStocksRequest
             {
@@ -162,14 +177,36 @@ namespace OctoWhirl.GUI.ViewModels
         }
         #endregion Private Data Methods
 
-        #region Private Technical Methods
-        private Dictionary<string, List<double>> FormatCandlesForChart(List<Candle> candles)
+        private List<Candle> FilledSeriesIfNecessary(List<Candle> candles, List<DateTime> dates)
         {
+            return dates.Select(date => candles.FirstOrDefault(
+                c => c.Timestamp == date) ?? 
+                new Candle 
+                { 
+                    Timestamp = date,
+                    Open = double.NaN,
+                    High = double.NaN,
+                    Low = double.NaN,
+                    Close = double.NaN,
+                }
+            ).ToList();
+        }
+
+        private Dictionary<string, List<Candle>> FormatCandlesForChart(List<Candle> candles)
+        {
+            var allDates = candles.Select(x => x.Timestamp).Distinct().ToList();
             return candles.GroupBy(c => c.Reference)
                           .ToDictionary(
                               g => g.Key,
-                              g => g.OrderBy(c => c.Timestamp).Select(c => c.Close).ToList()
+                              g => FilledSeriesIfNecessary(g.ToList(), allDates).OrderBy(c => c.Timestamp).ToList()
                           );
+        }
+        
+        #region Private Technical Methods
+        private void ClearGraph()
+        {
+            GraphLabels?.Clear();
+            GraphSeries?.Clear();
         }
         #endregion Private Technical Methods
     }
