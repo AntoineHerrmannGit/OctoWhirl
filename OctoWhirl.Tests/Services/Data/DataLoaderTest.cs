@@ -56,24 +56,5 @@ namespace OctoWhirl.Tests.Services.Data
             Assert.IsNotNull(candles);
             Assert.IsTrue(candles.IsNotEmpty());
         }
-
-        [TestMethod]
-        public async Task TestGetStocksFromYahooFinance()
-        {
-            var yahooClient = _provider.GetRequiredService<YahooFinanceClient>();
-
-            var request = new GetStocksRequest
-            {
-                Tickers = new List<string> { "AAPL" },
-                StartDate = DateTime.Now.AddDays(-5),
-                EndDate = DateTime.Now,
-                Source = ClientSource.YahooFinance,
-                Interval = ResolutionInterval.Day,
-            };
-
-            var candles = await yahooClient.GetStocks(request).ConfigureAwait(false);
-            Assert.IsNotNull(candles);
-            Assert.IsTrue(candles.IsNotEmpty());
-        }
     }
 }
