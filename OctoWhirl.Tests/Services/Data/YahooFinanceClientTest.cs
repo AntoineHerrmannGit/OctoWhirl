@@ -8,6 +8,7 @@ using OctoWhirl.Services.Models.Requests;
 
 namespace OctoWhirl.Tests.Services.Data
 {
+    [TestClass]
     public class YahooFinanceClientTest
     {
         private IServiceProvider _provider;
@@ -24,7 +25,7 @@ namespace OctoWhirl.Tests.Services.Data
 
             // Register Services
             services.AddSingleton<IConfiguration>(config);
-            services.AddTransient<YahooFinanceClient>();
+            services.AddHttpClient<YahooFinanceClient>();
 
             // Build Dependency-Injection
             _provider = services.BuildServiceProvider();
