@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Enums;
 using OctoWhirl.Core.Models.Technicals;
+using OctoWhirl.Core.Tools.FileManager;
 using OctoWhirl.Services.Data.Clients.YahooFinanceClient;
 using OctoWhirl.Services.Models.Requests;
 
@@ -18,7 +19,7 @@ namespace OctoWhirl.Tests.Services.Data
         {
             // Test Configuration
             var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true)
+                .AddJsonFile(FileManager.FindFilePath("appsettings.services.json"), optional: true)
                 .Build();
 
             var services = new ServiceCollection();
