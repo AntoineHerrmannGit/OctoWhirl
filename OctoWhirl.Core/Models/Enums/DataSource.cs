@@ -1,6 +1,6 @@
 ﻿namespace OctoWhirl.Core.Models.Enums
 {
-    public enum ClientSource
+    public enum DataSource
     {
         YahooFinance,
         FinnHub,
@@ -12,6 +12,6 @@
         //YahooFinanceHistorical,
         //YahooFinanceRealTime,
         //YahooFinanceOptions
-        Synthetic,
+        DataBase
     }
 }

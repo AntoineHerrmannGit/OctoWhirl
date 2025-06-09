@@ -9,5 +9,6 @@ namespace OctoWhirl.Core.Models.Common
         public double Strike { get; set; }
         public string Reference { get; set; }
         public string Underlying { get; set; }
+        public string OOCReference => $"O:{Underlying}{Maturity.ToString("yyMMdd")}{OptionType.ToString().First()}";
     }
 }

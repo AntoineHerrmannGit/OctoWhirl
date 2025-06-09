@@ -4,6 +4,7 @@ using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Enums;
 using OctoWhirl.Core.Models.Technicals;
 using OctoWhirl.Core.Tools.FileManager;
+using OctoWhirl.Services.Data.Clients.PolygonClient;
 using OctoWhirl.Services.Data.Clients.YahooFinanceClient;
 using OctoWhirl.Services.Data.Loaders;
 using OctoWhirl.Services.Models.Requests;
@@ -36,11 +37,15 @@ namespace OctoWhirl.Tests.Services.Data
             services.AddSingleton<IConfiguration>(config);
             services.AddTransient<DataLoader>();
             services.AddTransient<DataBaseLoader>();
+            services.AddHttpClient<PolygonClient>();
+            services.AddHttpClient<YahooFinanceClient>();
 
             // Build Dependency-Injection
             _provider = services.BuildServiceProvider();
         }
 
+
+        #region Database client tests
         [TestMethod]
         public async Task TestLoadDataFromDataBase()
         {
@@ -51,7 +56,7 @@ namespace OctoWhirl.Tests.Services.Data
                 Tickers = new List<string> { "AAPL" },
                 StartDate = DateTime.Now.AddDays(-5),
                 EndDate = DateTime.Now,
-                Source = ClientSource.YahooFinance,
+                Source = DataSource.YahooFinance,
                 Interval = ResolutionInterval.Day,
             };
 
@@ -59,5 +64,95 @@ namespace OctoWhirl.Tests.Services.Data
             Assert.IsNotNull(candles);
             Assert.IsTrue(candles.IsNotEmpty());
         }
+        #endregion Database client tests
+
+
+        #region YahooFinance client tests
+        [TestMethod]
+        public async Task TestGetStocksFromYahooFinance()
+        {
+            var yahooClient = _provider.GetRequiredService<YahooFinanceClient>();
+
+            var request = new GetStocksRequest
+            {
+                Tickers = new List<string> { "AAPL" },
+                StartDate = DateTime.Now.AddDays(-5),
+                EndDate = DateTime.Now,
+                Interval = ResolutionInterval.Day,
+            };
+
+            var candles = await yahooClient.GetStocks(request).ConfigureAwait(false);
+            Assert.IsNotNull(candles);
+            Assert.IsTrue(candles.IsNotEmpty());
+        }
+        #endregion YahooFinance client tests
+
+
+        #region PolygonIO client tests
+        [TestMethod]
+        public async Task TestGetStocksFromPolygonIO()
+        {
+            var polygonClient = _provider.GetRequiredService<PolygonClient>();
+
+            var request = new GetStocksRequest
+            {
+                Tickers = new List<string> { "AAPL" },
+                StartDate = DateTime.Now.AddDays(-5),
+                EndDate = DateTime.Now,
+                Interval = ResolutionInterval.Day,
+            };
+
+            var candles = await polygonClient.GetStocks(request).ConfigureAwait(false);
+            Assert.IsNotNull(candles);
+            Assert.IsTrue(candles.IsNotEmpty());
+        }
+
+
+        [TestMethod]
+        public async Task TestGetOptionsFromPolygonIO()
+        {
+            var polygonClient = _provider.GetRequiredService<PolygonClient>();
+
+            var optionListRequest = new GetListedOptionRequest
+            {
+                Tickers = new List<string> { "AAPL" },
+                AsOfDate = new DateTime(2025, 06, 09)
+            };
+            var options = await polygonClient.GetListedOptions(optionListRequest).ConfigureAwait(false);
+            var option = options.First();
+
+            var optionRequest = new GetOptionRequest
+            {
+                Tickers = new List<string> { option.Underlying },
+                Maturity = option.Maturity,
+                Strike = option.Strike,
+                StartDate = new DateTime(2025, 05, 09),
+                EndDate = new DateTime(2025, 05, 20),
+                Interval = ResolutionInterval.Day,
+                OptionType = option.OptionType
+            };
+
+            var optionSpot = await polygonClient.GetOption(optionRequest).ConfigureAwait(false);
+            Assert.IsNotNull(options);
+            Assert.IsTrue(options.IsNotEmpty());
+        }
+
+
+        [TestMethod]
+        public async Task TestGetListedOptionsFromPolygonIO()
+        {
+            var polygonClient = _provider.GetRequiredService<PolygonClient>();
+
+            var request = new GetListedOptionRequest
+            {
+                Tickers = new List<string> { "AAPL" },
+                AsOfDate = new DateTime(2025, 06, 09)
+            };
+
+            var options = await polygonClient.GetListedOptions(request).ConfigureAwait(false);
+            Assert.IsNotNull(options);
+            Assert.IsTrue(options.IsNotEmpty());
+        }
+        #endregion PolygonIO client tests
     }
 }

@@ -59,43 +59,47 @@ namespace OctoWhirl.Services.Data.Clients.FinnHubClient
         /// <summary>
         /// Retrieves options spots from FinnHub
         /// </summary>
-        public async Task<List<Candle>> GetOption(string reference, double strike, DateTime maturity, OptionType optionType, DateTime startDate, DateTime endDate, ResolutionInterval interval = ResolutionInterval.Day)
+        public async Task<List<Candle>> GetOption(GetOptionRequest request)
         {
-            long from = startDate.ToUnixTimestamp();
-            long to = endDate.ToUnixTimestamp();
+            throw new NotImplementedException();
 
-            string resolution = FinnHubResolutionIntervalParser.ToString(interval);
+            //long from = startDate.ToUnixTimestamp();
+            //long to = endDate.ToUnixTimestamp();
 
-            var symbol = BuildOptionSymbol(reference, strike, maturity, optionType);
+            //string resolution = FinnHubResolutionIntervalParser.ToString(interval);
 
-            string url = $"options/candle?symbol={symbol}&resolution={resolution}&from={from}&to={to}&token={_apiKey}";
+            //var symbol = BuildOptionSymbol(reference, strike, maturity, optionType);
 
-            var response = await CallClient<CandleResponse>(url);
+            //string url = $"options/candle?symbol={symbol}&resolution={resolution}&from={from}&to={to}&token={_apiKey}";
 
-            if (response?.s != "ok" || response.t == null)
-                return new List<Candle>();
+            //var response = await CallClient<CandleResponse>(url);
 
-            var candles = MapCandles(response, reference);
+            //if (response?.s != "ok" || response.t == null)
+            //    return new List<Candle>();
 
-            return candles;
+            //var candles = MapCandles(response, reference);
+
+            //return candles;
         }
 
         /// <summary>
         /// Retrieve the list of available options on market
         /// </summary>
-        public async Task<List<Option>> GetListedOptions(string symbol, DateTime date)
+        public async Task<List<Option>> GetListedOptions(GetListedOptionRequest request)
         {
-            string formattedDate = date.ToString("yyyy-MM-dd");
-            string url = $"stock/option-chain?symbol={symbol}&date={formattedDate}&token={_apiKey}";
+            throw new NotImplementedException();
 
-            var response = await CallClient<OptionChainResponse>(url);
+            //string formattedDate = date.ToString("yyyy-MM-dd");
+            //string url = $"stock/option-chain?symbol={symbol}&date={formattedDate}&token={_apiKey}";
 
-            if (response?.optionChain == null)
-                return new List<Option>();
+            //var response = await CallClient<OptionChainResponse>(url);
 
-            var options = MapOptions(response, symbol);
+            //if (response?.optionChain == null)
+            //    return new List<Option>();
 
-            return options;
+            //var options = MapOptions(response, symbol);
+
+            //return options;
         }
         #endregion FinnHubClient Methods
 

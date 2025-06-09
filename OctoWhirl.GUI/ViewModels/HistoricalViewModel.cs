@@ -34,10 +34,10 @@ namespace OctoWhirl.GUI.ViewModels
             set { SetProperty(ref _endDate, value); }
         }
 
-        public IEnumerable<ClientSource> AvailableDataSources => Enum.GetValues(typeof(ClientSource)).Cast<ClientSource>();
+        public IEnumerable<DataSource> AvailableDataSources => Enum.GetValues(typeof(DataSource)).Cast<DataSource>();
 
-        private ClientSource _dataSource;
-        public ClientSource DataSource
+        private DataSource _dataSource;
+        public DataSource DataSource
         {
             get => _dataSource;
             set => SetProperty(ref _dataSource, value);
@@ -82,7 +82,7 @@ namespace OctoWhirl.GUI.ViewModels
             LoadDataCommand = new AsyncRelayCommand(LoadData);
             AddInstrumentCommand = new RelayCommand(AddInstrument, CanAddInstrument);
 
-            DataSource = ClientSource.YahooFinance;
+            DataSource = DataSource.YahooFinance;
             _dataLoader = dataLoader;
 
             InitializeInstruments();
@@ -169,7 +169,7 @@ namespace OctoWhirl.GUI.ViewModels
                 StartDate = startDate,
                 EndDate = endDate,
                 Interval = ResolutionInterval.Day,
-                Source = ClientSource.YahooFinance,
+                Source = DataSource.YahooFinance,
             };
 
             var candles = await _dataLoader.GetStocks(request).ConfigureAwait(false);
