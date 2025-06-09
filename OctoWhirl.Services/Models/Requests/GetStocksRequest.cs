@@ -8,7 +8,7 @@ namespace OctoWhirl.Services.Models.Requests
         public List<string> Tickers { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public ClientSource Source { get; set; }
+        public DataSource Source { get; set; }
         public ResolutionInterval Interval { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using OctoWhirl.GUI.ViewModels;
 using OctoWhirl.GUI.ViewModels.Technical;
 using OctoWhirl.GUI.Views;
 using OctoWhirl.Services.Data.Clients.FinnHubClient;
+using OctoWhirl.Services.Data.Clients.PolygonClient;
 using OctoWhirl.Services.Data.Clients.YahooFinanceClient;
 using OctoWhirl.Services.Data.Loaders;
 using System.Windows;
@@ -59,9 +60,12 @@ namespace OctoWhirl.App
             services.AddTransient<DataBaseLoader>();
             services.AddTransient<DataLoader>();
 
+            services.AddSingleton<DataLoaderFactory>();
+
             // OctoWhirl Clients
             services.AddHttpClient<YahooFinanceClient>();
             services.AddHttpClient<FinnHubClient>();
+            services.AddHttpClient<PolygonClient>();
         }
     }
 

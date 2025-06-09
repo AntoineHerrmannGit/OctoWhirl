@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 namespace OctoWhirl.Services.Data.Clients

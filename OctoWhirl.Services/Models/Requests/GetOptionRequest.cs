@@ -1,8 +1,11 @@
-﻿namespace OctoWhirl.Services.Models.Requests
+﻿using OctoWhirl.Core.Models.Common;
+
+namespace OctoWhirl.Services.Models.Requests
 {
     public class GetOptionRequest : GetStocksRequest
     {
-        public List<double> Strikes { get; set; }
-        public List<DateTime> Maturities { get; set; }
+        public double Strike { get; set; }
+        public DateTime Maturity { get; set; }
+        public OptionType OptionType { get; set; }
     }
 }

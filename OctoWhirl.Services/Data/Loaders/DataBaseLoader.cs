@@ -36,7 +36,7 @@ namespace OctoWhirl.Services.Data.Loaders
         }
 
         #region Private File Methods
-        private string GetFileName(string reference, HistorizedMarketDataType historizedMarketDataType, ClientSource source)
+        private string GetFileName(string reference, HistorizedMarketDataType historizedMarketDataType, DataSource source)
         {
             return Path.Combine(_dataBasePath, source.ToString(), historizedMarketDataType.ToString(), $"{reference}.json");
         }

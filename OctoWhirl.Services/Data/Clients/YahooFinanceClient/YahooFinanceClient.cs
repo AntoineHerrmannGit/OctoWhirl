@@ -43,12 +43,12 @@ namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
             return candles;
         }
 
-        public Task<List<Candle>> GetOption(string reference, double strike, DateTime maturity, OptionType optionType, DateTime startDate, DateTime endDate, ResolutionInterval interval = ResolutionInterval.Day)
+        public Task<List<Candle>> GetOption(GetOptionRequest request)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Option>> GetListedOptions(string symbol, DateTime date)
+        public Task<List<Option>> GetListedOptions(GetListedOptionRequest request)
         {
             throw new NotImplementedException();
         }
