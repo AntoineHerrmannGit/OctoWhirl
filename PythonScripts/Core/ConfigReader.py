@@ -1,16 +1,26 @@
 import json
 import os
 from typing import Any
+import logging
+
 from Exceptions import MissingConfigurationException
 
 class ConfigReader():
     def __init__(self):
         self.configuration = None
+        self.logger = logging.getLogger("ConfigReader")
+        self.logger.setLevel(logging.INFO)
         self.read()
     
     def read(self, root: str = None, as_return: bool = False) -> dict[str, Any]:
         try:
-            appsettings = self.find_filepath("appsettings.json", root=root)
+            # Force the use of the correct appsettings.json in PythonScripts
+            if root is None:
+                root = os.path.dirname(__file__)
+            
+            appsettings = self.find_filepath("appsettings.json", root)
+            self.logger.info(f"Loading configuration from: {appsettings}")
+
             with open(appsettings, 'r') as f:
                 config = json.load(f)
                 if as_return:
@@ -19,25 +29,27 @@ class ConfigReader():
                     self.configuration = config
                     return self.configuration
         
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            raise MissingConfigurationException("Configuration file may be missing or corrupt")
+        except FileNotFoundError:
+            raise MissingConfigurationException("Configuration file 'appsettings.json' is missing. Please ensure it exists in the correct directory.")
+        except json.JSONDecodeError:
+            raise MissingConfigurationException("Configuration file 'appsettings.json' is corrupt or contains invalid JSON.")
 
     def get_configuration(self, *path: str, config = None) -> str | Any:
         if config is None:
             config = self.configuration
         
         if config is None:
-            raise MissingConfigurationException("No configuration found.")
+            raise MissingConfigurationException("No configuration found. Ensure 'appsettings.json' is loaded correctly.")
         
         result = config
         for section in path:
             if section in result:
                 result = result[section]
             else:
-                raise MissingConfigurationException(section)
+                raise MissingConfigurationException(f"Missing configuration section: {'.'.join(path)}")
         
         return result
-    
+
     def find_filepath(self, filename: str, root: str = None) -> str:
         if filename is None:
             raise ValueError("Filename cannot be None")
@@ -60,8 +72,8 @@ class ConfigReader():
             else:
                 child_dirs = [os.path.join(child, d) for child in child_dirs for d in os.listdir(child) if self.__is_dir(d)]
                 
-        raise ValueError(f"File {filename} not found in any parent / child directories.")
-    
+        raise FileNotFoundError(filename)
+
     def get_solution_root(self, solution: str = None) -> str:
         if solution is None:
             solution = "OctoWhirl"

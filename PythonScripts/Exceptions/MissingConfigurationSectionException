@@ -1,0 +1,5 @@
+from Exceptions.MissingConfigurationException import MissingConfigurationException
+
+class MissingConfigurationSectionException(MissingConfigurationException):
+    def __init__(self, section: str):
+        super().__init__(f"Missing configuration section: {section}")
