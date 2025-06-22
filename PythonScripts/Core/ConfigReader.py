@@ -6,7 +6,8 @@ import logging
 from Exceptions import MissingConfigurationException
 
 class ConfigReader():
-    def __init__(self):
+    def __init__(self, filename: str = "appsettings.json"):
+        self.filename = filename
         self.configuration = None
         self.logger = logging.getLogger("ConfigReader")
         self.logger.setLevel(logging.INFO)
@@ -17,7 +18,7 @@ class ConfigReader():
             if root is None:
                 root = os.path.dirname(__file__)
             
-            appsettings = self.find_filepath("appsettings.json", root)
+            appsettings = self.find_filepath(self.filename, root)
             self.logger.info(f"Loading configuration from: {appsettings}")
 
             with open(appsettings, 'r') as f:

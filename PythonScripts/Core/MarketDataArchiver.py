@@ -29,13 +29,13 @@ class MarketDataArchiver(ConfigReader):
         solution_root = os.path.dirname(self.get_solution_root())
         database_config_root = os.path.dirname(self.get_project_location(root=solution_root, project="OctoWhirl.Services"))
         database_config = self.read(root=database_config_root, as_return=True)
-        local_base_path = os.path.join(solution_root, self.get_configuration("DataBase", "LocalBasePath", config=database_config), source)
+        local_base_path = os.path.join(solution_root, self.get_configuration("Services", "DataBase", "LocalBasePath", config=database_config), source)
         
         
-        stocks_intraday_filename = self.get_configuration("DataBase", "DataBaseFileNames", "StockIntraday", config=database_config)
-        stocks_daily_filename = self.get_configuration("DataBase", "DataBaseFileNames", "StockDaily", config=database_config)
-        dividends_filename = self.get_configuration("DataBase", "DataBaseFileNames", "Dividends", config=database_config)
-        splits_filename = self.get_configuration("DataBase", "DataBaseFileNames", "Splits", config=database_config)
+        stocks_intraday_filename = self.get_configuration("Services", "DataBase", "DataBaseFileNames", "StockIntraday", config=database_config)
+        stocks_daily_filename = self.get_configuration("Services", "DataBase", "DataBaseFileNames", "StockDaily", config=database_config)
+        dividends_filename = self.get_configuration("Services", "DataBase", "DataBaseFileNames", "Dividends", config=database_config)
+        splits_filename = self.get_configuration("Services", "DataBase", "DataBaseFileNames", "Splits", config=database_config)
         
         self.__save_detailed_stock(spots=self.spots, root=local_base_path, filename=os.path.join(local_base_path, self.__get_file_key(stocks_intraday_filename)), override=override)
         self.__save_daily_stock(spots=self.spots_intraday, root=local_base_path, filename=os.path.join(local_base_path, self.__get_file_key(stocks_daily_filename)), override=override)
