@@ -14,7 +14,6 @@ class ConfigReader():
     
     def read(self, root: str = None, as_return: bool = False) -> dict[str, Any]:
         try:
-            # Force the use of the correct appsettings.json in PythonScripts
             if root is None:
                 root = os.path.dirname(__file__)
             
@@ -51,28 +50,27 @@ class ConfigReader():
         return result
 
     def find_filepath(self, filename: str, root: str = None) -> str:
+        """
+        Search for a file by name, recursively in the current directory and all parents/subfolders.
+        Returns the absolute path if found, else raises ValueError.
+        """
         if filename is None:
             raise ValueError("Filename cannot be None")
         
         current_dir = os.getcwd() if root is None else root
-        if filename in os.listdir(current_dir):
-            return os.path.join(current_dir, filename)
+
+        for dirpath, dirnames, filenames in os.walk(current_dir):
+            if filename in filenames:
+                return os.path.join(dirpath, filename)
         
         parent_dir = os.path.dirname(current_dir)
-        child_dirs = [os.path.join(current_dir, d) for d in os.listdir(current_dir) if self.__is_dir(d)]
-        while [parent_dir] + child_dirs:
-            if filename in os.listdir(parent_dir):
-                return os.path.join(parent_dir, filename)
-            else:
-                parent_dir = os.path.dirname(parent_dir)
+        while parent_dir and parent_dir != current_dir:
+            for dirpath, dirnames, filenames in os.walk(parent_dir):
+                if filename in filenames:
+                    return os.path.join(dirpath, filename)
+            current_dir, parent_dir = parent_dir, os.path.dirname(parent_dir)
 
-            for dir in child_dirs:
-                if filename in os.listdir(dir):
-                    return os.path.join(dir, filename)
-            else:
-                child_dirs = [os.path.join(child, d) for child in child_dirs for d in os.listdir(child) if self.__is_dir(d)]
-                
-        raise FileNotFoundError(filename)
+        raise FileNotFoundError(f"{filename} not found in any parent or child directories.")
 
     def get_solution_root(self, solution: str = None) -> str:
         if solution is None:
@@ -107,3 +105,5 @@ class ConfigReader():
             os.path.isdir(path) 
             and not os.path.basename(path) in ("bin", "obj", ".vs", ".git", ".idea")
         )
+    
+    
