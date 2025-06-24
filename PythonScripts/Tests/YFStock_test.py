@@ -7,6 +7,7 @@ from Core import YFStock
 
 CAC_ticker = "CAC"
 
+
 stock = YFStock(CAC_ticker)
 stock.save_to_json()
 

@@ -28,7 +28,7 @@ class MarketDataArchiver(ConfigReader):
         
         solution_root = os.path.dirname(self.get_solution_root())
         database_config_root = os.path.dirname(self.get_project_location(root=solution_root, project="OctoWhirl.Services"))
-        database_config = self.read(root=database_config_root, as_return=True)
+        database_config = self.read("appsettings.services.json", root=database_config_root)
         local_base_path = os.path.join(solution_root, self.get_configuration("Services", "DataBase", "LocalBasePath", config=database_config), source)
         
         

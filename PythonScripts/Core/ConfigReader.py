@@ -6,28 +6,23 @@ import logging
 from Exceptions import MissingConfigurationException
 
 class ConfigReader():
-    def __init__(self, filename: str = "appsettings.json"):
-        self.filename = filename
+    def __init__(self):
         self.configuration = None
         self.logger = logging.getLogger("ConfigReader")
         self.logger.setLevel(logging.INFO)
-        self.read()
     
-    def read(self, root: str = None, as_return: bool = False) -> dict[str, Any]:
+    def read(self, filename, root: str = None) -> dict[str, Any]:
         try:
             if root is None:
                 root = os.path.dirname(__file__)
             
-            appsettings = self.find_filepath(self.filename, root)
+            appsettings = self.find_filepath(filename, root)
             self.logger.info(f"Loading configuration from: {appsettings}")
 
             with open(appsettings, 'r') as f:
                 config = json.load(f)
-                if as_return:
-                    return config
-                else:
-                    self.configuration = config
-                    return self.configuration
+                self.configuration = config
+                return self.configuration
         
         except FileNotFoundError:
             raise MissingConfigurationException("Configuration file 'appsettings.json' is missing. Please ensure it exists in the correct directory.")
