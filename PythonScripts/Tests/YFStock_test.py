@@ -11,7 +11,6 @@ CAC_ticker = "CAC"
 stock = YFStock(CAC_ticker)
 stock.save_to_json()
 
-print("stock.yf_ticker:", stock.yf_ticker)
 assert (
     stock.ticker == CAC_ticker
     and stock.yf_ticker == "^FCHI"

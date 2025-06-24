@@ -25,7 +25,7 @@ class Stock(MarketDataArchiver):
     
     def __set_ticker(self, ticker: str) -> None:
         solution = self.get_solution_root()
-        services_project_location = os.path.dirname(self.get_project_location(project="OctoWhirl.Services", root=os.path.dirname(solution)))
+        services_project_location = os.path.dirname(self.get_project_location(project="OctoWhirl.App", root=os.path.dirname(solution)))
         
         config = self.read("appsettings.services.json", root=services_project_location)
         tickers_map = self.get_configuration("Services", "IndexTickerMap", config=config)
