@@ -48,16 +48,21 @@ class ConfigReader:
             return os.path.join(current_dir, filename)
         parent_dir = os.path.dirname(current_dir)
         child_dirs = [os.path.join(current_dir, d) for d in os.listdir(current_dir) if ConfigReader.__is_dir(os.path.join(current_dir, d))]
-        while [parent_dir] + child_dirs:
+        while True:
             if filename in os.listdir(parent_dir):
                 return os.path.join(parent_dir, filename)
-            else:
-                parent_dir = os.path.dirname(parent_dir)
+            if parent_dir == os.path.dirname(parent_dir):
+                break
+            parent_dir = os.path.dirname(parent_dir)
+            found_in_child = False
+            new_child_dirs = []
             for dir in child_dirs:
                 if filename in os.listdir(dir):
                     return os.path.join(dir, filename)
-            else:
-                child_dirs = [os.path.join(child, d) for child in child_dirs for d in os.listdir(child) if ConfigReader.__is_dir(os.path.join(child, d))]
+                new_child_dirs += [os.path.join(dir, d) for d in os.listdir(dir) if ConfigReader.__is_dir(os.path.join(dir, d))]
+            if not new_child_dirs:
+                break
+            child_dirs = new_child_dirs
         raise FileNotFoundError(f"{filename} not found in any parent or child directories.")
 
     @staticmethod
