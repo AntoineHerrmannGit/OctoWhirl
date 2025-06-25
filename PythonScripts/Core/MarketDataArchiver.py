@@ -6,9 +6,8 @@ from .ConfigReader import ConfigReader
 from Exceptions import MissingConfigurationException
 
 
-class MarketDataArchiver(ConfigReader):
+class MarketDataArchiver:
     def __init__(self):
-        ConfigReader.__init__(self)
         self.ticker = None
         self.currency: str = None
         self.spots: list[Spot] = None
@@ -23,20 +22,18 @@ class MarketDataArchiver(ConfigReader):
         
         :param override: If True, override existing data. Default is False.
         """
-        if "LocalBasePath" not in self.configuration:
-            MissingConfigurationException("LocalBasePath")
-        
-        solution_root = os.path.dirname(self.get_solution_root())
-        database_config_root = os.path.dirname(self.get_project_location(root=solution_root, project="OctoWhirl.Services"))
-        database_config = self.read("appsettings.services.json", root=database_config_root)
-        local_base_path = os.path.join(solution_root, self.get_configuration("Services", "DataBase", "LocalBasePath", config=database_config), source)
-        
-        
-        stocks_intraday_filename = self.get_configuration("Services", "DataBase", "DataBaseFileNames", "StockIntraday", config=database_config)
-        stocks_daily_filename = self.get_configuration("Services", "DataBase", "DataBaseFileNames", "StockDaily", config=database_config)
-        dividends_filename = self.get_configuration("Services", "DataBase", "DataBaseFileNames", "Dividends", config=database_config)
-        splits_filename = self.get_configuration("Services", "DataBase", "DataBaseFileNames", "Splits", config=database_config)
-        
+        solution_root = os.path.dirname(ConfigReader.get_solution_root())
+        database_config_root = os.path.dirname(ConfigReader.get_project_location("OctoWhirl.App", root=solution_root))
+        database_config = ConfigReader.read("appsettings.services.json", root=database_config_root)
+        local_base_path = os.path.join(
+            solution_root,
+            ConfigReader.get_configuration("Services", "DataBase", "LocalBasePath", config=database_config),
+            source
+        )
+        stocks_intraday_filename = ConfigReader.get_configuration("Services", "DataBase", "DataBaseFileNames", "StockIntraday", config=database_config)
+        stocks_daily_filename = ConfigReader.get_configuration("Services", "DataBase", "DataBaseFileNames", "StockDaily", config=database_config)
+        dividends_filename = ConfigReader.get_configuration("Services", "DataBase", "DataBaseFileNames", "Dividends", config=database_config)
+        splits_filename = ConfigReader.get_configuration("Services", "DataBase", "DataBaseFileNames", "Splits", config=database_config)
         self.__save_detailed_stock(spots=self.spots, root=local_base_path, filename=os.path.join(local_base_path, self.__get_file_key(stocks_intraday_filename)), override=override)
         self.__save_daily_stock(spots=self.spots_intraday, root=local_base_path, filename=os.path.join(local_base_path, self.__get_file_key(stocks_daily_filename)), override=override)
         self.__save_dividends(dividends=self.dividends, root=local_base_path, filename=os.path.join(local_base_path, self.__get_file_key(dividends_filename)), override=override)

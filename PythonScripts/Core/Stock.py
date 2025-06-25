@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 from Models import Spot, CorporateAction
 from .MarketDataArchiver import MarketDataArchiver
+from .ConfigReader import ConfigReader
 
 
 class Stock(MarketDataArchiver):
@@ -24,11 +25,11 @@ class Stock(MarketDataArchiver):
         raise NotImplementedError()
     
     def __set_ticker(self, ticker: str) -> None:
-        solution = self.get_solution_root()
-        services_project_location = os.path.dirname(self.get_project_location(project="OctoWhirl.App", root=os.path.dirname(solution)))
+        solution = ConfigReader.get_solution_root()
+        services_project_location = os.path.dirname(ConfigReader.get_project_location(project="OctoWhirl.App", root=os.path.dirname(solution)))
         
-        config = self.read("appsettings.services.json", root=services_project_location)
-        tickers_map = self.get_configuration("Services", "IndexTickerMap", config=config)
+        config = ConfigReader.read("appsettings.services.json", root=services_project_location)
+        tickers_map = ConfigReader.get_configuration("Services", "IndexTickerMap", config=config)
         
         if ticker in tickers_map:
             self.yf_ticker = tickers_map[ticker]
