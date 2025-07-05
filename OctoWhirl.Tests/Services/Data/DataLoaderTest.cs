@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OctoWhirl.Core.Extensions;
+using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Enums;
 using OctoWhirl.Core.Models.Technicals;
 using OctoWhirl.Core.Tools.FileManager;
@@ -83,7 +84,24 @@ namespace OctoWhirl.Tests.Services.Data
 
             var candles = await yahooClient.GetStocks(request).ConfigureAwait(false);
             Assert.IsNotNull(candles);
-            Assert.IsTrue(candles.IsNotEmpty());
+            Assert.IsNotEmpty(candles);
+        }
+
+        [TestMethod]
+        public async Task TestGetCorporateActionsFromYahooFinance()
+        {
+            var yahooClient = _provider.GetRequiredService<YahooFinanceClient>();
+
+            var request = new GetCorporateActionsRequest
+            {
+                Tickers = new List<string> { "AAPL" },
+                StartDate = DateTime.Now.AddMonths(-6),
+                EndDate = DateTime.Now,
+            };
+
+            var corporateActions = await yahooClient.GetCorporateActions(request).ConfigureAwait(false);
+            Assert.IsNotNull(corporateActions);
+            Assert.IsNotEmpty(corporateActions);
         }
         #endregion YahooFinance client tests
 
