@@ -1,18 +1,17 @@
-﻿using OctoWhirl.Core.Models.Technicals;
+﻿using OctoWhirl.Services.Strategy.Events;
 
 namespace OctoWhirl.Services.Strategy
 {
-    public interface IStrategy
+    public interface IStrategy : IDisposable
     {
-        #region Proprties
-        List<string> Universe { get; set; }
-        TimeSerie<double> Valuation { get; set; }
-        #endregion Properties
+        IDisposable _orderExecSub { get; set; }
+        StrategyRunner _strategyRunner { get; set; }
 
-        #region Methods
-        Task Initialize(List<string> universe, DateTime startDate, DateTime endDate);
-
-        Task Run();
-        #endregion Methods
+        IEnumerable<string> Universe { get; set; }
+        void Attach(StrategyRunner runner);
+        void OnMarketEvent(MarketEvent marketEvent);
+        Task Init();
+        void Dispose();
     }
+
 }
