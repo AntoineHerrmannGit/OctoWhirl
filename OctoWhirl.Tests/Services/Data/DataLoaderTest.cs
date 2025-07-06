@@ -171,6 +171,23 @@ namespace OctoWhirl.Tests.Services.Data
             Assert.IsNotNull(options);
             Assert.IsTrue(options.IsNotEmpty());
         }
+
+        [TestMethod]
+        public async Task TestGetCorporateActionsFromPolygon()
+        {
+            var polygonClient = _provider.GetRequiredService<PolygonClient>();
+
+            var request = new GetCorporateActionsRequest
+            {
+                Tickers = new List<string> { "AAPL" },
+                StartDate = DateTime.Now.AddMonths(-6),
+                EndDate = DateTime.Now,
+            };
+
+            var corporateActions = await polygonClient.GetCorporateActions(request).ConfigureAwait(false);
+            Assert.IsNotNull(corporateActions);
+            Assert.IsNotEmpty(corporateActions);
+        }
         #endregion PolygonIO client tests
     }
 }
