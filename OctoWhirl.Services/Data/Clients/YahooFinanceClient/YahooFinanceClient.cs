@@ -24,7 +24,7 @@ namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
             var section = configuration.GetRequiredSection("Services").GetRequiredSection("YahooFinance");
 
             _chartUrl = section.GetRequiredSection("ChartUrl").Get<string>() ?? throw new ConfigurationErrorsException("Services:YahooFinance:ChartUrl");
-            _corporateActionUrl = section.GetRequiredSection("CorporataeActionUrl").Get<string>() ?? throw new ConfigurationErrorsException("Services:YahooFinance:CorporataeActionUrl");
+            _corporateActionUrl = section.GetRequiredSection("CorporateActionUrl").Get<string>() ?? throw new ConfigurationErrorsException("Services:YahooFinance:CorporateActionUrl");
         }
         #endregion BaseClient Methods
 
@@ -64,7 +64,7 @@ namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
 
         public Task<List<Option>> GetListedOptions(GetListedOptionRequest request)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public async Task<List<CorporateAction>> GetCorporateActions(GetCorporateActionsRequest request)
