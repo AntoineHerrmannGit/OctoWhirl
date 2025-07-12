@@ -4,5 +4,12 @@
     {
         Split,
         Dividend,
+        Merge,
+        Spinoff,
+        NameChange,
+        Acquisition,
+        SymbolChange,
+        Bankruptcy,
+        Delisted
     }
 }

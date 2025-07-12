@@ -7,5 +7,7 @@ namespace OctoWhirl.Services.Data.Clients
     {
         Task<List<Candle>> GetOption(GetOptionRequest request);
         Task<List<Option>> GetListedOptions(GetListedOptionRequest request);
+        Task<List<Split>> GetSplits(GetCorporateActionsRequest request);
+        Task<List<Dividend>> GetDividends(GetCorporateActionsRequest request);
     }
 }

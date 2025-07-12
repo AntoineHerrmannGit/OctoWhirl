@@ -9,11 +9,6 @@ using OctoWhirl.Services.Data.Clients.PolygonClient;
 using OctoWhirl.Services.Data.Clients.YahooFinanceClient;
 using OctoWhirl.Services.Data.Loaders;
 using OctoWhirl.Services.Models.Requests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OctoWhirl.Tests.Services.Data
 {
@@ -88,7 +83,7 @@ namespace OctoWhirl.Tests.Services.Data
         }
 
         [TestMethod]
-        public async Task TestGetCorporateActionsFromYahooFinance()
+        public async Task TestGetSplitsFromYahooFinance()
         {
             var yahooClient = _provider.GetRequiredService<YahooFinanceClient>();
 
@@ -97,11 +92,30 @@ namespace OctoWhirl.Tests.Services.Data
                 Tickers = new List<string> { "AAPL" },
                 StartDate = DateTime.Now.AddMonths(-6),
                 EndDate = DateTime.Now,
+                CorporateActionType = CorporateActionType.Split,
             };
 
-            var corporateActions = await yahooClient.GetCorporateActions(request).ConfigureAwait(false);
+            var corporateActions = await yahooClient.GetSplits(request).ConfigureAwait(false);
             Assert.IsNotNull(corporateActions);
-            Assert.IsNotEmpty(corporateActions);
+        }
+
+        [TestMethod]
+        public async Task TestGetDividendsFromYahooFinance()
+        {
+            var yahooClient = _provider.GetRequiredService<YahooFinanceClient>();
+
+            var request = new GetCorporateActionsRequest
+            {
+                Tickers = new List<string> { "AAPL" },
+                StartDate = DateTime.Now.AddMonths(-6),
+                EndDate = DateTime.Now,
+                CorporateActionType = CorporateActionType.Dividend,
+            };
+
+            var dividends = await yahooClient.GetDividends(request).ConfigureAwait(false);
+            Assert.IsNotNull(dividends);
+            Assert.IsNotEmpty(dividends);
+            Assert.IsTrue(dividends.All(div => div.DividendAmount != 0));
         }
         #endregion YahooFinance client tests
 
@@ -170,6 +184,42 @@ namespace OctoWhirl.Tests.Services.Data
             var options = await polygonClient.GetListedOptions(request).ConfigureAwait(false);
             Assert.IsNotNull(options);
             Assert.IsTrue(options.IsNotEmpty());
+        }
+
+        [TestMethod]
+        public async Task TestGetSplitsFromPolygon()
+        {
+            var polygonClient = _provider.GetRequiredService<PolygonClient>();
+
+            var request = new GetCorporateActionsRequest
+            {
+                Tickers = new List<string> { "AAPL" },
+                StartDate = DateTime.Now.AddMonths(-6),
+                EndDate = DateTime.Now,
+                CorporateActionType = CorporateActionType.Split,
+            };
+
+            var splits = await polygonClient.GetSplits(request).ConfigureAwait(false);
+            Assert.IsNotNull(splits);
+        }
+
+        [TestMethod]
+        public async Task TestGetDividendsFromPolygon()
+        {
+            var polygonClient = _provider.GetRequiredService<PolygonClient>();
+
+            var request = new GetCorporateActionsRequest
+            {
+                Tickers = new List<string> { "AAPL" },
+                StartDate = DateTime.Now.AddMonths(-6),
+                EndDate = DateTime.Now,
+                CorporateActionType = CorporateActionType.Dividend,
+            };
+
+            var dividends = await polygonClient.GetDividends(request).ConfigureAwait(false);
+            Assert.IsNotNull(dividends);
+            Assert.IsNotEmpty(dividends);
+            Assert.IsTrue(dividends.All(div => div.DividendAmount != 0));
         }
         #endregion PolygonIO client tests
     }
