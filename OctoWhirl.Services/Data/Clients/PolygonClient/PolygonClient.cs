@@ -3,7 +3,6 @@ using OctoWhirl.Core.Exceptions;
 using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Services.Models.Requests;
-using System.Reflection.Metadata;
 using System.Text.Json.Serialization;
 
 namespace OctoWhirl.Services.Data.Clients.PolygonClient
@@ -78,17 +77,30 @@ namespace OctoWhirl.Services.Data.Clients.PolygonClient
             return options;
         }
 
-        public async Task<List<CorporateAction>> GetCorporateActions(GetCorporateActionsRequest request)
+        public async Task<List<Split>> GetSplits(GetCorporateActionsRequest request)
         {
             var startDate = request.StartDate.ToDateString();
             var endDate = request.EndDate.ToDateString();
 
-            var tasks = request.Tickers.Select(ticker => GetSingleCorporateAction(ticker, startDate, endDate)).ToList();
+            var tasks = request.Tickers.Select(ticker => GetSingleSplit(ticker, startDate, endDate)).ToList();
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
 
-            var corporateActions = results.SelectMany(result => result).ToList();
+            var splits = results.SelectMany(result => result).ToList();
 
-            return corporateActions;
+            return splits;
+        }
+
+        public async Task<List<Dividend>> GetDividends(GetCorporateActionsRequest request)
+        {
+            var startDate = request.StartDate.ToDateString();
+            var endDate = request.EndDate.ToDateString();
+
+            var tasks = request.Tickers.Select(ticker => GetSingleDividend(ticker, startDate, endDate)).ToList();
+            var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            var dividends = results.SelectMany(result => result).ToList();
+
+            return dividends;
         }
         #endregion IFinanceClient Methods
 
@@ -124,32 +136,38 @@ namespace OctoWhirl.Services.Data.Clients.PolygonClient
             return MapToCandles(option, response);
         }
 
-        private async Task<List<CorporateAction>> GetSingleCorporateAction(string ticker, string startDate, string endDate)
+        private async Task<List<Split>> GetSingleSplit(string ticker, string startDate, string endDate)
         {
-            var url = $"{_corporateActionUrl}?ticker={ticker}&execution_date.gte={startDate}&execution_date.lte={endDate}&apiKey={_apiKey}";
+            var url = BuildCorporateActionUrl(ticker, startDate, endDate, CorporateActionType.Split);
             var response = await CallClient<PolygonCorporateActionsResponse>(url).ConfigureAwait(false);
 
-            // Other types of corporate actions are not supported yet as protected in the switch
-            var corporateActions = response.Results.Where(result => 
-                   result.CorporateActionType == PolygonCorporateActionType.dividend 
-                || result.CorporateActionType == PolygonCorporateActionType.split
-            ).Select(result =>
+            var splits = response.results.Select(result => 
             {
-                return result.CorporateActionType switch
-                {
-                    PolygonCorporateActionType.dividend => MapToDividend(result),
-                    PolygonCorporateActionType.split => MapToSplit(result),
-                    _ => throw new NotSupportedException()
-                };
+                var split = MapToSplit(result);
+                split.Reference = ticker;
+                return split;
             }).ToList();
 
-            corporateActions.ForEach(c => c.Reference = ticker);
+            return splits;
+        }
 
-            return corporateActions;
+        private async Task<List<Dividend>> GetSingleDividend(string ticker, string startDate, string endDate)
+        {
+            var url = BuildCorporateActionUrl(ticker, startDate, endDate, CorporateActionType.Dividend);
+            var response = await CallClient<PolygonCorporateActionsResponse>(url).ConfigureAwait(false);
+
+            var dividends = response.results.Select(result =>
+            {
+                var dividend = MapToDividend(result);
+                dividend.Reference = ticker;
+                return dividend;
+            }).ToList();
+
+            return dividends;
         }
         #endregion Private Unitary Methods
 
-        #region Private Stock Url Builders
+        #region Privat Url Builders
         private string CreateRequestUrl(string from, string to, string interval, int amplitude, string ticker, int maxNbOfCandles) 
             => CreateUrlDescription(ticker, from, to, interval, amplitude) + "?" + CreateUrlParameters(maxNbOfCandles);
 
@@ -168,7 +186,14 @@ namespace OctoWhirl.Services.Data.Clients.PolygonClient
 
         private string CreateOptionListURL(string ticker, DateTime asOfDate, int limit)
             => $"{_optionUrl}?underlying_ticker={ticker}&as_of={asOfDate.ToDateString()}&expired=false&order=asc&limit={limit}&sort=ticker&apiKey={_apiKey}";
-        #endregion Private Stock Url Builders
+
+        private string BuildCorporateActionUrl(string ticker, string startDate, string endDate, CorporateActionType corporateActionType)
+        {
+            int maxPoints = 1000;
+            var type = PolygonCorporateActionTypeParser.Parse(corporateActionType);
+            return $"{_corporateActionUrl}/{type}?ticker={ticker}&execution_date.gte={startDate}&execution_date.lte={endDate}&limit={maxPoints}&apiKey={_apiKey}";
+        }
+        #endregion Private Url Builders
 
         #region Mappers
         private static IEnumerable<Candle> MapToCandles(string ticker, PolygonResponse<PolygonCandle> response)
@@ -194,21 +219,21 @@ namespace OctoWhirl.Services.Data.Clients.PolygonClient
                 Maturity = DateTime.TryParse(result.expiration_date, out DateTime date) ? date : default,
             });
 
-        private static CorporateAction MapToSplit(PolygonCorporateAction polygonCorporateAction)
+        private static Split MapToSplit(PolygonCorporateAction polygonCorporateAction)
         {
             return new Split
             {
-                TimeStamp = DateTime.Parse(polygonCorporateAction.ExecutionDate),
-                SplitRatio = polygonCorporateAction.SplitFrom.Value / polygonCorporateAction.SplitTo.Value,
+                TimeStamp = polygonCorporateAction.ex_dividend_date.Value,
+                SplitRatio = polygonCorporateAction.split_from.Value / polygonCorporateAction.split_to.Value,
             };
         }
 
-        private static CorporateAction MapToDividend(PolygonCorporateAction polygonCorporateAction)
+        private static Dividend MapToDividend(PolygonCorporateAction polygonCorporateAction)
         {
             return new Dividend
             {
-                TimeStamp = DateTime.Parse(polygonCorporateAction.ExecutionDate),
-                DividendAmount = polygonCorporateAction.CashAmount.Value,
+                TimeStamp = polygonCorporateAction.ex_dividend_date.Value,
+                DividendAmount = polygonCorporateAction.cash_amount.Value,
             };
         }
         #endregion Mappers
@@ -257,80 +282,53 @@ namespace OctoWhirl.Services.Data.Clients.PolygonClient
 
         class PolygonCorporateActionsResponse
         {
-            [JsonPropertyName("status")]
-            public string Status { get; set; }
+            public string status { get; set; }
 
-            [JsonPropertyName("request_id")]
-            public string RequestId { get; set; }
+            public string request_id { get; set; }
 
-            [JsonPropertyName("next_url")]
-            public string NextUrl { get; set; }
+            public string next_url { get; set; }
 
-            [JsonPropertyName("results")]
-            public List<PolygonCorporateAction> Results { get; set; }
+            public List<PolygonCorporateAction> results { get; set; }
         }
 
         class PolygonCorporateAction
         {
-            [JsonPropertyName("id")]
-            public string Id { get; set; }
+            public string id { get; set; }
 
-            [JsonPropertyName("ca_type")]
-            public PolygonCorporateActionType CorporateActionType { get; set; }
+            public string ticker { get; set; }
 
-            [JsonPropertyName("execution_date")]
-            public string ExecutionDate { get; set; }
+            public string ca_type { get; set; }
 
-            [JsonPropertyName("record_date")]
-            public string RecordDate { get; set; }
+            public double? cash_amount { get; set; }
 
-            [JsonPropertyName("declared_date")]
-            public string DeclaredDate { get; set; }
+            public string currency { get; set; }
 
-            [JsonPropertyName("payment_date")]
-            public string PaymentDate { get; set; }
+            public DateTime? declaration_date { get; set; }
 
-            [JsonPropertyName("cash_amount")]
-            public double? CashAmount { get; set; }
+            public string dividend_type { get; set; }
 
-            [JsonPropertyName("ticker")]
-            public string Ticker { get; set; }
+            public DateTime? ex_dividend_date { get; set; }
 
-            [JsonPropertyName("description")]
-            public string Description { get; set; }
+            public int? frequency { get; set; }
 
-            [JsonPropertyName("notes")]
-            public string Notes { get; set; }
+            public DateTime? pay_date { get; set; }
 
-            [JsonPropertyName("split_from")]
-            public double? SplitFrom { get; set; }
+            public DateTime? record_date { get; set; }
 
-            [JsonPropertyName("split_to")]
-            public double? SplitTo { get; set; }
+            public string description { get; set; }
 
-            [JsonPropertyName("old_ticker")]
-            public string OldTicker { get; set; }
+            public string notes { get; set; }
 
-            [JsonPropertyName("new_ticker")]
-            public string NewTicker { get; set; }
+            public double? split_from { get; set; }
 
-            [JsonPropertyName("target_ticker")]
-            public string TargetTicker { get; set; }
+            public double? split_to { get; set; }
+
+            public string old_ticker { get; set; }
+
+            public string new_ticker { get; set; }
+
+            public string target_ticker { get; set; }
         }
-
-        enum PolygonCorporateActionType
-        {
-            dividend,
-            split,
-            merger,
-            spinoff,
-            acquisition,
-            name_change,
-            symbol_change,
-            bankruptcy,
-            delisted
-        }
-
         #endregion Private Class
     }
 }

@@ -3,7 +3,6 @@ using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Technicals;
 using OctoWhirl.Services.Models.Requests;
 using System.Configuration;
-using System.Reactive;
 using System.Text.Json.Serialization;
 
 namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
@@ -36,11 +35,7 @@ namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
 
             string resolution = YahooFinanceIntervalResolutionParser.ToString(request.Interval);
 
-            var tasks = request.Tickers.Select(async ticker =>
-            {
-                var candle = await GetSingleStock(ticker, period1, period2, resolution).ConfigureAwait(false);
-                return candle;
-            }).ToList();
+            var tasks = request.Tickers.Select(ticker => GetSingleStock(ticker, period1, period2, resolution)).ToList();
 
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
             var candles = results.SelectMany(result => result).ToList();
@@ -67,25 +62,32 @@ namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
             throw new NotSupportedException();
         }
 
-        public async Task<List<CorporateAction>> GetCorporateActions(GetCorporateActionsRequest request)
+        public async Task<List<Split>> GetSplits(GetCorporateActionsRequest request)
         {
             var startDate = new DateTimeOffset(request.StartDate).ToUnixTimeSeconds();
             var endDate = new DateTimeOffset(request.EndDate).ToUnixTimeSeconds();
             var interval = YahooFinanceIntervalResolutionParser.ToString(ResolutionInterval.Day);
 
-            var tasks = request.Tickers.Select(async ticker =>
-            { 
-                var corpAction = await GetSingleCorporateAction(ticker, startDate, endDate, interval).ConfigureAwait(false);
-                if (request.CorporateActionType != null)
-                    return corpAction.Where(coac => coac.ActionType == request.CorporateActionType).ToList();
-                else
-                    return corpAction;
-            }).ToList();
+            var tasks = request.Tickers.Select(ticker => GetSingleSplit(ticker, startDate, endDate, interval));
 
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
-            var corporateActions = results.SelectMany(result => result).ToList();
+            var splits = results.SelectMany(result => result).ToList();
 
-            return corporateActions;
+            return splits;
+        }
+
+        public async Task<List<Dividend>> GetDividends(GetCorporateActionsRequest request)
+        {
+            var startDate = new DateTimeOffset(request.StartDate).ToUnixTimeSeconds();
+            var endDate = new DateTimeOffset(request.EndDate).ToUnixTimeSeconds();
+            var interval = YahooFinanceIntervalResolutionParser.ToString(ResolutionInterval.Day);
+
+            var tasks = request.Tickers.Select(ticker => GetSingleDividend(ticker, startDate, endDate, interval));
+
+            var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+            var dividends = results.SelectMany(result => result).ToList();
+
+            return dividends;
         }
         #endregion YahooFinanceClient Methods
 
@@ -128,47 +130,55 @@ namespace OctoWhirl.Services.Data.Clients.YahooFinanceClient
             }
         }
 
-        private async Task<List<CorporateAction>> GetSingleCorporateAction(string ticker, long startDate, long endDate, string interval)
+        private async Task<List<Split>> GetSingleSplit(string ticker, long startDate, long endDate, string interval)
         {
-            var url = $"{_corporateActionUrl}/{ticker}?interval={interval}&period1={startDate}&period2={endDate}&events=div|split";
+            var url = BuildCorporateActionUrl(ticker, startDate, endDate, interval, CorporateActionType.Split);
 
             try
             {
                 var result = await CallClient<YahooChartResponse>(url).ConfigureAwait(false);
-
                 var yahooSplits = result?.Chart?.Result?.FirstOrDefault()?.Events?.Splits;
-                var yahooDividends = result?.Chart?.Result?.FirstOrDefault()?.Events?.Dividends;
-
-                var corporateActions = new List<CorporateAction>();
-                if (yahooSplits != null)
+                return yahooSplits.Values.Select(split => new Split
                 {
-                    var splits = yahooSplits.Values.Select(split => new Split
-                    {
-                        Reference = ticker,
-                        TimeStamp = DateTimeOffset.FromUnixTimeSeconds(split.Date).DateTime,
-                        SplitRatio = split.Numerator / split.Denominator
-                    });
-                    corporateActions.AddRange(splits);
-                }
-
-                if (yahooDividends != null)
-                {
-                    var dividends = yahooDividends.Values.Select(div => new Dividend
-                    {
-                        Reference = ticker,
-                        TimeStamp = DateTimeOffset.FromUnixTimeSeconds(div.Date).DateTime,
-                        DividendAmount = div.Amount,
-                    });
-                    corporateActions.AddRange(dividends);
-                }
-
-                return corporateActions;
+                    Reference = ticker,
+                    TimeStamp = DateTimeOffset.FromUnixTimeSeconds(split.Date).DateTime,
+                    SplitRatio = split.Numerator / split.Denominator
+                }).ToList();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Erreur: {ex.Message}");
-                return new List<CorporateAction>();
+                return new List<Split>();
             }
+        }
+
+        private async Task<List<Dividend>> GetSingleDividend(string ticker, long startDate, long endDate, string interval)
+        {
+            var url = BuildCorporateActionUrl(ticker, startDate, endDate, interval, CorporateActionType.Dividend);
+
+            try
+            {
+                var result = await CallClient<YahooChartResponse>(url).ConfigureAwait(false);
+                var yahooDividends = result?.Chart?.Result?.FirstOrDefault()?.Events?.Dividends;
+
+                return yahooDividends.Values.Select(div => new Dividend
+                {
+                    Reference = ticker,
+                    TimeStamp = DateTimeOffset.FromUnixTimeSeconds(div.Date).DateTime,
+                    DividendAmount = div.Amount,
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur: {ex.Message}");
+                return new List<Dividend>();
+            }
+        }
+
+        private string BuildCorporateActionUrl(string ticker, long startDate, long endDate, string interval, CorporateActionType corporateActionType)
+        {
+            string type = YahooFinanceCorporateActionTypeParser.Parse(corporateActionType);
+            return $"{_corporateActionUrl}/{ticker}?interval={interval}&period1={startDate}&period2={endDate}&events={type}";
         }
         #endregion Private Methods
 
