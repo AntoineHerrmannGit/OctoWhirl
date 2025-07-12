@@ -3,6 +3,7 @@ using OctoWhirl.Core.Exceptions;
 using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Services.Models.Requests;
+using System.Text.Json.Serialization;
 
 namespace OctoWhirl.Services.Data.Clients.PolygonClient
 {
@@ -11,60 +12,49 @@ namespace OctoWhirl.Services.Data.Clients.PolygonClient
         private readonly string _apiKey;
         private readonly string _chartUrl;
         private readonly string _optionUrl;
+        private readonly string _corporateActionUrl;
 
         public PolygonClient(HttpClient httpClient, IConfiguration configuration) : base(httpClient)
         {
-            _apiKey = configuration.GetRequiredSection("Services").GetRequiredSection("Polygon").GetRequiredSection("ApiKey").Get<string>();
-            _chartUrl = configuration.GetRequiredSection("Services").GetRequiredSection("Polygon").GetRequiredSection("ChartUrl").Get<string>();
-            _optionUrl = configuration.GetRequiredSection("Services").GetRequiredSection("Polygon").GetRequiredSection("OptionUrl").Get<string>();
+            var section = configuration.GetRequiredSection("Services").GetRequiredSection("Polygon");
+
+            _apiKey = section.GetRequiredSection("ApiKey").Get<string>();
+            _chartUrl = section.GetRequiredSection("ChartUrl").Get<string>();
+            _optionUrl = section.GetRequiredSection("OptionUrl").Get<string>();
+            _corporateActionUrl = section.GetRequiredSection("CorporateActionUrl").Get<string>();
         }
 
         #region IFinanceClient Methods
         public async Task<List<Candle>> GetStocks(GetStocksRequest request)
         {
-            var maxNbOfCandles = 50000;
-
-            string from = request.StartDate.ToDateString();
-            string to = request.EndDate.ToDateString();
+            string startDate = request.StartDate.ToDateString();
+            string endDate = request.EndDate.ToDateString();
 
             string interval = request.Interval.GetInterval();
             int amplitude = request.Interval.GetAmplitude();
 
-            var candles = new List<Candle>();
-            foreach(var ticker in request.Tickers)
-            {
-                string url = CreateRequestUrl(from, to, interval, amplitude, ticker, maxNbOfCandles);
-                var response = await CallClient<PolygonResponse<PolygonCandle>>(url).ConfigureAwait(false);
-                if (response.results.IsNullOrEmpty())
-                    throw new BadStatusException($"Polygon failed on request {url} : {response.message}");
+            var tasks = request.Tickers.Select(ticker => GetSingleStock(ticker, startDate, endDate, interval, amplitude));
 
-                candles.AddRange(MapToCandles(ticker, response));
-            }
+            var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+            var candles = results.SelectMany(result => result).ToList();
 
             return candles;
         }
 
         public async Task<List<Candle>> GetOption(GetOptionRequest request)
         {
-            var maxNbOfCandles = 1000;
-
             string from = request.StartDate.ToDateString();
             string to = request.EndDate.ToDateString();
 
             string interval = request.Interval.GetInterval();
             int amplitude = request.Interval.GetAmplitude();
 
-            var candles = new List<Candle>();
-            foreach (var ticker in request.Tickers)
-            {
-                var option = CreateOptionReference(ticker, request.Strike, request.Maturity, request.OptionType);
-                var url = CreateRequestUrl(from, to, interval, amplitude, option, maxNbOfCandles);
-                var response = await CallClient<PolygonResponse<PolygonCandle>>(url).ConfigureAwait(false);
-                if (response.results.IsNullOrEmpty())
-                    throw new BadStatusException($"Polygon failed on request {url} : {response.message}");
+            var tasks = request.Tickers.Select(ticker => GetSingleOption(
+                ticker, from, to, interval, amplitude, request.Strike, request.Maturity, request.OptionType
+            ));
 
-                candles.AddRange(MapToCandles(option, response));
-            }
+            var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+            var candles = results.SelectMany(result => result).ToList();
 
             return candles;
         }
@@ -86,11 +76,98 @@ namespace OctoWhirl.Services.Data.Clients.PolygonClient
 
             return options;
         }
+
+        public async Task<List<Split>> GetSplits(GetCorporateActionsRequest request)
+        {
+            var startDate = request.StartDate.ToDateString();
+            var endDate = request.EndDate.ToDateString();
+
+            var tasks = request.Tickers.Select(ticker => GetSingleSplit(ticker, startDate, endDate)).ToList();
+            var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            var splits = results.SelectMany(result => result).ToList();
+
+            return splits;
+        }
+
+        public async Task<List<Dividend>> GetDividends(GetCorporateActionsRequest request)
+        {
+            var startDate = request.StartDate.ToDateString();
+            var endDate = request.EndDate.ToDateString();
+
+            var tasks = request.Tickers.Select(ticker => GetSingleDividend(ticker, startDate, endDate)).ToList();
+            var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            var dividends = results.SelectMany(result => result).ToList();
+
+            return dividends;
+        }
         #endregion IFinanceClient Methods
 
 
-
         #region Private Methods
+        #region Private Unitary Methods
+        private async Task<IEnumerable<Candle>> GetSingleStock(string ticker, string startDate, string endDate, string interval, int amplitude)
+        {
+            // Max limit authorized by Polygon.io
+            var maxNbOfCandles = 50000;
+
+            string url = CreateRequestUrl(startDate, endDate, interval, amplitude, ticker, maxNbOfCandles);
+            var response = await CallClient<PolygonResponse<PolygonCandle>>(url).ConfigureAwait(false);
+            if (response.results.IsNullOrEmpty())
+                throw new BadStatusException($"Polygon failed on request {url} : {response.message}");
+
+            var candles = MapToCandles(ticker, response);
+            return candles;
+        }
+
+        private async Task<IEnumerable<Candle>> GetSingleOption(string ticker, string startDate, string endDate, string interval, int amplitude, double strike, DateTime maturity, OptionType optionType)
+        {
+            // Max limit authorized by Polygon.io
+            var maxNbOfCandles = 1000;
+
+            var option = CreateOptionReference(ticker, strike, maturity, optionType);
+            var url = CreateRequestUrl(startDate, endDate, interval, amplitude, option, maxNbOfCandles);
+
+            var response = await CallClient<PolygonResponse<PolygonCandle>>(url).ConfigureAwait(false);
+            if (response.results.IsNullOrEmpty())
+                throw new BadStatusException($"Polygon failed on request {url} : {response.message}");
+
+            return MapToCandles(option, response);
+        }
+
+        private async Task<List<Split>> GetSingleSplit(string ticker, string startDate, string endDate)
+        {
+            var url = BuildCorporateActionUrl(ticker, startDate, endDate, CorporateActionType.Split);
+            var response = await CallClient<PolygonCorporateActionsResponse>(url).ConfigureAwait(false);
+
+            var splits = response.results.Select(result => 
+            {
+                var split = MapToSplit(result);
+                split.Reference = ticker;
+                return split;
+            }).ToList();
+
+            return splits;
+        }
+
+        private async Task<List<Dividend>> GetSingleDividend(string ticker, string startDate, string endDate)
+        {
+            var url = BuildCorporateActionUrl(ticker, startDate, endDate, CorporateActionType.Dividend);
+            var response = await CallClient<PolygonCorporateActionsResponse>(url).ConfigureAwait(false);
+
+            var dividends = response.results.Select(result =>
+            {
+                var dividend = MapToDividend(result);
+                dividend.Reference = ticker;
+                return dividend;
+            }).ToList();
+
+            return dividends;
+        }
+        #endregion Private Unitary Methods
+
+        #region Privat Url Builders
         private string CreateRequestUrl(string from, string to, string interval, int amplitude, string ticker, int maxNbOfCandles) 
             => CreateUrlDescription(ticker, from, to, interval, amplitude) + "?" + CreateUrlParameters(maxNbOfCandles);
 
@@ -110,6 +187,15 @@ namespace OctoWhirl.Services.Data.Clients.PolygonClient
         private string CreateOptionListURL(string ticker, DateTime asOfDate, int limit)
             => $"{_optionUrl}?underlying_ticker={ticker}&as_of={asOfDate.ToDateString()}&expired=false&order=asc&limit={limit}&sort=ticker&apiKey={_apiKey}";
 
+        private string BuildCorporateActionUrl(string ticker, string startDate, string endDate, CorporateActionType corporateActionType)
+        {
+            int maxPoints = 1000;
+            var type = PolygonCorporateActionTypeParser.Parse(corporateActionType);
+            return $"{_corporateActionUrl}/{type}?ticker={ticker}&execution_date.gte={startDate}&execution_date.lte={endDate}&limit={maxPoints}&apiKey={_apiKey}";
+        }
+        #endregion Private Url Builders
+
+        #region Mappers
         private static IEnumerable<Candle> MapToCandles(string ticker, PolygonResponse<PolygonCandle> response)
             => response.results.Select(result => new Candle
             {
@@ -132,6 +218,25 @@ namespace OctoWhirl.Services.Data.Clients.PolygonClient
                 OptionType = result.contract_type == "call" ? OptionType.Call : OptionType.Put,
                 Maturity = DateTime.TryParse(result.expiration_date, out DateTime date) ? date : default,
             });
+
+        private static Split MapToSplit(PolygonCorporateAction polygonCorporateAction)
+        {
+            return new Split
+            {
+                TimeStamp = polygonCorporateAction.ex_dividend_date.Value,
+                SplitRatio = polygonCorporateAction.split_from.Value / polygonCorporateAction.split_to.Value,
+            };
+        }
+
+        private static Dividend MapToDividend(PolygonCorporateAction polygonCorporateAction)
+        {
+            return new Dividend
+            {
+                TimeStamp = polygonCorporateAction.ex_dividend_date.Value,
+                DividendAmount = polygonCorporateAction.cash_amount.Value,
+            };
+        }
+        #endregion Mappers
         #endregion Private Methods
 
         #region Private Class
@@ -173,6 +278,56 @@ namespace OctoWhirl.Services.Data.Clients.PolygonClient
             public double strike_price { get; set; }
             public string ticker { get; set; }
             public string underlying_ticker { get; set; }
+        }
+
+        class PolygonCorporateActionsResponse
+        {
+            public string status { get; set; }
+
+            public string request_id { get; set; }
+
+            public string next_url { get; set; }
+
+            public List<PolygonCorporateAction> results { get; set; }
+        }
+
+        class PolygonCorporateAction
+        {
+            public string id { get; set; }
+
+            public string ticker { get; set; }
+
+            public string ca_type { get; set; }
+
+            public double? cash_amount { get; set; }
+
+            public string currency { get; set; }
+
+            public DateTime? declaration_date { get; set; }
+
+            public string dividend_type { get; set; }
+
+            public DateTime? ex_dividend_date { get; set; }
+
+            public int? frequency { get; set; }
+
+            public DateTime? pay_date { get; set; }
+
+            public DateTime? record_date { get; set; }
+
+            public string description { get; set; }
+
+            public string notes { get; set; }
+
+            public double? split_from { get; set; }
+
+            public double? split_to { get; set; }
+
+            public string old_ticker { get; set; }
+
+            public string new_ticker { get; set; }
+
+            public string target_ticker { get; set; }
         }
         #endregion Private Class
     }
