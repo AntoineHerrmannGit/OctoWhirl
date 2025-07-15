@@ -1,0 +1,18 @@
+{
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./PythonScripts",
+        "-p",
+        "test_*.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestArgs": [
+        "PythonScripts/Tests"
+    ]
+    ,
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}/PythonScripts"
+    }
+}

@@ -1,4 +1,3 @@
-import sys
 import os
 
 from Core import ConfigReader, YFStock

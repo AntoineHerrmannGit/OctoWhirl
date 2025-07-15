@@ -39,30 +39,59 @@ class ConfigReader:
                 raise MissingConfigurationException(f"Missing configuration section: {'.'.join(path)}")
         return result
 
-    @staticmethod
-    def find_filepath(filename: str, root: str = None) -> str:
+    @classmethod
+    def find_filepath(cls, filename: str, root: str = None) -> str:
         if filename is None:
             raise ValueError("Filename cannot be None")
+        
         current_dir = os.getcwd() if root is None else root
-        if filename in os.listdir(current_dir):
-            return os.path.join(current_dir, filename)
+        visited_dirs = set()
+        
+        # Check current directory first
+        try:
+            if filename in os.listdir(current_dir):
+                return os.path.join(current_dir, filename)
+        except (OSError, PermissionError):
+            raise FileNotFoundError(f"Cannot access directory: {current_dir}")
+        
+        visited_dirs.add(os.path.normpath(current_dir))
         parent_dir = os.path.dirname(current_dir)
-        child_dirs = [os.path.join(current_dir, d) for d in os.listdir(current_dir) if ConfigReader.__is_dir(os.path.join(current_dir, d))]
-        while True:
-            if filename in os.listdir(parent_dir):
-                return os.path.join(parent_dir, filename)
-            if parent_dir == os.path.dirname(parent_dir):
-                break
-            parent_dir = os.path.dirname(parent_dir)
-            found_in_child = False
+        child_dirs = [os.path.join(current_dir, d) for d in os.listdir(current_dir) 
+                      if cls.__is_dir(os.path.join(current_dir, d))]
+        
+        while parent_dir or child_dirs:
+            # Search in parent directory
+            if parent_dir:
+                norm_parent = os.path.normpath(parent_dir)
+                if norm_parent not in visited_dirs:
+                    try:
+                        if filename in os.listdir(parent_dir):
+                            return os.path.join(parent_dir, filename)
+                        visited_dirs.add(norm_parent)
+                    except (OSError, PermissionError):
+                        pass  # Skip inaccessible directories
+                
+                # Move to next parent, stop at filesystem root
+                next_parent = os.path.dirname(parent_dir)
+                parent_dir = next_parent if next_parent != parent_dir else None
+
+            # Search in child directories
             new_child_dirs = []
-            for dir in child_dirs:
-                if filename in os.listdir(dir):
-                    return os.path.join(dir, filename)
-                new_child_dirs += [os.path.join(dir, d) for d in os.listdir(dir) if ConfigReader.__is_dir(os.path.join(dir, d))]
-            if not new_child_dirs:
-                break
+            for dir_path in child_dirs:
+                norm_path = os.path.normpath(dir_path)
+                if norm_path not in visited_dirs:
+                    try:
+                        if filename in os.listdir(dir_path):
+                            return os.path.join(dir_path, filename)
+                        visited_dirs.add(norm_path)
+                        # Add subdirectories for next iteration
+                        new_child_dirs.extend([os.path.join(dir_path, d) for d in os.listdir(dir_path) 
+                                             if cls.__is_dir(os.path.join(dir_path, d))])
+                    except (OSError, PermissionError):
+                        pass  # Skip inaccessible directories
+            
             child_dirs = new_child_dirs
+                
         raise FileNotFoundError(f"{filename} not found in any parent or child directories.")
 
     @staticmethod
