@@ -1,8 +1,9 @@
 import json
 import os
 from datetime import datetime
+
 from Models import Spot, CorporateAction, DataSource
-from .ConfigReader import ConfigReader
+from Core.ConfigReader import ConfigReader
 from Exceptions import MissingConfigurationException
 
 

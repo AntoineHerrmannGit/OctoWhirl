@@ -1,8 +1,9 @@
-from datetime import datetime
 import os
+from datetime import datetime
+
 from Models import Spot, CorporateAction
-from .MarketDataArchiver import MarketDataArchiver
-from .ConfigReader import ConfigReader
+from Core.ConfigReader import ConfigReader
+from Core.MarketDataArchiver import MarketDataArchiver
 
 
 class Stock(MarketDataArchiver):
