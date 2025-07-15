@@ -1,97 +1,100 @@
 import json
 import os
 from typing import Any
+import logging
+
 from Exceptions import MissingConfigurationException
 
-class ConfigReader():
-    def __init__(self):
-        self.configuration = None
-        self.read()
-    
-    def read(self, root: str = None, as_return: bool = False) -> dict[str, Any]:
+class ConfigReader: 
+    """
+    ConfigReader class is just a container of static methods
+    """
+    logger = logging.getLogger("ConfigReader")
+    logger.setLevel(logging.INFO)
+
+    @staticmethod
+    def read(filename: str, root: str = None) -> dict[str, Any]:
         try:
-            appsettings = self.find_filepath("appsettings.json", root=root)
+            if root is None:
+                root = os.path.dirname(__file__)
+            appsettings = ConfigReader.find_filepath(filename, root)
+            ConfigReader.logger.info(f"Loading configuration from: {appsettings}")
             with open(appsettings, 'r') as f:
                 config = json.load(f)
-                if as_return:
-                    return config
-                else:
-                    self.configuration = config
-                    return self.configuration
-        
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            raise MissingConfigurationException("Configuration file may be missing or corrupt")
+                return config
+        except FileNotFoundError:
+            raise MissingConfigurationException(f"Configuration file {filename} is missing. Please ensure it exists in the correct directory.")
+        except json.JSONDecodeError:
+            raise MissingConfigurationException(f"Configuration file {filename} is corrupt or contains invalid JSON.")
 
-    def get_configuration(self, *path: str, config = None) -> str | Any:
+    @staticmethod
+    def get_configuration(*path: str, config: dict[str, Any] = None) -> str | Any:
         if config is None:
-            config = self.configuration
-        
-        if config is None:
-            raise MissingConfigurationException("No configuration found.")
-        
+            raise MissingConfigurationException("No configuration provided.")
         result = config
         for section in path:
             if section in result:
                 result = result[section]
             else:
-                raise MissingConfigurationException(section)
-        
+                raise MissingConfigurationException(f"Missing configuration section: {'.'.join(path)}")
         return result
-    
-    def find_filepath(self, filename: str, root: str = None) -> str:
+
+    @staticmethod
+    def find_filepath(filename: str, root: str = None) -> str:
         if filename is None:
             raise ValueError("Filename cannot be None")
-        
         current_dir = os.getcwd() if root is None else root
         if filename in os.listdir(current_dir):
             return os.path.join(current_dir, filename)
-        
         parent_dir = os.path.dirname(current_dir)
-        child_dirs = [os.path.join(current_dir, d) for d in os.listdir(current_dir) if self.__is_dir(d)]
-        while [parent_dir] + child_dirs:
+        child_dirs = [os.path.join(current_dir, d) for d in os.listdir(current_dir) if ConfigReader.__is_dir(os.path.join(current_dir, d))]
+        while True:
             if filename in os.listdir(parent_dir):
                 return os.path.join(parent_dir, filename)
-            else:
-                parent_dir = os.path.dirname(parent_dir)
-
+            if parent_dir == os.path.dirname(parent_dir):
+                break
+            parent_dir = os.path.dirname(parent_dir)
+            found_in_child = False
+            new_child_dirs = []
             for dir in child_dirs:
                 if filename in os.listdir(dir):
                     return os.path.join(dir, filename)
-            else:
-                child_dirs = [os.path.join(child, d) for child in child_dirs for d in os.listdir(child) if self.__is_dir(d)]
-                
-        raise ValueError(f"File {filename} not found in any parent / child directories.")
-    
-    def get_solution_root(self, solution: str = None) -> str:
+                new_child_dirs += [os.path.join(dir, d) for d in os.listdir(dir) if ConfigReader.__is_dir(os.path.join(dir, d))]
+            if not new_child_dirs:
+                break
+            child_dirs = new_child_dirs
+        raise FileNotFoundError(f"{filename} not found in any parent or child directories.")
+
+    @staticmethod
+    def get_solution_root(solution: str = None) -> str:
         if solution is None:
             solution = "OctoWhirl"
-        
         solution = f"{solution}.sln"
-        return self.find_filepath(solution)
-            
-    def get_project_location(self, project: str, root: str = None) -> str:
+        return ConfigReader.find_filepath(solution)
+
+    @staticmethod
+    def get_project_location(project: str, root: str = None) -> str:
         if ".csproj" in project and not project.endswith(".csproj"):
             raise ValueError('Project name must end with ".csproj"')
         else:
             project = f"{project}.csproj"
-        
         if root is None:
-            root = os.path.dirname(self.get_solution_root())
-        
-        dirs = [os.path.join(root, d) for d in os.listdir(root) if self.__is_dir(os.path.join(root, d))]
+            root = os.path.dirname(ConfigReader.get_solution_root())
+        dirs = [os.path.join(root, d) for d in os.listdir(root) if ConfigReader.__is_dir(os.path.join(root, d))]
         while dirs:
             new_dirs = []
             for dir in dirs:
                 if project in os.listdir(dir):
                     return os.path.join(dir, project)
                 else:
-                    new_dirs += [os.path.join(dir, d) for d in os.listdir(dir) if self.__is_dir(os.path.join(dir, d))]
+                    new_dirs += [os.path.join(dir, d) for d in os.listdir(dir) if ConfigReader.__is_dir(os.path.join(dir, d))]
             dirs = new_dirs
-        
         raise ValueError(f"Service {project} cannot be located from {root}")
-    
-    def __is_dir(self, path: str) -> bool:
+
+    @staticmethod
+    def __is_dir(path: str) -> bool:
         return (
-            os.path.isdir(path) 
+            os.path.isdir(path)
             and not os.path.basename(path) in ("bin", "obj", ".vs", ".git", ".idea")
         )
+
