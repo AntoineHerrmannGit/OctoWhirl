@@ -1,10 +1,9 @@
-﻿using OctoWhirl.Core.Models.Technicals;
-using OctoWhirl.Services.Strategy.Events;
+﻿using OctoWhirl.Services.Strategy.Events;
 using System.Reactive.Linq;
 
 namespace OctoWhirl.Services.Strategy.Strategies
 {
-    public class MeanRebalancingStrategy : IStrategy
+    public class DummyWaitStrategy : IStrategy
     {
         #region IStrategy Properties
         public IDisposable _orderExecSub { get; set; }
@@ -13,18 +12,12 @@ namespace OctoWhirl.Services.Strategy.Strategies
         #endregion IStrategy Properties
 
         #region Strategy Properties
-        public Dictionary<string, double> Positions;
-        public TimeSerie<double> Valorization;
-        public TimeSpan RebalancingFrequency;
+        public int SeenEvents { get; set; }
         #endregion Strategy Properties
 
         #region Ctor
-        public MeanRebalancingStrategy(IEnumerable<string> universe, TimeSpan rebalancingFrequency)
+        public DummyWaitStrategy()
         {
-            Universe = universe;
-            Positions = universe.ToDictionary(x => x, x => 0d);
-            Valorization = new TimeSerie<double>();
-            RebalancingFrequency = rebalancingFrequency;
         }
         #endregion Ctor
 
@@ -39,12 +32,13 @@ namespace OctoWhirl.Services.Strategy.Strategies
 
         public Task Init()
         {
+            SeenEvents = 0;
             return Task.CompletedTask;
         }
 
         public void OnMarketEvent(MarketEvent marketEvent)
         {
-
+            SeenEvents++;
         }
 
         #region IDisposable Methods

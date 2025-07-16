@@ -5,10 +5,13 @@ using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Enums;
 using OctoWhirl.Core.Models.Technicals;
 using OctoWhirl.Core.Tools.FileManager;
+using OctoWhirl.Services;
 using OctoWhirl.Services.Data.Clients.PolygonClient;
 using OctoWhirl.Services.Data.Clients.YahooFinanceClient;
 using OctoWhirl.Services.Data.Loaders;
 using OctoWhirl.Services.Models.Requests;
+using OctoWhirl.Services.Strategy;
+using OctoWhirl.Services.Strategy.Strategies;
 
 namespace OctoWhirl.Tests.Services.Data
 {
@@ -224,3 +227,5 @@ namespace OctoWhirl.Tests.Services.Data
         #endregion PolygonIO client tests
     }
 }
+
+services.AddKeyedTransient<IStrategy, DummyWaitStrategy>(AvailableStrategiesEnum.DummyWaitStrategy);

@@ -6,6 +6,8 @@ using OctoWhirl.GUI.Views;
 using OctoWhirl.Services.Data.Clients.PolygonClient;
 using OctoWhirl.Services.Data.Clients.YahooFinanceClient;
 using OctoWhirl.Services.Data.Loaders;
+using OctoWhirl.Services.Strategy;
+using OctoWhirl.Services.Strategy.Strategies;
 using System.Windows;
 
 namespace OctoWhirl.App
