@@ -45,14 +45,19 @@ class ConfigReader:
             raise ValueError("Filename cannot be None")
         
         current_dir = os.getcwd() if root is None else root
+        
+        # Validate that the directory exists and is accessible
+        if not os.path.exists(current_dir):
+            raise FileNotFoundError(f"Directory does not exist: {current_dir}")
+        if not os.path.isdir(current_dir):
+            raise ValueError(f"Path is not a directory: {current_dir}")
+        if not os.access(current_dir, os.R_OK):
+            raise FileNotFoundError(f"Cannot access directory: {current_dir}")
+        
         visited_dirs = set()
         
-        # Check current directory first
-        try:
-            if filename in os.listdir(current_dir):
-                return os.path.join(current_dir, filename)
-        except (OSError, PermissionError):
-            raise FileNotFoundError(f"Cannot access directory: {current_dir}")
+        if filename in os.listdir(current_dir):
+            return os.path.join(current_dir, filename)
         
         visited_dirs.add(os.path.normpath(current_dir))
         parent_dir = os.path.dirname(current_dir)
@@ -63,13 +68,10 @@ class ConfigReader:
             # Search in parent directory
             if parent_dir:
                 norm_parent = os.path.normpath(parent_dir)
-                if norm_parent not in visited_dirs:
-                    try:
-                        if filename in os.listdir(parent_dir):
-                            return os.path.join(parent_dir, filename)
-                        visited_dirs.add(norm_parent)
-                    except (OSError, PermissionError):
-                        pass  # Skip inaccessible directories
+                if norm_parent not in visited_dirs and os.access(parent_dir, os.R_OK):
+                    if filename in os.listdir(parent_dir):
+                        return os.path.join(parent_dir, filename)
+                    visited_dirs.add(norm_parent)
                 
                 # Move to next parent, stop at filesystem root
                 next_parent = os.path.dirname(parent_dir)
@@ -79,16 +81,13 @@ class ConfigReader:
             new_child_dirs = []
             for dir_path in child_dirs:
                 norm_path = os.path.normpath(dir_path)
-                if norm_path not in visited_dirs:
-                    try:
-                        if filename in os.listdir(dir_path):
-                            return os.path.join(dir_path, filename)
-                        visited_dirs.add(norm_path)
-                        # Add subdirectories for next iteration
-                        new_child_dirs.extend([os.path.join(dir_path, d) for d in os.listdir(dir_path) 
-                                             if cls.__is_dir(os.path.join(dir_path, d))])
-                    except (OSError, PermissionError):
-                        pass  # Skip inaccessible directories
+                if norm_path not in visited_dirs and os.access(dir_path, os.R_OK):
+                    if filename in os.listdir(dir_path):
+                        return os.path.join(dir_path, filename)
+                    visited_dirs.add(norm_path)
+                    # Add subdirectories for next iteration
+                    new_child_dirs.extend([os.path.join(dir_path, d) for d in os.listdir(dir_path) 
+                                         if cls.__is_dir(os.path.join(dir_path, d))])
             
             child_dirs = new_child_dirs
                 

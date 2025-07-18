@@ -87,6 +87,24 @@ class TestConfigReaderStateless(unittest.TestCase):
     def test_read_missing_file_raises(self):
         with self.assertRaises(MissingConfigurationException):
             ConfigReader.read('notfound.json', root=self.temp_dir.name)
+    
+    def test_find_filepath_invalid_root_directory(self):
+        # Test with non-existent directory
+        with self.assertRaises(FileNotFoundError):
+            ConfigReader.find_filepath('test.json', root='/path/that/does/not/exist')
+    
+    def test_find_filepath_root_is_file_not_directory(self):
+        # Create a file and try to use it as root directory
+        test_file = self.temp_dir.name + '/not_a_directory.txt'
+        with open(test_file, 'w') as f:
+            f.write("test")
+        
+        with self.assertRaises(ValueError):
+            ConfigReader.find_filepath('test.json', root=test_file)
+    
+    def test_find_filepath_none_filename(self):
+        with self.assertRaises(ValueError):
+            ConfigReader.find_filepath(None, root=self.temp_dir.name)
 
 if __name__ == '__main__':
     unittest.main()
