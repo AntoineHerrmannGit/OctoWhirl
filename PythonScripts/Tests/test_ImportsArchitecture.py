@@ -1,63 +1,47 @@
-import unittest
+import pytest
+from Core import ConfigReader, Stock, YFStock, MarketDataArchiver
+from Core.ConfigReader import ConfigReader as CR
+from Core.Stock import Stock as S
+from Core.YFStock import YFStock as YFS
+from Core.MarketDataArchiver import MarketDataArchiver as MDA
 
-class TestImportsArchitecture(unittest.TestCase):
-    """
-    Tests to demonstrate that the new import architecture works
-    from anywhere in the project.
-    """
-    
-    def test_import_from_core_package(self):
-        """Test that we can import directly from Core package"""
-        try:
-            from Core import ConfigReader, Stock, YFStock, MarketDataArchiver
-            self.assertTrue(True, "Import from Core succeeded")
-        except ImportError as e:
-            self.fail(f"Failed to import from Core: {e}")
-    
-    def test_specific_absolute_imports(self):
-        """Test specific absolute imports"""
-        try:
-            from Core.ConfigReader import ConfigReader
-            from Core.Stock import Stock
-            from Core.YFStock import YFStock
-            from Core.MarketDataArchiver import MarketDataArchiver
-            
-            # Verify that classes are properly imported
-            self.assertTrue(hasattr(ConfigReader, 'read'))
-            self.assertTrue(hasattr(Stock, '__init__'))
-            self.assertTrue(hasattr(YFStock, 'get_spots'))
-            self.assertTrue(hasattr(MarketDataArchiver, '__init__'))
-            
-        except ImportError as e:
-            self.fail(f"Failed absolute imports: {e}")
-    
-    def test_class_inheritance_works(self):
-        """Test that inheritance works with new imports"""
-        try:
-            from Core.YFStock import YFStock
-            from Core.Stock import Stock
-            
-            # We just test that classes are properly linked
-            self.assertTrue(issubclass(YFStock, Stock))
-            
-        except Exception as e:
-            self.fail(f"Problem with inheritance: {e}")
-    
-    def test_models_imports_still_work(self):
-        """Test that Models imports still work"""
-        try:
-            from Models import Spot, CorporateAction
-            self.assertTrue(True, "Models import succeeded")
-        except ImportError as e:
-            self.fail(f"Failed Models import: {e}")
-    
-    def test_exceptions_imports_still_work(self):
-        """Test that Exceptions imports still work"""
-        try:
-            from Exceptions import MissingConfigurationException
-            self.assertTrue(True, "Exceptions import succeeded")
-        except ImportError as e:
-            self.fail(f"Failed Exceptions import: {e}")
 
-if __name__ == '__main__':
-    unittest.main()
+def test_import_from_core_package():
+    """Test that we can import directly from Core package"""
+    # Imports are already tested at module level above
+    assert hasattr(ConfigReader, 'read')
+    assert hasattr(Stock, '__init__')
+    assert hasattr(YFStock, 'get_spots')
+    assert hasattr(MarketDataArchiver, '__init__')
+
+
+def test_specific_absolute_imports():
+    """Test specific absolute imports with dot notation"""
+    # Verify that classes are properly imported via explicit paths
+    assert hasattr(CR, 'read')
+    assert hasattr(S, '__init__')
+    assert hasattr(YFS, 'get_spots')
+    assert hasattr(MDA, '__init__')
+
+
+def test_class_inheritance_works():
+    """Test that inheritance works with strict imports"""
+    # We just test that classes are properly linked
+    assert issubclass(YFStock, Stock)
+
+
+def test_node_dependency_management():
+    """Test que chaque nœud gère ses dépendances (Core gère Models)"""
+    # Core a importé Models pour ses besoins, donc on peut y accéder via Core
+    from Core import Spot, CorporateAction
+    
+    assert Spot is not None
+    assert CorporateAction is not None
+
+
+def test_local_exceptions_imports():
+    """Test que Exceptions imports work when imported explicitly"""
+    # Import only what we need, when we need it
+    from Exceptions import MissingConfigurationException
+    
+    assert MissingConfigurationException is not None

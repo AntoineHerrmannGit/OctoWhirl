@@ -1,45 +1,42 @@
-import unittest
+import pytest
+import Core
 
-class TestArchitectureFlexibility(unittest.TestCase):
-    """
-    Tests to demonstrate the flexibility of the new architecture
-    """
-    
-    def test_multiple_import_methods_work(self):
-        """
-        Demonstrates that the new architecture is more flexible.
-        We can import from different places.
-        """
-        import_methods = []
-        
-        # Method 1: Direct import from Core
-        try:
-            from Core.ConfigReader import ConfigReader as CR1
-            import_methods.append("Direct from Core")
-        except ImportError:
-            pass
-        
-        # Method 2: Import via Core package
-        try:
-            from Core import ConfigReader as CR2
-            import_methods.append("Via Core package")
-        except ImportError:
-            pass
-        
-        # At least 2 methods should work
-        self.assertGreaterEqual(len(import_methods), 2, 
-                               f"Only {len(import_methods)} import methods work: {import_methods}")
-    
-    def test_api_clarity_with_all_exports(self):
-        """Test that __all__ clearly defines the public API"""
-        import Core
-        
-        # Verify that __all__ exists and contains our main classes
-        self.assertTrue(hasattr(Core, '__all__'))
-        expected_exports = ['ConfigReader', 'MarketDataArchiver', 'Stock', 'YFStock']
-        
-        for export in expected_exports:
-            self.assertIn(export, Core.__all__, f"{export} missing from __all__")
 
-if __name__ == '__main__':
-    unittest.main()
+def test_local_node_declarations():
+    """
+    Test que chaque nœud déclare localement ses classes
+    et gère ses propres dépendances
+    """
+    # Core doit exposer ses classes via son __init__.py local
+    from Core import ConfigReader, YFStock, Stock, MarketDataArchiver
+    
+    # Vérifier que les classes sont bien accessibles
+    assert ConfigReader is not None
+    assert YFStock is not None
+    assert Stock is not None
+    assert MarketDataArchiver is not None
+
+
+def test_local_dependencies_management():
+    """
+    Test que chaque nœud gère ses propres dépendances (comme Models)
+    """
+    # Core importe Models pour ses propres besoins
+    # On doit pouvoir accéder aux Models via Core
+    from Core import Spot, CorporateAction
+    
+    assert Spot is not None
+    assert CorporateAction is not None
+
+
+def test_explicit_dot_imports():
+    """
+    Test que l'import avec "." fonctionne pour déclarer les classes du nœud
+    """
+    # Import explicite depuis le nœud Core
+    from Core.ConfigReader import ConfigReader as CR_Explicit
+    from Core.YFStock import YFStock as YF_Explicit
+    
+    # Ces imports doivent fonctionner
+    assert CR_Explicit is not None
+    assert YF_Explicit is not None
