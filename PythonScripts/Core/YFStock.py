@@ -2,9 +2,10 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from pandas import DataFrame
+
 from Models import Spot, CorporateAction, CorporateActionType
 from Models import Interval, IntradayInterval, DataSource
-from .Stock import Stock
+from Core.Stock import Stock
 
 class YFStock(Stock):
     def __init__(self, ticker: str) -> None:

@@ -1,6 +1,7 @@
+import os
+
 from Core import ConfigReader, YFStock
 from logging import Logger
-import os
 
 
 def main() -> None:
