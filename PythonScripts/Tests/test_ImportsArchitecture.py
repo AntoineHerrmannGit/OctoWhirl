@@ -31,8 +31,8 @@ def test_class_inheritance_works():
 
 
 def test_node_dependency_management():
-    """Test que chaque nœud gère ses dépendances (Core gère Models)"""
-    # Core a importé Models pour ses besoins, donc on peut y accéder via Core
+    """Test that each node manages its dependencies (Core manages Models)"""
+    # Core imported Models for its needs, so we can access via Core
     from Core import Spot, CorporateAction
     
     assert Spot is not None
@@ -40,7 +40,7 @@ def test_node_dependency_management():
 
 
 def test_local_exceptions_imports():
-    """Test que Exceptions imports work when imported explicitly"""
+    """Test that Exceptions imports work when imported explicitly"""
     # Import only what we need, when we need it
     from Exceptions import MissingConfigurationException
     

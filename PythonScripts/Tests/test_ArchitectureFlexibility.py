@@ -3,14 +3,11 @@ import Core
 
 
 def test_local_node_declarations():
-    """
-    Test que chaque nœud déclare localement ses classes
-    et gère ses propres dépendances
-    """
-    # Core doit exposer ses classes via son __init__.py local
+    """Test that each node declares its classes locally and manages dependencies"""
+    # Core must expose its classes via local __init__.py
     from Core import ConfigReader, YFStock, Stock, MarketDataArchiver
     
-    # Vérifier que les classes sont bien accessibles
+    # Verify classes are accessible
     assert ConfigReader is not None
     assert YFStock is not None
     assert Stock is not None
@@ -18,11 +15,9 @@ def test_local_node_declarations():
 
 
 def test_local_dependencies_management():
-    """
-    Test que chaque nœud gère ses propres dépendances (comme Models)
-    """
-    # Core importe Models pour ses propres besoins
-    # On doit pouvoir accéder aux Models via Core
+    """Test that each node manages its own dependencies (like Models)"""
+    # Core imports Models for its own needs
+    # We should be able to access Models via Core
     from Core import Spot, CorporateAction
     
     assert Spot is not None
@@ -30,13 +25,11 @@ def test_local_dependencies_management():
 
 
 def test_explicit_dot_imports():
-    """
-    Test que l'import avec "." fonctionne pour déclarer les classes du nœud
-    """
-    # Import explicite depuis le nœud Core
+    """Test that explicit dot imports work for node class declarations"""
+    # Explicit import from Core node
     from Core.ConfigReader import ConfigReader as CR_Explicit
     from Core.YFStock import YFStock as YF_Explicit
     
-    # Ces imports doivent fonctionner
+    # These imports must work
     assert CR_Explicit is not None
     assert YF_Explicit is not None
