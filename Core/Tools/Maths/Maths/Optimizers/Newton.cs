@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OctoWhirl.Core.Models.Technicals;
+﻿using OctoWhirl.Core.Models.Technicals;
 
 namespace OctoWhirl.Core.Maths.Optimizers
 {
