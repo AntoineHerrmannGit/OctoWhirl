@@ -104,10 +104,9 @@ This implementation serves as a complement to the main C# application :
 
     - Purpose:
         - Research and experimentation with financial algorithms and models
-        - Prototyping of new features before C# implementation  
+        - Prototyping and validation of algorithms and new features before C# implementation
         - Data analysis and validation tools
         - Independent mathematical computations and simulations
-        - Algorithm prototyping and validation  
         - Research and backtesting frameworks
         - Auxiliary tools and utilities
         - Bridge for external Python libraries (ML, analytics)
