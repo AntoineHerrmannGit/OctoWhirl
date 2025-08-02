@@ -99,16 +99,53 @@ Good coding practices :
 Python Scripts :
 -----------------
 
-Python scripts are implemented to historize data from the sources.
-This implementation must match several constraints :
+Python scripts are implemented for data analysis, research and prototyping purposes.
+This implementation serves as a complement to the main C# application :
+
+    - Purpose:
+        - Research and experimentation with financial algorithms and models
+        - Prototyping of new features before C# implementation  
+        - Data analysis and validation tools
+        - Independent mathematical computations and simulations
+        - Algorithm prototyping and validation  
+        - Research and backtesting frameworks
+        - Auxiliary tools and utilities
+        - Bridge for external Python libraries (ML, analytics)
 
     - Models:
+        - Python models are lightweight containers for research data
+        - They should align with C# models when possible for consistency
+        - Focus on flexibility and rapid prototyping rather than production constraints
+        - Must remain simple containers without business logic
+        - Used primarily for research, backtesting, and data exploration before implementing final solutions in C#
 
-        - Python models are base models of historizing data. They must match a DBModel on C# side to access database.
-        - Unlike C# models (even if it does not match the good practices), Python models must not contain any logics, they are just containers for the data. 
+    - Architecture:
+        - Modular design with clear separation of concerns
+        - Each module manages its own dependencies locally
+        - Public API via @staticmethod, internal methods via @classmethod
+        - Comprehensive test coverage using pytest framework
 
-    
-Accessing Local Database :
+
+Data Management :
 -----------------
 
-The projects assumes that a local database is accessible. The path to access the database is set in the appsettings.services.json.
+Data historization and persistence are handled by the C# application through the Services layer.
+This implementation maintains architectural consistency with the main application :
+
+    - Historization Strategy:
+        - All data collection and storage operations are centralized in C# Services
+        - Integration with external data sources (APIs, feeds) through Services layer
+        - Consistent error handling and logging across all data operations
+        - Maintains data integrity and transaction consistency
+
+    - Database Access:
+        - Local database required (path configured in appsettings.services.json)
+        - All persistence operations follow unified access patterns
+        - Database models align with Core technical and business models
+        - Supports both real-time and batch processing scenarios
+
+    - Architecture Benefits:
+        - Integration with main application lifecycle and dependency injection
+        - Better performance and memory management through C# optimization
+        - Unified deployment model reduces operational complexity
+        - Consistent monitoring and maintenance procedures
