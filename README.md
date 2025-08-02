@@ -38,6 +38,7 @@ General organisation of the project :
             - code-behind is allowed to be overridden in ViewModels for very specific tasks like display or calls
             - Views are just a middleware to the ViewModels
             - No intelligence is allowed in the GUI part
+            - GUI communicates with Services and Core via a Client which is only responsible of splitting display and calculations. 
 
         - Services contains services as class or independent services (like APIs) which are fully responsible of the business
             - Services must respect SOLID principles applied to business and use only tools and models defined in Core
