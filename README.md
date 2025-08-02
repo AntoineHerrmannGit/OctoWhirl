@@ -107,7 +107,7 @@ This implementation serves as a complement to the main C# application :
         - Prototyping and validation of algorithms and new features before C# implementation
         - Data analysis and validation tools
         - Independent mathematical computations and simulations
-        - Research and backtesting frameworks
+        - Backtesting frameworks
         - Auxiliary tools and utilities
         - Bridge for external Python libraries (ML, analytics)
 
