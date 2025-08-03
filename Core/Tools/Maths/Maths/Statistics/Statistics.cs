@@ -101,5 +101,9 @@ namespace OctoWhirl.Maths.Statistics
 
             return result;
         }
+
+        public static double Skew(IEnumerable<double> serie) => Moment(serie, 3);
+
+        public static double Kurtosis(IEnumerable<double> serie) => Moment(serie, 4);
     }
 }

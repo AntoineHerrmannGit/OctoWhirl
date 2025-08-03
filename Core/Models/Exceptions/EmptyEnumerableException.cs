@@ -4,6 +4,6 @@
     {
         public EmptyEnumerableException() { }
 
-        public EmptyEnumerableException(string message) : base(message) { }
+        public EmptyEnumerableException(string message) : base($"Empty enumerable : {message}") { }
     }
 }

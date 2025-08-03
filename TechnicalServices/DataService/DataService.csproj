@@ -18,8 +18,4 @@
     <ProjectReference Include="..\..\Core\Models\Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataService\" />
-  </ItemGroup>
-
 </Project>
