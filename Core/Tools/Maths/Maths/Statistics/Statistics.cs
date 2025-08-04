@@ -4,7 +4,7 @@ namespace OctoWhirl.Maths.Statistics
 {
     public static class Statistics
     {
-        public static double Correlation(IEnumerable<double> serie1, IEnumerable<double> serie2)
+        public static double Correlation(IEnumerable<double> serie1, IEnumerable<double> serie2, double lambda = 0)
         {
             if (!serie1.Any())
                 throw new EmptyEnumerableException(nameof(serie1));
@@ -15,7 +15,7 @@ namespace OctoWhirl.Maths.Statistics
             var enumerator2 = serie2.GetEnumerator();
 
             if (!enumerator1.MoveNext() || !enumerator2.MoveNext())
-                throw new EmptyEnumerableException("One of the series is empty"); 
+                throw new EmptyEnumerableException("One of the series is empty");
 
             double sum1 = enumerator1.Current;
             double sum2 = enumerator2.Current;
@@ -45,14 +45,23 @@ namespace OctoWhirl.Maths.Statistics
             double var2 = sum2Squared / count - mean2 * mean2;
             double crossedTerms = sumProduct / count;
 
+            if (var1 == 0 && var2 == 0)
+                return 1.0;
+            else if (var1 == 0  || var2 == 0)
+                return 0.0;
+
             double numerator = crossedTerms - mean1 * mean2;
             double denominator = Math.Sqrt(var1 * var2);
-            if (denominator == 0)
-                throw new DivideByZeroException(nameof(denominator));
+            double correlation = numerator / denominator;
 
-            return numerator / denominator;
+            if (lambda != 0)
+            {
+                double sgn = Math.Sign(lambda);
+                correlation += sgn * (1 - sgn * correlation) * Math.Abs(lambda);
+            }
+
+            return correlation;
         }
-
         public static double StdDev(IEnumerable<double> serie) => Math.Sqrt(Variance(serie));
 
         public static double Variance(IEnumerable<double> serie)
