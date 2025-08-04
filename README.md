@@ -95,36 +95,6 @@ Good coding practices :
             - If part of the code has strong assumptions, hypothesis or requirements, leave a comment! 
 
 
-
-Python Scripts :
------------------
-
-Python scripts are implemented for data analysis, research and prototyping purposes.
-This implementation serves as a complement to the main C# application :
-
-    - Purpose:
-        - Research and experimentation with financial algorithms and models
-        - Prototyping and validation of algorithms and new features before C# implementation
-        - Data analysis and validation tools
-        - Independent mathematical computations and simulations
-        - Backtesting frameworks
-        - Auxiliary tools and utilities
-        - Bridge for external Python libraries (ML, analytics)
-
-    - Models:
-        - Python models are lightweight containers for research data
-        - They should align with C# models when possible for consistency
-        - Focus on flexibility and rapid prototyping rather than production constraints
-        - Must remain simple containers without business logic
-        - Used primarily for research, backtesting, and data exploration before implementing final solutions in C#
-
-    - Architecture:
-        - Modular design with clear separation of concerns
-        - Each module manages its own dependencies locally
-        - Public API via @staticmethod, internal methods via @classmethod
-        - Comprehensive test coverage using pytest framework
-
-
 Data Management :
 -----------------
 
