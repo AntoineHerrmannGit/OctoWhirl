@@ -57,7 +57,7 @@ namespace OctoWhirl.Maths.Statistics
             if (lambda != 0)
             {
                 double sgn = Math.Sign(lambda);
-                correlation += sgn * (1 - sgn * correlation) * Math.Abs(lambda);
+                correlation += (1 - sgn * correlation) * lambda;
             }
 
             return correlation;
