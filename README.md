@@ -95,20 +95,26 @@ Good coding practices :
             - If part of the code has strong assumptions, hypothesis or requirements, leave a comment! 
 
 
-
-Python Scripts :
+Data Management :
 -----------------
 
-Python scripts are implemented to historize data from the sources.
-This implementation must match several constraints :
+Data historization and persistence are handled by the C# application through the Services layer.
+This implementation maintains architectural consistency with the main application :
 
-    - Models:
+    - Historization Strategy:
+        - All data collection and storage operations are centralized in C# Services
+        - Integration with external data sources (APIs, feeds) through Services layer
+        - Consistent error handling and logging across all data operations
+        - Maintains data integrity and transaction consistency
 
-        - Python models are base models of historizing data. They must match a DBModel on C# side to access database.
-        - Unlike C# models (even if it does not match the good practices), Python models must not contain any logics, they are just containers for the data. 
+    - Database Access:
+        - Local database required (path configured in appsettings.services.json)
+        - All persistence operations follow unified access patterns
+        - Database models align with Core technical and business models
+        - Supports both real-time and batch processing scenarios
 
-    
-Accessing Local Database :
------------------
-
-The projects assumes that a local database is accessible. The path to access the database is set in the appsettings.services.json.
+    - Architecture Benefits:
+        - Integration with main application lifecycle and dependency injection
+        - Better performance and memory management through C# optimization
+        - Unified deployment model reduces operational complexity
+        - Consistent monitoring and maintenance procedures
