@@ -6,16 +6,13 @@ namespace OctoWhirl.Maths.Statistics
     {
         public static double Correlation(IEnumerable<double> serie1, IEnumerable<double> serie2, double lambda = 0)
         {
-            if (!serie1.Any())
-                throw new EmptyEnumerableException(nameof(serie1));
-            if (!serie2.Any())
-                throw new EmptyEnumerableException(nameof(serie2));
-
             var enumerator1 = serie1.GetEnumerator();
             var enumerator2 = serie2.GetEnumerator();
 
-            if (!enumerator1.MoveNext() || !enumerator2.MoveNext())
-                throw new EmptyEnumerableException("One of the series is empty");
+            if (!enumerator1.MoveNext())
+                throw new EmptyEnumerableException(nameof(serie1));
+            if (!enumerator2.MoveNext())
+                throw new EmptyEnumerableException(nameof(serie2));
 
             double sum1 = enumerator1.Current;
             double sum2 = enumerator2.Current;
