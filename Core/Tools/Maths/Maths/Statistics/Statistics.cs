@@ -4,28 +4,31 @@ namespace OctoWhirl.Maths.Statistics
 {
     public static class Statistics
     {
-        public static double Correlation(IEnumerable<double> serie1, IEnumerable<double> serie2)
+        public static double Correlation(IEnumerable<double> serie1, IEnumerable<double> serie2, double lambda = 0)
         {
-            if (!serie1.Any())
-                throw new EmptyEnumerableException(nameof(serie1));
-            if (!serie2.Any())
-                throw new EmptyEnumerableException(nameof(serie1));
-
             var enumerator1 = serie1.GetEnumerator();
             var enumerator2 = serie2.GetEnumerator();
 
-            double mean1 = enumerator1.Current;
-            double mean2 = enumerator2.Current;
-            double var1 = enumerator1.Current * enumerator1.Current;
-            double var2 = enumerator2.Current * enumerator2.Current;
-            double crossedTerms = enumerator1.Current * enumerator2.Current;
+            if (!enumerator1.MoveNext())
+                throw new EmptyEnumerableException(nameof(serie1));
+            if (!enumerator2.MoveNext())
+                throw new EmptyEnumerableException(nameof(serie2));
+
+            double sum1 = enumerator1.Current;
+            double sum2 = enumerator2.Current;
+            double sum1Squared = enumerator1.Current * enumerator1.Current;
+            double sum2Squared = enumerator2.Current * enumerator2.Current;
+            double sumProduct = enumerator1.Current * enumerator2.Current;
+            int count = 1;
+
             while (enumerator1.MoveNext() && enumerator2.MoveNext())
             {
-                mean1 += enumerator1.Current;
-                mean2 += enumerator2.Current;
-                var1 += enumerator1.Current * enumerator1.Current;
-                var2 += enumerator2.Current * enumerator2.Current;
-                crossedTerms += enumerator1.Current * enumerator2.Current;
+                sum1 += enumerator1.Current;
+                sum2 += enumerator2.Current;
+                sum1Squared += enumerator1.Current * enumerator1.Current;
+                sum2Squared += enumerator2.Current * enumerator2.Current;
+                sumProduct += enumerator1.Current * enumerator2.Current;
+                count++;
             }
 
             if (enumerator1.MoveNext())
@@ -33,15 +36,29 @@ namespace OctoWhirl.Maths.Statistics
             if (enumerator2.MoveNext())
                 throw new IndexOutOfRangeException(nameof(serie2));
 
-            double numerator = crossedTerms - mean1 * mean2;
-            double denominator = Math.Sqrt((var1 - mean1 * mean1) * (var2 - mean2 * mean2));
-            if (denominator == 0)
-                throw new DivideByZeroException(nameof(denominator));
+            double mean1 = sum1 / count;
+            double mean2 = sum2 / count;
+            double var1 = sum1Squared / count - mean1 * mean1;
+            double var2 = sum2Squared / count - mean2 * mean2;
+            double crossedTerms = sumProduct / count;
 
+            if (var1 == 0 && var2 == 0)
+                return 1.0;
+            else if (var1 == 0  || var2 == 0)
+                return 0.0;
+
+            double numerator = crossedTerms - mean1 * mean2;
+            double denominator = Math.Sqrt(var1 * var2);
             double correlation = numerator / denominator;
+
+            if (lambda != 0)
+            {
+                double sgn = Math.Sign(lambda);
+                correlation += (1 - sgn * correlation) * lambda;
+            }
+
             return correlation;
         }
-
         public static double StdDev(IEnumerable<double> serie) => Math.Sqrt(Variance(serie));
 
         public static double Variance(IEnumerable<double> serie)
