@@ -5,7 +5,7 @@ namespace Strategy.Test.Mocks
 {
     internal class MarketEventProviderMock : IMarketEventProvider
     {
-        private List<MarketEvent> _events;
+        private List<MarketEvent> _events = new List<MarketEvent>();
 
         public Task Init()
         {

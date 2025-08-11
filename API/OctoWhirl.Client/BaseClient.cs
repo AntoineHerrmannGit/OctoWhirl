@@ -33,7 +33,7 @@ namespace OctoWhirl.Client
             httpResponse.EnsureSuccessStatusCode();
 
             var jsonResponse = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return jsonResponse.DeserializeFromJson<TResponse>();
+            return jsonResponse.DeserializeFromJson<TResponse>() ?? throw new InvalidOperationException("Failed to deserialize response");
         }
 
         #region IDisposable

@@ -6,7 +6,7 @@ namespace OctoWhirl.Models.Technicals
     public class CandleSerie : TimeSerie<Candle>
     {
         #region Properties
-        public string Reference { get; set; }
+        public string Reference { get; set; } = string.Empty;
         #endregion Properties
 
         public CandleSerie() :

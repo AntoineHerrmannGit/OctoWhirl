@@ -8,7 +8,7 @@ namespace Strategy.Test
     [TestClass]
     public sealed class StrategyTest
     {
-        private IServiceProvider _provider;
+        private IServiceProvider _provider = null!;
 
         [TestInitialize]
         public void Setup()

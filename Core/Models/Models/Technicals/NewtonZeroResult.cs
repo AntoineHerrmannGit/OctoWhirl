@@ -6,6 +6,6 @@
         public int Iterations { get; set; }
         public bool HasConverged { get; set; }
         public double Distance { get; set; }
-        public string Error { get; set; }
+        public string Error { get; set; } = string.Empty;
     }
 }

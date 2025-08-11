@@ -10,8 +10,8 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
 {
     public class YahooFinanceClient : BaseClient, IFinanceService
     {
-        private string _chartUrl;
-        private string _corporateActionUrl;
+        private string? _chartUrl;
+        private string? _corporateActionUrl;
 
         public YahooFinanceClient(HttpClient httpClient, IConfiguration configuration) : base(httpClient)
         {
@@ -127,7 +127,7 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
             catch (Exception ex)
             {
                 Console.WriteLine($"Erreur: {ex.Message}");
-                return new List<Candle>();
+                return [];
             }
         }
 
@@ -139,17 +139,17 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
             {
                 var result = await CallClient<YahooChartResponse>(url).ConfigureAwait(false);
                 var yahooSplits = result?.Chart?.Result?.FirstOrDefault()?.Events?.Splits;
-                return yahooSplits.Values.Select(split => new Split
+                return yahooSplits?.Values.Select(split => new Split
                 {
                     Reference = ticker,
                     TimeStamp = DateTimeOffset.FromUnixTimeSeconds(split.Date).DateTime,
                     SplitRatio = split.Numerator / split.Denominator
-                }).ToList();
+                }).ToList() ?? [];
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Erreur: {ex.Message}");
-                return new List<Split>();
+                return [];
             }
         }
 
@@ -162,12 +162,12 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
                 var result = await CallClient<YahooChartResponse>(url).ConfigureAwait(false);
                 var yahooDividends = result?.Chart?.Result?.FirstOrDefault()?.Events?.Dividends;
 
-                return yahooDividends.Values.Select(div => new Dividend
+                return yahooDividends?.Values.Select(div => new Dividend
                 {
                     Reference = ticker,
                     TimeStamp = DateTimeOffset.FromUnixTimeSeconds(div.Date).DateTime,
                     DividendAmount = div.Amount,
-                }).ToList();
+                }).ToList() ?? [];
             }
             catch (Exception ex)
             {
@@ -240,7 +240,7 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
             public double Denominator { get; set; }
 
             [JsonPropertyName("splitRatio")]
-            public string SplitRatio { get; set; }
+            public string? SplitRatio { get; set; }
 
             [JsonPropertyName("date")]
             public long Date { get; set; }
@@ -252,7 +252,7 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
             public long Date { get; set; }
 
             [JsonPropertyName("earningsDate")]
-            public List<long> EarningsDate { get; set; }
+            public List<long>? EarningsDate { get; set; }
         }
 
         class IndicatorGroup

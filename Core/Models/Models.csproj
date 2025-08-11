@@ -10,8 +10,5 @@
   	<RootNamespace>OctoWhirl</RootNamespace>
   </PropertyGroup>
 	
-  <ItemGroup>
-    <ProjectReference Include="..\Tools\Technicals\Technicals.csproj" />
-  </ItemGroup>
 
 </Project>

@@ -9,7 +9,7 @@ namespace OctoWhirl.Core.Tools.Technicals
         private string _logFile;
         private LogLevel _level;
 
-        public Logger(string logFile = null, LogLevel level = LogLevel.Info)
+        public Logger(string? logFile = null, LogLevel level = LogLevel.Info)
         {
             _level = level;
 

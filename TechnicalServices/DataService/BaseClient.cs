@@ -24,7 +24,7 @@ namespace OctoWhirl.TechnicalServices.DataService
                 var response = await _httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 var content = await response.Content.ReadAsStringAsync();
-                return content.DeserializeFromJson<T>();
+                return content.DeserializeFromJson<T>() ?? throw new InvalidOperationException("Failed to deserialize response");
             }
             catch (HttpRequestException e)
             {

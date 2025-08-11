@@ -3,8 +3,8 @@ namespace OctoWhirl.Core.Models.Technicals
     public class TimeSerie<T> : SortedDictionary<DateTime, T>
     {
         #region Accessors
-        public List<DateTime> Dates => Keys.ToList();
-        public new List<T> Values => base.Values.ToList();
+        public List<DateTime> Dates => [.. Keys];
+        public new List<T> Values => [.. base.Values];
 
         public DateTime LastDate => Dates.Any() ? Dates.Last() : throw new ArgumentOutOfRangeException(nameof(Dates));
         public T LastValue => Values.Any() ? Values.Last() : throw new ArgumentOutOfRangeException(nameof(Values));

@@ -14,7 +14,7 @@ namespace Data.Test
     [TestClass]
     public sealed class DataTest
     {
-        private IServiceProvider _provider;
+        private IServiceProvider _provider = null!;
 
         [TestInitialize]
         public void Setup()

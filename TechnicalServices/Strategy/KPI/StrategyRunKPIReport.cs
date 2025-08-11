@@ -6,6 +6,6 @@
         public TimeSpan RumTime { get; set; }
         public TimeSpan CloseTime { get; set; }
         public int NbOfEvents { get; set; }
-        public List<string> Errors { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
     }
 }

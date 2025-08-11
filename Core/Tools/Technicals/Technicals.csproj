@@ -9,5 +9,9 @@
   <PropertyGroup>
   	<RootNamespace>OctoWhirl</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Maths\Maths.csproj" />
+  </ItemGroup>
 	
 </Project>

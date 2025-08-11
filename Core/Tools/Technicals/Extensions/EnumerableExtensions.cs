@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Technicals.Extensions;
+using OctoWhirl.Core.Maths;
 
 namespace OctoWhirl.Core.Extensions
 {
@@ -25,146 +26,45 @@ namespace OctoWhirl.Core.Extensions
             return @this.IsNull() || !@this.Any();
         }
 
-        public static double Mean(this IEnumerable<double> @this, Func<double, double> selector = null)
+        
+        public static double Mean(this IEnumerable<double> @this)
         {
-            if (!@this.Any())
-                throw new ArgumentOutOfRangeException($"Enumerable must have at least one element.");
-
-            if (selector.IsNull())
-                selector = new Func<double, double> (x => x);
-
-            double mean = 0;
-            int count = 0;
-            foreach(double element in @this)
-            {
-                mean += selector(element);
-                count++;
-            }
-            return mean / count;
+            return Statistics.Mean(@this);
         }
 
-        public static double Var(this IEnumerable<double> @this, Func<double, double> selector = null)
+        public static double Variance(this IEnumerable<double> @this)
         {
-            if (!@this.Any())
-                throw new ArgumentOutOfRangeException($"Enumerable must have at least one element.");
-
-            if (selector.IsNull())
-                selector = new Func<double, double>(x => x);
-
-            double stddev = 0;
-            double mean = 0;
-            int count = 0;
-            foreach(double element in @this)
-            {
-                double stepElement = selector(element);
-                stddev += stepElement * stepElement;
-                mean += stepElement;
-                count++;
-            }
-            mean /= count;
-            return (stddev - mean * mean) / count;
+            return Statistics.Variance(@this);
         }
 
-        public static double StdDev(this IEnumerable<double> @this, Func<double, double> selector = null)
+        public static double StdDev(this IEnumerable<double> @this)
         {
-            return Math.Sqrt(@this.Var(selector));
+            return Statistics.StdDev(@this);
         }
 
-        public static double CoVar(this IEnumerable<double> @this, IEnumerable<double> @other, Func<double, double> @thisSelector = null, Func<double, double> @otherSelector = null)
+        public static double Covariance(this IEnumerable<double> @this, IEnumerable<double> other)
         {
-            if (!@this.Any() || !other.Any())
-                throw new ArgumentOutOfRangeException($"Enumerable must have at least one element.");
-
-            bool isSizeChecked = false;
-            if (@thisSelector.IsNull())
-                @thisSelector = new Func<double, double>(x => x);
-            else
-            {
-                if (@this.Count() != @other.Count())
-                    throw new ArgumentOutOfRangeException($"Enumerables must have the same number of elements.");
-                isSizeChecked = true;
-            }
-
-            if (@otherSelector.IsNull())
-                @otherSelector = @thisSelector;
-            else
-                if (!isSizeChecked && @this.Count() != @other.Count())
-                throw new ArgumentOutOfRangeException($"Enumerables must have the same number of elements.");
-
-            double meanThis = 0;
-            double meanOther = 0;
-            double crossedTerm = 0;
-            int count = 0;
-
-            var @thisEnumerator = @this.GetEnumerator();
-            var @otherEnumerator = @other.GetEnumerator();
-            while (@thisEnumerator.MoveNext() && @otherEnumerator.MoveNext())
-            {
-                double @thisElement = @thisSelector(@thisEnumerator.Current);
-                double @otherElement = @thisSelector(@otherEnumerator.Current);
-
-                meanThis += @thisElement;
-                meanOther += @otherElement;
-                crossedTerm += @thisElement * @otherElement;
-                count++;
-            }
-
-            if (@thisEnumerator.MoveNext() || @otherEnumerator.MoveNext())
-                throw new ArgumentOutOfRangeException($"Enumerables must have the same number of elements.");
-
-            return (crossedTerm - meanThis * meanOther) / count;
+            return Statistics.Covariance(@this, other);
         }
 
-        public static double Correl(this IEnumerable<double> @this, IEnumerable<double> @other, Func<double, double> @thisSelector = null, Func<double, double> @otherSelector = null)
+        public static double Correlation(this IEnumerable<double> @this, IEnumerable<double> other, double lambda = 0)
         {
-            if (!@this.Any() || !other.Any())
-                throw new ArgumentOutOfRangeException($"Enumerable must have at least one element.");
-
-            bool isSizeChecked = false;
-            if (@thisSelector.IsNull())
-                @thisSelector = new Func<double, double> (x => x);
-            else
-            {
-                if (@this.Count() != @other.Count())
-                    throw new ArgumentOutOfRangeException($"Enumerables must have the same number of elements.");
-                isSizeChecked = true;
-            }
-
-            if (@otherSelector.IsNull())
-                @otherSelector = @thisSelector;
-            else
-                if (!isSizeChecked && @this.Count() != @other.Count())
-                    throw new ArgumentOutOfRangeException($"Enumerables must have the same number of elements.");
-
-            double meanThis = 0;
-            double meanOther = 0;
-            double stdDevThis = 0;
-            double stdDevOther = 0;
-            double crossedTerm = 0;
-            int count = 0;
-
-            var @thisEnumerator = @this.GetEnumerator();
-            var @otherEnumerator = @other.GetEnumerator();
-            while (@thisEnumerator.MoveNext() && @otherEnumerator.MoveNext())
-            {
-                double @thisElement = @thisSelector(@thisEnumerator.Current);
-                double @otherElement = @thisSelector(@otherEnumerator.Current);
-
-                meanThis += @thisElement;
-                meanOther += @otherElement;
-                stdDevThis += @thisElement * @thisElement;
-                stdDevOther += @otherElement * @otherElement;
-                crossedTerm += @thisElement * @otherElement;
-                count++;
-            }
-
-            if (@thisEnumerator.MoveNext() || @otherEnumerator.MoveNext())
-                throw new ArgumentOutOfRangeException($"Enumerables must have the same number of elements.");
-
-            return (crossedTerm - meanThis * meanOther) 
-                / Math.Sqrt((stdDevThis - meanThis * meanThis) * (stdDevOther - meanOther * meanOther));
+            return Statistics.Correlation(@this, other, lambda);
         }
 
+        public static double Moment(this IEnumerable<double> @this, int order)
+        {
+            return Statistics.Moment(@this, order);
+        }
 
+        public static double Skew(this IEnumerable<double> @this)
+        {
+            return Statistics.Skew(@this);
+        }
+
+        public static double Kurtosis(this IEnumerable<double> @this)
+        {
+            return Statistics.Kurtosis(@this);
+        }
     }
 }
