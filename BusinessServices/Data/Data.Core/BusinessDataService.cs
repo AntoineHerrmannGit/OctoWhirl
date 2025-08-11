@@ -20,9 +20,7 @@ namespace OctoWhirl
             var dataService = _dataServiceFactory.GetService(request.Source);
             var candles = await dataService.GetCandles(request).ConfigureAwait(false);
 
-            return candles.GroupBy(c => c.Reference)
-                                .Select(g => new CandleSerie(g.Key, g.Select(c => new KeyValuePair<DateTime, Candle>(c.Timestamp, c))))
-                                .ToList();
+            return [.. candles.GroupBy(c => c.Reference).Select(g => new CandleSerie(g.Key, g.Select(c => new KeyValuePair<DateTime, Candle>(c.Timestamp, c))))];
         }
     }
 }

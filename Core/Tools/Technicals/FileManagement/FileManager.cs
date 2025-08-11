@@ -1,4 +1,5 @@
-﻿using Technicals.Extensions;
+﻿using OctoWhirl.Core.Extensions;
+using Technicals.Extensions;
 
 namespace OctoWhirl.Core.Tools.FileManagement
 {
@@ -17,7 +18,7 @@ namespace OctoWhirl.Core.Tools.FileManagement
             if (root.IsNull())
                 root = GetSolutionRoot();
 
-            var subDirectories = new List<string> { root };
+            var subDirectories = new List<string> { root! };
             while (subDirectories.Any())
             {
                 var newSubDirs = new List<string>();
@@ -25,7 +26,12 @@ namespace OctoWhirl.Core.Tools.FileManagement
                 {
                     if (dir.EndsWith(dirname))
                         return dir;
-                    newSubDirs.AddRange(Directory.GetDirectories(dir).Where(d => !IgnoredDirs.Contains(d.Split("\\").Last())));
+                    var directories = Directory.GetDirectories(dir).Where(d => !IgnoredDirs.Contains(d.Split("\\").Last()));
+                    foreach (var directory in directories)
+                    {
+                        if (!string.IsNullOrEmpty(directory))
+                            newSubDirs.Add(directory);
+                    }
                 }
                 subDirectories = newSubDirs;
             }
@@ -43,8 +49,8 @@ namespace OctoWhirl.Core.Tools.FileManagement
             if (root.IsNull())
                 root = GetSolutionRoot();
 
-            var subDirectories = new List<string> { root };
-            var subfiles = Directory.GetFiles(root);
+            var subDirectories = new List<string> { root! };
+            var subfiles = Directory.GetFiles(root!);
             while (subDirectories.Any())
             {
                 var newSubDirs = new List<string>();
@@ -53,7 +59,12 @@ namespace OctoWhirl.Core.Tools.FileManagement
                     foreach (var file in Directory.GetFiles(dir))
                         if (file.EndsWith(filename))
                             return file;
-                    newSubDirs.AddRange(Directory.GetDirectories(dir).Where(d => !IgnoredDirs.Contains(d.Split("\\").Last())));
+                    var directories = Directory.GetDirectories(dir).Where(d => !IgnoredDirs.Contains(d.Split("\\").Last()));
+                    foreach (var directory in directories)
+                    {
+                        if (!string.IsNullOrEmpty(directory))
+                            newSubDirs.Add(directory);
+                    }
                 }
 
                 subDirectories = newSubDirs;
@@ -65,7 +76,7 @@ namespace OctoWhirl.Core.Tools.FileManagement
         public static string GetSolutionRoot()
         {
             var root = Directory.GetCurrentDirectory();
-            while (!root.EndsWith("OctoWhirl"))
+            while (!root.IsNullOrEmpty() && !root.EndsWith("OctoWhirl"))
                 root = Directory.GetParent(root)?.FullName ?? throw new FileNotFoundException("Impossible to find the root of the solution");
 
             return root;

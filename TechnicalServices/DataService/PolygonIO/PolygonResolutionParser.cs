@@ -13,7 +13,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
             var timelaps = Regex.Matches(interval.ToString(), regex).FirstOrDefault()?.Value.ToLower();
             if (timelaps.IsNull())
                 throw new ArgumentException($"Failed parse \"{interval}\" as polygon interval regex.");
-            return timelaps;
+            return timelaps!;
         }
 
         public static int GetAmplitude(this ResolutionInterval interval)

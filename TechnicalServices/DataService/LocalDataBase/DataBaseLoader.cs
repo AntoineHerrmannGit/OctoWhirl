@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Enums;
 using OctoWhirl.Core.Models.Exceptions;
@@ -32,7 +33,7 @@ namespace OctoWhirl.TechnicalServices.DataService.LocalDataBase
             }).ToList();
 
             var stocks = await Task.WhenAll(tasks).ConfigureAwait(false);
-            return stocks.SelectMany(stock =>  stock).ToList();
+            return [.. stocks.SelectMany(stock => stock ?? Enumerable.Empty<Candle>())];
         }
 
         public Task<List<Candle>> GetOption(GetOptionRequest request) => throw new NotImplementedException();
