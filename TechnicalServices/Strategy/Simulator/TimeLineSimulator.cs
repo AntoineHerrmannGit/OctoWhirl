@@ -13,7 +13,7 @@ namespace OctoWhirl.TechnicalServices.Strategy.Simulator
         private readonly List<MarketEvent> _marketEvents = new();
 
         // Événement que les stratégies écoutent
-        public event EventHandler<MarketEvent> MarketEventOccured;
+        public event EventHandler<MarketEvent>? MarketEventOccured;
 
         public TimeLineSimulator(IMarketEventProvider marketEventProvider)
         {

@@ -6,7 +6,7 @@
         public double High { get; set; }
         public double Low { get; set; }
         public double Close { get; set; }
-        public string Currency { get; set; }
+        public string Currency { get; set; } = string.Empty;
         public double Volume { get; set; }
     }
 }

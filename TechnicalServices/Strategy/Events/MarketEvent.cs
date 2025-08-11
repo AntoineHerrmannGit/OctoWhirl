@@ -3,6 +3,6 @@
     public class MarketEvent : EventArgs
     {
         public DateTime TimeStamp { get; set; }
-        public string Reference { get; set; }
+        public string Reference { get; set; } = string.Empty;
     }
 }
