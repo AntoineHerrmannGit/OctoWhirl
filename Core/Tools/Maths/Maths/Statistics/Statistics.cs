@@ -1,6 +1,9 @@
-﻿using OctoWhirl.Core.Models.Exceptions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using OctoWhirl.Core.Models.Exceptions;
 
-namespace OctoWhirl.Maths.Statistics
+namespace OctoWhirl.Core.Maths
 {
     public static class Statistics
     {
@@ -59,6 +62,42 @@ namespace OctoWhirl.Maths.Statistics
 
             return correlation;
         }
+
+        public static double Covariance(IEnumerable<double> serie1, IEnumerable<double> serie2)
+        {
+            var enumerator1 = serie1.GetEnumerator();
+            var enumerator2 = serie2.GetEnumerator();
+
+            if (!enumerator1.MoveNext())
+                throw new EmptyEnumerableException(nameof(serie1));
+            if (!enumerator2.MoveNext())
+                throw new EmptyEnumerableException(nameof(serie2));
+
+            double sum1 = enumerator1.Current;
+            double sum2 = enumerator2.Current;
+            double sumProduct = enumerator1.Current * enumerator2.Current;
+            int count = 1;
+
+            while (enumerator1.MoveNext() && enumerator2.MoveNext())
+            {
+                sum1 += enumerator1.Current;
+                sum2 += enumerator2.Current;
+                sumProduct += enumerator1.Current * enumerator2.Current;
+                count++;
+            }
+
+            if (enumerator1.MoveNext())
+                throw new IndexOutOfRangeException(nameof(serie1));
+            if (enumerator2.MoveNext())
+                throw new IndexOutOfRangeException(nameof(serie2));
+
+            double mean1 = sum1 / count;
+            double mean2 = sum2 / count;
+            double crossedTerms = sumProduct / count;
+
+            return crossedTerms - mean1 * mean2;
+        }
+
         public static double StdDev(IEnumerable<double> serie) => Math.Sqrt(Variance(serie));
 
         public static double Variance(IEnumerable<double> serie)

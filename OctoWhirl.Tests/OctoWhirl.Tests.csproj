@@ -16,8 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Tools\Maths\Maths.csproj" />
+    <ProjectReference Include="..\Core\Tools\Technicals\Technicals.csproj" />
     <ProjectReference Include="..\Core\Models\Models.csproj" />
+    <ProjectReference Include="..\Core\Tools\Maths\Maths.csproj" />
   </ItemGroup>
 
 </Project>
