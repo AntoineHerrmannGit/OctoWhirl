@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AsyncTools;
+using Microsoft.Extensions.Configuration;
 using OctoWhirl.Core.Extensions;
 using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Exceptions;
@@ -14,6 +15,8 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
         private readonly string _chartUrl;
         private readonly string _optionUrl;
         private readonly string _corporateActionUrl;
+
+        private const int _listedOptionLimit = 1000;
 
         public PolygonClient(HttpClient httpClient, IConfiguration configuration) : base(httpClient)
         {
@@ -62,19 +65,10 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
 
         public async Task<List<Option>> GetListedOptions(GetListedOptionRequest request)
         {
-            int maxNbOfResults = 1000;
+            var tasks = request.References.Select(reference => GetListedOptionForSingleReference(reference, request.AsOfDate));
+            var results = await Task.WhenAll(tasks).ConfigureAwait(false);
 
-            var options = new List<Option>();
-            foreach (var ticker in request.Tickers)
-            {
-                var url = CreateOptionListURL(ticker, request.AsOfDate, maxNbOfResults);
-                var response = await CallClient<PolygonResponse<PolygonOption>>(url).ConfigureAwait(false);
-                if (response.results.IsNullOrEmpty())
-                    throw new BadStatusException($"Polygon failed on request {url} : {response.message}");
-
-                options.AddRange(MapToOption(response));
-            }
-
+            var options = results.SelectMany(result => result).ToList();
             return options;
         }
 
@@ -135,6 +129,38 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
                 throw new BadStatusException($"Polygon failed on request {url} : {response.message}");
 
             return MapToCandles(option, response);
+        }
+
+        private async Task<List<Option>> GetListedOptionForSingleReference(string reference, DateTime asOfDate)
+        {
+            var url = CreateOptionListURL(reference, asOfDate, _listedOptionLimit);
+            var response = await CallClient<PolygonResponse<PolygonOption>>(url).ConfigureAwait(false);
+            if (response.results.IsNullOrEmpty())
+                throw new BadStatusException($"Polygon failed on request {url} : {response.message}");
+
+            var options = MapToOption(response);
+            while (!response.next_url.IsNullOrEmpty())
+            {
+                url = $"{response.next_url}&apiKey={_apiKey}&limit={_listedOptionLimit}";
+                var task = CallClient<PolygonResponse<PolygonOption>>(url);
+
+                // Polygon.io has a maximum number of 5 calls per minute so in case of too many calls, we give ourselves an other couple of attempts
+                try
+                {
+                    response = await task.ConfigureAwait(false);
+                }
+                catch
+                {
+                    response = await TaskTools.Retry(task, attempts:2, delay:60*1000).ConfigureAwait(false);
+                }
+
+                if (response.results.IsNullOrEmpty())
+                    throw new BadStatusException($"Polygon failed on request {url} : {response.message}");
+
+                options = options.Concat(MapToOption(response));
+            }
+
+            return options.ToList();
         }
 
         private async Task<List<Split>> GetSingleSplit(string ticker, string startDate, string endDate)

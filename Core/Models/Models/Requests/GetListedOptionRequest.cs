@@ -2,7 +2,7 @@
 {
     public class GetListedOptionRequest
     {
-        public List<string> Tickers { get; set; }
+        public List<string> References { get; set; }
         public DateTime AsOfDate { get; set; }
     }
 }
