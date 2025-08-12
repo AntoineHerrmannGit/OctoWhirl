@@ -120,7 +120,7 @@ namespace Data.Test
 
             var optionListRequest = new GetListedOptionRequest
             {
-                Tickers = new List<string> { "AAPL" },
+                References = new List<string> { "AAPL" },
                 AsOfDate = new DateTime(2025, 06, 09)
             };
             var options = await polygonClient.GetListedOptions(optionListRequest).ConfigureAwait(false);
@@ -150,12 +150,13 @@ namespace Data.Test
 
             var request = new GetListedOptionRequest
             {
-                Tickers = new List<string> { "AAPL" },
+                References = new List<string> { "AAPL" },
                 AsOfDate = new DateTime(2025, 06, 09)
             };
 
             var options = await polygonClient.GetListedOptions(request).ConfigureAwait(false);
             Assert.IsNotNull(options);
+            Assert.IsTrue(options.Count > 1000);
             Assert.IsTrue(options.IsNotEmpty());
         }
 

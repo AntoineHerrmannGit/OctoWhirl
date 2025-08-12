@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Tools\AsyncTools\AsyncTools.csproj" />
     <ProjectReference Include="..\..\Core\Tools\Serializer\Serializer.csproj" />
     <ProjectReference Include="..\..\Core\Models\Models.csproj" />
   </ItemGroup>
