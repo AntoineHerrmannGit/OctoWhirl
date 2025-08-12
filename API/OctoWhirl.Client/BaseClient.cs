@@ -1,4 +1,5 @@
 ﻿using OctoWhirl.Client.Requests;
+using OctoWhirl.Core.Exceptions;
 using OctoWhirl.Core.Tools.Serializer;
 
 namespace OctoWhirl.Client
@@ -33,7 +34,7 @@ namespace OctoWhirl.Client
             httpResponse.EnsureSuccessStatusCode();
 
             var jsonResponse = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return jsonResponse.DeserializeFromJson<TResponse>() ?? throw new InvalidOperationException("Failed to deserialize response");
+            return jsonResponse.DeserializeFromJson<TResponse>() ?? throw new DeserializationException(typeof(TResponse), jsonResponse);
         }
 
         #region IDisposable

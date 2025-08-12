@@ -1,12 +1,13 @@
 ﻿using OctoWhirl.Core.Models.Common;
 using OctoWhirl.Core.Models.Technicals;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor.
 
 namespace OctoWhirl.Models.Technicals
 {
     public class CandleSerie : TimeSerie<Candle>
     {
         #region Properties
-        public string Reference { get; set; } = string.Empty;
+        public string Reference { get; set; }
         #endregion Properties
 
         public CandleSerie() :
