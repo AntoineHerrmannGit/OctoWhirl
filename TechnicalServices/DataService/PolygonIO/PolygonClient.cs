@@ -17,6 +17,9 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
         private readonly string _corporateActionUrl;
 
         private const int _listedOptionLimit = 1000;
+        private const int _maxNbOfCandles = 50000;
+        private const int _retryDelay = 60000;
+        private const int _retryAttempts = 3;
 
         public PolygonClient(HttpClient httpClient, IConfiguration configuration) : base(httpClient)
         {
@@ -104,11 +107,9 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
         #region Private Unitary Methods
         private async Task<IEnumerable<Candle>> GetSingleStock(string ticker, string startDate, string endDate, string interval, int amplitude)
         {
-            // Max limit authorized by Polygon.io
-            var maxNbOfCandles = 50000;
+            string url = CreateRequestUrl(startDate, endDate, interval, amplitude, ticker, _maxNbOfCandles);
+            var response = await ExecutePolygonRequest<PolygonResponse<PolygonCandle>>(url).ConfigureAwait(false);
 
-            string url = CreateRequestUrl(startDate, endDate, interval, amplitude, ticker, maxNbOfCandles);
-            var response = await CallClient<PolygonResponse<PolygonCandle>>(url).ConfigureAwait(false);
             if (response.results.IsNullOrEmpty())
                 throw new BadStatusException($"Polygon failed on request {url} : {response.message}");
 
@@ -118,13 +119,10 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
 
         private async Task<IEnumerable<Candle>> GetSingleOption(string ticker, string startDate, string endDate, string interval, int amplitude, double strike, DateTime maturity, OptionType optionType)
         {
-            // Max limit authorized by Polygon.io
-            var maxNbOfCandles = 1000;
-
             var option = CreateOptionReference(ticker, strike, maturity, optionType);
-            var url = CreateRequestUrl(startDate, endDate, interval, amplitude, option, maxNbOfCandles);
+            var url = CreateRequestUrl(startDate, endDate, interval, amplitude, option, _listedOptionLimit);
 
-            var response = await CallClient<PolygonResponse<PolygonCandle>>(url).ConfigureAwait(false);
+            var response = await ExecutePolygonRequest<PolygonResponse<PolygonCandle>>(url).ConfigureAwait(false);
             if (response.results.IsNullOrEmpty())
                 throw new BadStatusException($"Polygon failed on request {url} : {response.message}");
 
@@ -142,17 +140,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
             while (!response.next_url.IsNullOrEmpty())
             {
                 url = $"{response.next_url}&apiKey={_apiKey}&limit={_listedOptionLimit}";
-                var task = CallClient<PolygonResponse<PolygonOption>>(url);
-
-                // Polygon.io has a maximum number of 5 calls per minute so in case of too many calls, we give ourselves an other couple of attempts
-                try
-                {
-                    response = await task.ConfigureAwait(false);
-                }
-                catch
-                {
-                    response = await TaskTools.Retry(task, attempts:2, delay:60*1000).ConfigureAwait(false);
-                }
+                response = await ExecutePolygonRequest<PolygonResponse<PolygonOption>>(url).ConfigureAwait(false);
 
                 if (response.results.IsNullOrEmpty())
                     throw new BadStatusException($"Polygon failed on request {url} : {response.message}");
@@ -166,7 +154,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
         private async Task<List<Split>> GetSingleSplit(string ticker, string startDate, string endDate)
         {
             var url = BuildCorporateActionUrl(ticker, startDate, endDate, CorporateActionType.Split);
-            var response = await CallClient<PolygonCorporateActionsResponse>(url).ConfigureAwait(false);
+            var response = await ExecutePolygonRequest<PolygonCorporateActionsResponse>(url).ConfigureAwait(false);
 
             var splits = response.results.Select(result => 
             {
@@ -181,7 +169,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
         private async Task<List<Dividend>> GetSingleDividend(string ticker, string startDate, string endDate)
         {
             var url = BuildCorporateActionUrl(ticker, startDate, endDate, CorporateActionType.Dividend);
-            var response = await CallClient<PolygonCorporateActionsResponse>(url).ConfigureAwait(false);
+            var response = await ExecutePolygonRequest<PolygonCorporateActionsResponse>(url).ConfigureAwait(false);
 
             var dividends = response.results.Select(result =>
             {
@@ -191,6 +179,12 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
             }).ToList();
 
             return dividends;
+        }
+
+        // Polygon.io has a maximum number of 5 calls per minute so in case of too many calls, we give ourselves an other couple of attempts
+        private async Task<T> ExecutePolygonRequest<T>(string url)
+        {
+            return await TaskTools.Retry(CallClient<T>(url), attempts: _retryAttempts, delay: _retryDelay).ConfigureAwait(false);
         }
         #endregion Private Unitary Methods
 
