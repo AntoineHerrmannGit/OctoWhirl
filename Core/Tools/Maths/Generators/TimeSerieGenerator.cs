@@ -1,7 +1,7 @@
-﻿using OctoWhirl.Core.Models.Extensions;
-using OctoWhirl.Core.Models.Technicals;
+﻿using OctoWhirl.Core.Models.Models.Technicals;
+using OctoWhirl.Core.Tools.Technicals.Extensions;
 
-namespace OctoWhirl.Core.Tools.Generators
+namespace OctoWhirl.Core.Tools.Maths.Generators
 {
     public class TimeSerieGenerator : IGenerator<TimeSerie<double>>
     {

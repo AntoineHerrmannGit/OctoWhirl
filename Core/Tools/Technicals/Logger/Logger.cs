@@ -1,6 +1,4 @@
-using System.IO;
-
-namespace OctoWhirl.Core.Tools.Technicals
+namespace OctoWhirl.Core.Tools.Technicals.Logger
 {
     public class Logger : ILogger
     {

@@ -1,7 +1,7 @@
 ﻿using OctoWhirl.TechnicalServices.Strategy.Events;
 using OctoWhirl.TechnicalServices.Strategy.Strategies;
 
-namespace Strategy.Test.Mocks
+namespace OctoWhirl.Test.Strategy
 {
     internal class DummyStrategy : AbstractStrategy
     {

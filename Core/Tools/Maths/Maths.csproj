@@ -6,12 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <PropertyGroup>
-  	<RootNamespace>OctoWhirl</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<RootNamespace>OctoWhirl.Core.Tools.Maths</RootNamespace>
+	</PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <ProjectReference Include="..\..\Models\Models.csproj" />
+    <ProjectReference Include="..\Technicals\Technicals.csproj" />
   </ItemGroup>
 
 </Project>

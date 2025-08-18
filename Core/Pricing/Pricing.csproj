@@ -6,7 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<RootNamespace>OctoWhirl.Core.Pricing</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
     <ProjectReference Include="..\Tools\Maths\Maths.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿namespace OctoWhirl.Core.Tools.Generators
+﻿namespace OctoWhirl.Core.Tools.Maths.Generators
 {
     public class LogBrownianGenerator : BrownianGenerator
     {

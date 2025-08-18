@@ -5,7 +5,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<RootNamespace>OctoWhirl.Core.Tools.Serializer</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

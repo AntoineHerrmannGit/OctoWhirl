@@ -1,8 +1,8 @@
-﻿using OctoWhirl.Client.Requests;
-using OctoWhirl.Core.Models.Requests;
-using OctoWhirl.Models.Technicals;
+﻿using OctoWhirl.API.Client.Requests;
+using OctoWhirl.Core.Models.Models.Requests;
+using OctoWhirl.Core.Models.Models.Technicals;
 
-namespace OctoWhirl.Client
+namespace OctoWhirl.API.Client
 {
     public class DataClient : BaseClient
     {

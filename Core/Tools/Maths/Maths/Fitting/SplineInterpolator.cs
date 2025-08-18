@@ -1,7 +1,7 @@
-﻿using OctoWhirl.Exceptions;
-using OctoWhirl.Maths.Models;
+﻿using OctoWhirl.Core.Models.Exceptions;
+using OctoWhirl.Core.Tools.Maths.Models;
 
-namespace OctoWhirl.Maths.Fitting
+namespace OctoWhirl.Core.Tools.Maths.Fitting
 {
     public class SplineInterpolator : ISplineInterpolator
     {

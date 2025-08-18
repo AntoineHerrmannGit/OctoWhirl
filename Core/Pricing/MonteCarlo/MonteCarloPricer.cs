@@ -1,5 +1,5 @@
-﻿using OctoWhirl.Core.Models.Technicals;
-using OctoWhirl.Core.Tools.Generators;
+﻿using OctoWhirl.Core.Models.Models.Technicals;
+using OctoWhirl.Core.Tools.Maths.Generators;
 
 namespace OctoWhirl.Core.Pricing.MonteCarlo
 {

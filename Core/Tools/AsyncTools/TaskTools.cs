@@ -1,6 +1,6 @@
-﻿using OctoWhirl.Exceptions;
+﻿using OctoWhirl.Core.Models.Exceptions;
 
-namespace AsyncTools
+namespace OctoWhirl.Core.Tools.AsyncTools
 {
     public static class TaskTools
     {

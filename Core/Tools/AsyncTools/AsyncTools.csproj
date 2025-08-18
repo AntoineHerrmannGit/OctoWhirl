@@ -6,7 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<RootNamespace>OctoWhirl.Core.Tools.AsyncTools</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
     <ProjectReference Include="..\..\Models\Models.csproj" />
   </ItemGroup>
 

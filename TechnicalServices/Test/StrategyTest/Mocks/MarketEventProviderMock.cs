@@ -1,7 +1,7 @@
 ﻿using OctoWhirl.TechnicalServices.Strategy.EventProviders;
 using OctoWhirl.TechnicalServices.Strategy.Events;
 
-namespace Strategy.Test.Mocks
+namespace OctoWhirl.Test.Strategy
 {
     internal class MarketEventProviderMock : IMarketEventProvider
     {

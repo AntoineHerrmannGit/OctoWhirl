@@ -7,11 +7,6 @@
   </PropertyGroup>
 	
   <PropertyGroup>
-  	<RootNamespace>OctoWhirl</RootNamespace>
+  	<RootNamespace>OctoWhirl.Core.Models</RootNamespace>
   </PropertyGroup>
-	
-  <ItemGroup>
-    <ProjectReference Include="..\Tools\Technicals\Technicals.csproj" />
-  </ItemGroup>
-
 </Project>

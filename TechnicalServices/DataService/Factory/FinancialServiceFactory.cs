@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using OctoWhirl.Core.Models.Enums;
+using OctoWhirl.Core.Models.Models.Enums;
 using OctoWhirl.TechnicalServices.DataService;
 using OctoWhirl.TechnicalServices.DataService.LocalDataBase;
 using OctoWhirl.TechnicalServices.DataService.PolygonIO;

@@ -1,4 +1,4 @@
-﻿namespace Technicals.Extensions
+﻿namespace OctoWhirl.Core.Tools.Technicals.Extensions
 {
     public static class StringExtension
     {

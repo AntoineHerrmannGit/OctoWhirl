@@ -1,4 +1,4 @@
-﻿namespace OctoWhirl.Client.Requests
+﻿namespace OctoWhirl.API.Client.Requests
 {
     public abstract class HttpAbstractRequest : IHttpRequest
     {

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OctoWhirl.Core.Models.Technicals;
+﻿using OctoWhirl.Core.Models.Models.Technicals;
 
-namespace OctoWhirl.Core.Models.Extensions
+namespace OctoWhirl.Core.Tools.Technicals.Extensions
 {
     public static class ResolutionIntervalExtension
     {

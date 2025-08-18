@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OctoWhirl.TechnicalServices.Strategy.EventProviders;
 using OctoWhirl.TechnicalServices.Strategy.Simulator;
-using Strategy.Test.Mocks;
 
-namespace Strategy.Test
+namespace OctoWhirl.Test.Strategy
 {
     [TestClass]
     public sealed class StrategyTest

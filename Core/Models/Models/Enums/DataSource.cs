@@ -1,4 +1,4 @@
-﻿namespace OctoWhirl.Core.Models.Enums
+﻿namespace OctoWhirl.Core.Models.Models.Enums
 {
     public enum DataSource
     {

@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OctoWhirl.Core.Models.Common;
-using OctoWhirl.Core.Models.Requests;
-using OctoWhirl.Core.Models.Technicals;
-using OctoWhirl.Services.Models.Requests;
+using OctoWhirl.Core.Models.Models.Common;
+using OctoWhirl.Core.Models.Models.Requests;
+using OctoWhirl.Core.Models.Models.Technicals;
 using System.Configuration;
 using System.Text.Json.Serialization;
 
