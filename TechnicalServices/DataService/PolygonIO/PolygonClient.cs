@@ -184,7 +184,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
         // Polygon.io has a maximum number of 5 calls per minute so in case of too many calls, we give ourselves an other couple of attempts
         private async Task<T> ExecutePolygonRequest<T>(string url)
         {
-            return await TaskTools.Retry(CallClient<T>(url), attempts: _retryAttempts, delay: _retryDelay).ConfigureAwait(false);
+            return await TaskTools.Retry(() => CallClient<T>(url), attempts: _retryAttempts, delay: _retryDelay).ConfigureAwait(false);
         }
         #endregion Private Unitary Methods
 
