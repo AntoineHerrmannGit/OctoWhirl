@@ -1,6 +1,6 @@
-﻿using OctoWhirl.Core.Models.Technicals;
+﻿using OctoWhirl.Core.Models.Models.Technicals;
 
-namespace OctoWhirl.Core.Maths.Optimizers
+namespace OctoWhirl.Core.Tools.Maths.Optimizers
 {
     public static class Newton
     {

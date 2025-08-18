@@ -1,6 +1,6 @@
-﻿using Technicals.Extensions;
+﻿using OctoWhirl.Core.Tools.Technicals.Extensions;
 
-namespace OctoWhirl.Core.Tools.FileManagement
+namespace OctoWhirl.Core.Tools.Technicals.FileManagement
 {
     public static class FileManager
     {

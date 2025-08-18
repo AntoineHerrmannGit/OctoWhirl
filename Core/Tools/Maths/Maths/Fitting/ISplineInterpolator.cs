@@ -1,4 +1,4 @@
-﻿namespace OctoWhirl.Maths.Fitting
+﻿namespace OctoWhirl.Core.Tools.Maths.Fitting
 {
     public interface ISplineInterpolator
     {

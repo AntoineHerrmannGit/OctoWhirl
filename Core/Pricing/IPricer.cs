@@ -1,4 +1,4 @@
-﻿using OctoWhirl.Core.Models.Technicals;
+﻿using OctoWhirl.Core.Models.Models.Technicals;
 
 namespace OctoWhirl.Core.Pricing
 {

@@ -1,4 +1,4 @@
-﻿namespace OctoWhirl.Core.Maths.Functions
+﻿namespace OctoWhirl.Core.Tools.Maths.Functions
 {
     public static class Functions
     {

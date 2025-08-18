@@ -1,10 +1,9 @@
 ﻿using DataService.Factory;
-using OctoWhirl.BusinessServices.Data.Core;
-using OctoWhirl.Core.Models.Common;
-using OctoWhirl.Core.Models.Requests;
-using OctoWhirl.Models.Technicals;
+using OctoWhirl.Core.Models.Models.Common;
+using OctoWhirl.Core.Models.Models.Requests;
+using OctoWhirl.Core.Models.Models.Technicals;
 
-namespace OctoWhirl
+namespace OctoWhirl.BusinessServices.Data.Core
 {
     public class BusinessDataService : IBusinessDataService
     {

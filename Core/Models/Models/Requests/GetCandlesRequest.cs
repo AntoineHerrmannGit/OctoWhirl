@@ -1,7 +1,7 @@
-﻿using OctoWhirl.Core.Models.Enums;
-using OctoWhirl.Core.Models.Technicals;
+﻿using OctoWhirl.Core.Models.Models.Enums;
+using OctoWhirl.Core.Models.Models.Technicals;
 
-namespace OctoWhirl.Core.Models.Requests
+namespace OctoWhirl.Core.Models.Models.Requests
 {
     public class GetCandlesRequest
     {

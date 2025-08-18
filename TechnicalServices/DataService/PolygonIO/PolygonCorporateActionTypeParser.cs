@@ -1,4 +1,4 @@
-﻿using OctoWhirl.Core.Models.Common;
+﻿using OctoWhirl.Core.Models.Models.Common;
 
 namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
 {

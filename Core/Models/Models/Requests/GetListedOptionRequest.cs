@@ -1,4 +1,4 @@
-﻿namespace OctoWhirl.Services.Models.Requests
+﻿namespace OctoWhirl.Core.Models.Models.Requests
 {
     public class GetListedOptionRequest
     {

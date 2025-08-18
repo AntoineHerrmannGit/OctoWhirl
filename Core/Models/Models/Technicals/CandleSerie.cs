@@ -1,7 +1,6 @@
-﻿using OctoWhirl.Core.Models.Common;
-using OctoWhirl.Core.Models.Technicals;
+﻿using OctoWhirl.Core.Models.Models.Common;
 
-namespace OctoWhirl.Models.Technicals
+namespace OctoWhirl.Core.Models.Models.Technicals
 {
     public class CandleSerie : TimeSerie<Candle>
     {

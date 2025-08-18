@@ -1,6 +1,6 @@
-﻿using OctoWhirl.Core.Models.Common.Interfaces;
+﻿using OctoWhirl.Core.Models.Models.Common.Interfaces;
 
-namespace OctoWhirl.Core.Models.Common
+namespace OctoWhirl.Core.Models.Models.Common
 {
     public class Option : IOption, IInstrument
     {

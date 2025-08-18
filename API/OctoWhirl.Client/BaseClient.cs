@@ -1,7 +1,7 @@
-﻿using OctoWhirl.Client.Requests;
+﻿using OctoWhirl.API.Client.Requests;
 using OctoWhirl.Core.Tools.Serializer;
 
-namespace OctoWhirl.Client
+namespace OctoWhirl.API.Client
 {
     public abstract class BaseClient : IDisposable
     {

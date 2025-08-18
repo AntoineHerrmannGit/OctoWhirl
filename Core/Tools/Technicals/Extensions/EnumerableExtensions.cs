@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Technicals.Extensions;
-
-namespace OctoWhirl.Core.Extensions
+﻿namespace OctoWhirl.Core.Tools.Technicals.Extensions
 {
     public static class EnumerableExtensions
     {

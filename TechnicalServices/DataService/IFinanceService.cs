@@ -1,5 +1,5 @@
-﻿using OctoWhirl.Core.Models.Common;
-using OctoWhirl.Services.Models.Requests;
+﻿using OctoWhirl.Core.Models.Models.Common;
+using OctoWhirl.Core.Models.Models.Requests;
 
 namespace OctoWhirl.TechnicalServices.DataService
 {

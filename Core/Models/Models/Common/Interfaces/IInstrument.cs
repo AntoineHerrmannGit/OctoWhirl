@@ -1,4 +1,4 @@
-﻿namespace OctoWhirl.Core.Models.Common.Interfaces
+﻿namespace OctoWhirl.Core.Models.Models.Common.Interfaces
 {
     public interface IInstrument
     {

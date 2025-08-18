@@ -1,15 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OctoWhirl.Core.Extensions;
-using OctoWhirl.Core.Models.Common;
-using OctoWhirl.Core.Models.Requests;
-using OctoWhirl.Core.Models.Technicals;
-using OctoWhirl.Services.Models.Requests;
+using OctoWhirl.Core.Models.Models.Common;
+using OctoWhirl.Core.Models.Models.Requests;
+using OctoWhirl.Core.Models.Models.Technicals;
+using OctoWhirl.Core.Tools.Technicals.Extensions;
 using OctoWhirl.TechnicalServices.DataService.LocalDataBase;
 using OctoWhirl.TechnicalServices.DataService.PolygonIO;
 using OctoWhirl.TechnicalServices.DataService.YahooFinance;
 
-namespace Data.Test
+namespace OctoWhirl.Test.Data
 {
     [TestClass]
     public sealed class DataTest

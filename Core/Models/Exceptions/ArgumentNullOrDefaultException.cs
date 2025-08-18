@@ -1,4 +1,4 @@
-﻿namespace OctoWhirl.Exceptions
+﻿namespace OctoWhirl.Core.Models.Exceptions
 {
     public class ArgumentNullOrDefaultException : Exception
     {

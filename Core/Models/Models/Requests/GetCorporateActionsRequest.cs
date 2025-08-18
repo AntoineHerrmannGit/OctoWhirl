@@ -1,6 +1,6 @@
-﻿using OctoWhirl.Core.Models.Common;
+﻿using OctoWhirl.Core.Models.Models.Common;
 
-namespace OctoWhirl.Services.Models.Requests
+namespace OctoWhirl.Core.Models.Models.Requests
 {
     public class GetCorporateActionsRequest
     {

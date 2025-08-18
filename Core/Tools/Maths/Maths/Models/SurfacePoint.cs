@@ -1,4 +1,4 @@
-﻿namespace OctoWhirl.Maths.Models
+﻿namespace OctoWhirl.Core.Tools.Maths.Models
 {
     public class SurfacePoint
     {

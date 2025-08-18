@@ -1,6 +1,6 @@
 ﻿using OctoWhirl.Core.Models.Exceptions;
 
-namespace OctoWhirl.Maths.Statistics
+namespace OctoWhirl.Core.Tools.Maths.Statistics
 {
     public static class Statistics
     {

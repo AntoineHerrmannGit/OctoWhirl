@@ -1,4 +1,4 @@
-﻿namespace OctoWhirl.Core.Models.Technicals
+﻿namespace OctoWhirl.Core.Models.Models.Technicals
 {
     public class NewtonZeroResult
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OctoWhirl.BusinessServices.Data.Core;
-using OctoWhirl.Core.Models.Requests;
-using OctoWhirl.Exceptions;
-using OctoWhirl.Models.Technicals;
-using Technicals.Extensions;
+using OctoWhirl.Core.Models.Exceptions;
+using OctoWhirl.Core.Models.Models.Requests;
+using OctoWhirl.Core.Models.Models.Technicals;
+using OctoWhirl.Core.Tools.Technicals.Extensions;
 
 namespace OctoWhirl.BusinessServices.Data.App.Controllers
 {

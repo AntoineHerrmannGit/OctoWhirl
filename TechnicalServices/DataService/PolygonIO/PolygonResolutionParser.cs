@@ -1,7 +1,6 @@
-﻿using OctoWhirl.Core.Extensions;
-using OctoWhirl.Core.Models.Technicals;
+﻿using OctoWhirl.Core.Models.Models.Technicals;
+using OctoWhirl.Core.Tools.Technicals.Extensions;
 using System.Text.RegularExpressions;
-using Technicals.Extensions;
 
 namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
 {
