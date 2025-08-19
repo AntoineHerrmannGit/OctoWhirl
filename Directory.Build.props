@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <RootNamespace>OctoWhirl</RootNamespace>
+    <GenerateImplicitNamespace>true</GenerateImplicitNamespace>
+  </PropertyGroup>
+</Project>

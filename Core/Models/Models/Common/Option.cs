@@ -2,7 +2,7 @@
 
 namespace OctoWhirl.Core.Models.Models.Common
 {
-    public class Option : IOption, IInstrument
+    public class Option : IOption
     {
         public OptionType OptionType { get; set; }
         public DateTime Maturity { get; set; }

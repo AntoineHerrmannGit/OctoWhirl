@@ -32,5 +32,11 @@
             else
                 return Sign(x);
         }
+
+        /// <summary>
+        /// Cumulative error function
+        /// 1 / 2 * (1 + Erf(x / sqrt(2))
+        /// </summary>
+        public static double Cerf(double x) => 0.5 * (1 + Erf(x / Math.Sqrt(2)));
     }
 }
