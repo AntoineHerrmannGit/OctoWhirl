@@ -7,7 +7,7 @@ using OctoWhirl.Core.Tools.Technicals.Extensions;
 
 namespace OctoWhirl.Core.Pricing.BlackSholes
 {
-    public class BlachSholesPricer
+    public class BlackSholesPricer
     {
         public BlackSholesPricingResponse Price(IBlackSholesOption option)
         {

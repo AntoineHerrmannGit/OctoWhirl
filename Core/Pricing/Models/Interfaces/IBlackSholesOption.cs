@@ -4,9 +4,9 @@ namespace OctoWhirl.Core.Pricing.Models.Interfaces
 {
     public interface IBlackSholesOption : IOption
     {
-        public double Spot { get; set; }
-        public DateTime TimeStamp { get; set; }
-        public double Volatility { get; set; }
-        public double Rate { get; set; }
+        double Spot { get; set; }
+        DateTime TimeStamp { get; set; }
+        double Volatility { get; set; }
+        double Rate { get; set; }
     }
 }
