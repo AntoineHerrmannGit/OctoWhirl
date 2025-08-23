@@ -23,6 +23,10 @@
     <PackageReference Include="MSTest" Version="3.6.4" />
   </ItemGroup>
 
+	<PropertyGroup>
+		<RootNamespace>OctoWhirl.Core.Test.Pricing</RootNamespace>
+	</PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\Pricing\Pricing.csproj" />
   </ItemGroup>

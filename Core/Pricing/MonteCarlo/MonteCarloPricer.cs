@@ -1,13 +1,13 @@
 ﻿using OctoWhirl.Core.Models.Models.Technicals;
-using OctoWhirl.Core.Tools.Maths.Generators;
+using OctoWhirl.Core.Tools.Maths.Generators.Interfaces;
 
 namespace OctoWhirl.Core.Pricing.MonteCarlo
 {
     public class MonteCarloPricer : IPricer
     {
-        private readonly IGenerator<TimeSerie<double>> _generator;
+        private readonly ISimpleGenerator<TimeSerie<double>> _generator;
 
-        public MonteCarloPricer(IGenerator<TimeSerie<double>> generator)
+        public MonteCarloPricer(ISimpleGenerator<TimeSerie<double>> generator)
         {
             _generator = generator;
         }

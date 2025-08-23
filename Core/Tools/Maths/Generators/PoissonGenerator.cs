@@ -1,6 +1,8 @@
+using OctoWhirl.Core.Tools.Maths.Generators.Interfaces;
+
 namespace OctoWhirl.Core.Tools.Maths.Generators
 {
-    public class PoissonGenerator : IGenerator<double>
+    public class PoissonGenerator : ISimpleGenerator<double>
     {
         private Random _random;
         private readonly double _lambda;

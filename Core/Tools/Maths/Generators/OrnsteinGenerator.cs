@@ -1,6 +1,8 @@
+using OctoWhirl.Core.Tools.Maths.Generators.Interfaces;
+
 namespace OctoWhirl.Core.Tools.Maths.Generators
 {
-    public class OrnsteinGenerator : IGenerator<double>
+    public class OrnsteinGenerator : ISimpleGenerator<double>
     {
         private readonly GaussianGenerator _random;
 
@@ -25,7 +27,9 @@ namespace OctoWhirl.Core.Tools.Maths.Generators
 
         public double GetNext()
         {
-            return _reversion * (_mean - _state) * _step + _sigma * _random.GetNext();
+            var lastState = _state;
+            _state = _reversion * (_state - _mean) * _step + _sigma * _random.GetNext();
+            return lastState;
         }
 
         public void Reset()
