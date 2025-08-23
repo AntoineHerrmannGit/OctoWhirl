@@ -1,12 +1,14 @@
+using OctoWhirl.Core.Tools.Maths.Generators.Interfaces;
+
 namespace OctoWhirl.Core.Tools.Maths.Generators
 {
-    public class RandomTrajectoryGenerator : IGenerator<List<double>>
+    public class RandomTrajectoryGenerator : ISimpleGenerator<List<double>>
     {
         private int _totalSteps;
-        private readonly IGenerator<double> _generator;
+        private readonly ISimpleGenerator<double> _generator;
 
 
-        public RandomTrajectoryGenerator(IGenerator<double> generator, int totalSteps = 1000)
+        public RandomTrajectoryGenerator(ISimpleGenerator<double> generator, int totalSteps = 1000)
         {
             if (generator == null)
                 throw new ArgumentNullException(nameof(generator));

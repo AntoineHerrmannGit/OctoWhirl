@@ -4,7 +4,7 @@ using OctoWhirl.Core.Models.Models.Enums;
 using OctoWhirl.Core.Pricing.BlackSholes;
 using OctoWhirl.Core.Pricing.Models;
 
-namespace Pricing.Test
+namespace OctoWhirl.Core.Test.Pricing
 {
     [TestClass]
     public sealed class BlackSholesTest
