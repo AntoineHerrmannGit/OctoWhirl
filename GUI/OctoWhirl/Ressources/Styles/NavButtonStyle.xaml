@@ -6,6 +6,10 @@
         <ResourceDictionary Source="../Colors/DarkThemeColors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
+    <!-- Converter : Fusionner les deux converters en un seul-->
+    <conv:PackUriConverter x:Key="PackUriConverter"/>
+    <conv:ThemeIconConverter x:Key="ThemeIconConverter"/>
+
     <!-- Style Definition -->
     <Style x:Key="NavButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource NavButtonBackGroundColorBrush}"/>
@@ -19,7 +23,10 @@
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Width="70" Height="70" Margin="0,0,10,0" Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag, Converter={StaticResource PackUriConverter}}"/>
+                            <Image Width="70" Height="70" Margin="0,0,10,0" 
+                                   Source="{Binding RelativeSource={RelativeSource TemplatedParent}, 
+                                   Path=Tag, 
+                                   Converter={StaticResource PackUriConverter}}"/>
                             <ContentPresenter VerticalAlignment="Center" />
                         </StackPanel>
                     </Border>

@@ -9,7 +9,7 @@
                 <ResourceDictionary Source="Ressources/Styles/NavButtonStyle.xaml"/>
                 
                 <!-- Colors -->
-                <ResourceDictionary Source="Resources/Colors/DarkThemeColors.xaml" />
+                <ResourceDictionary Source="Ressources/Colors/DarkThemeColors.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

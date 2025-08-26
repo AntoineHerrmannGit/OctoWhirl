@@ -6,4 +6,7 @@
     <!-- MainWindow LeftPannel Buttons -->
     <Color x:Key="MainWindowLeftPannnelButtonBackGroundColor">#FFDBAD</Color>
     
+    <!-- MainWindow DarkTheme Background -->
+    <SolidColorBrush x:Key="MainWindowDarkThemeBrush" Color="{StaticResource MainWindowDarkThemeColor}"/>
+    
 </ResourceDictionary>

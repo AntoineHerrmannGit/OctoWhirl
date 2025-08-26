@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="OctoWhirl" Height="800" Width="1200" 
         ResizeMode="CanResize" AllowDrop="True"
-        Background="{StaticResource MainWindowDarkThemeColor}">
+        Background="{StaticResource MainWindowDarkThemeBrush}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
