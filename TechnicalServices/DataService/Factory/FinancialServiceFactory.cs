@@ -17,8 +17,8 @@ namespace DataService.Factory
         }
 
         public IFinanceService GetService(DataSource source)
-            => source switch 
-            { 
+            => source switch
+            {
                 DataSource.YahooFinance => _provider.GetRequiredService<YahooFinanceClient>(),
                 DataSource.PolygonIO => _provider.GetRequiredService<PolygonClient>(),
                 DataSource.LocalDataBase => _provider.GetRequiredService<DataBaseLoader>(),

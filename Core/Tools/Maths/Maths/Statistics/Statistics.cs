@@ -44,7 +44,7 @@ namespace OctoWhirl.Core.Tools.Maths.Statistics
 
             if (var1 == 0 && var2 == 0)
                 return 1.0;
-            else if (var1 == 0  || var2 == 0)
+            else if (var1 == 0 || var2 == 0)
                 return 0.0;
 
             double numerator = crossedTerms - mean1 * mean2;
@@ -69,10 +69,10 @@ namespace OctoWhirl.Core.Tools.Maths.Statistics
             double mean = 0;
             double square = 0;
             int count = 0;
-            foreach(double value in serie)
+            foreach (double value in serie)
             {
                 mean += value;
-                square += value * value; 
+                square += value * value;
                 count++;
             }
 
@@ -85,7 +85,7 @@ namespace OctoWhirl.Core.Tools.Maths.Statistics
 
         public static double Moment(IEnumerable<double> serie, int order)
         {
-            if(!serie.Any())
+            if (!serie.Any())
                 throw new EmptyEnumerableException(nameof(serie));
 
             double result;

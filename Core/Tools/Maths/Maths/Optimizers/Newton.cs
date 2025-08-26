@@ -12,8 +12,8 @@ namespace OctoWhirl.Core.Tools.Maths.Optimizers
             return (Derive(function, point + step, step, order - 1) - Derive(function, point - step, step, order - 1)) / (2 * step);
         }
 
-        public static NewtonZeroResult GetZero(Func<double, double> function, double seed, double step = 1e-6, 
-            double lowerBound = double.NegativeInfinity, double upperbound = double.PositiveInfinity, 
+        public static NewtonZeroResult GetZero(Func<double, double> function, double seed, double step = 1e-6,
+            double lowerBound = double.NegativeInfinity, double upperbound = double.PositiveInfinity,
             int maxIterations = 10, double tolerance = 1e-8)
         {
             int iteration = 0;

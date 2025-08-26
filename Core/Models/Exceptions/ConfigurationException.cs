@@ -1,6 +1,6 @@
 ﻿namespace OctoWhirl.Core.Models.Exceptions
 {
-    public class ConfigurationException: Exception
+    public class ConfigurationException : Exception
     {
         public ConfigurationException() { }
 

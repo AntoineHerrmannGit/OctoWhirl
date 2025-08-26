@@ -20,7 +20,7 @@ namespace OctoWhirl.Core.Tools.Maths.Generators
         private double _state;
         private readonly double _sqrtStep;
 
-        public LogHestonGenerator(double drift = 0.04, double volatilityMean = 0.2, double volOfVol = 0.2, double spotVolCorrelation = 0.8, 
+        public LogHestonGenerator(double drift = 0.04, double volatilityMean = 0.2, double volOfVol = 0.2, double spotVolCorrelation = 0.8,
                                   double reversionStrength = 1, double initialVolatility = 0, double step = 0.01, double initialState = 100, IMultiGenerator<double>? generator = null)
         {
             _drift = drift;

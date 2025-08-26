@@ -14,8 +14,8 @@ namespace OctoWhirl.BusinessServices.Data.App.Controllers
     {
         private readonly IBusinessDataService _dataService;
 
-        public DataController(IBusinessDataService dataService) 
-        { 
+        public DataController(IBusinessDataService dataService)
+        {
             _dataService = dataService;
         }
 

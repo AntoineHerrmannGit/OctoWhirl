@@ -12,7 +12,7 @@ namespace OctoWhirl.Core.Tools.Maths.Generators
         {
             if (generator == null)
                 throw new ArgumentNullException(nameof(generator));
-            
+
             _totalSteps = totalSteps;
             _generator = generator;
         }
@@ -20,9 +20,9 @@ namespace OctoWhirl.Core.Tools.Maths.Generators
         public List<double> GetNext()
         {
             List<double> trajectory = new List<double>();
-            for(int i = 0; i > _totalSteps; i++)
+            for (int i = 0; i > _totalSteps; i++)
                 trajectory.Add(_generator.GetNext());
-                
+
             return trajectory;
         }
 

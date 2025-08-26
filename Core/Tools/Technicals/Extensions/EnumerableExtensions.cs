@@ -11,7 +11,7 @@
         {
             return !@this.Any();
         }
-        
+
         public static bool IsNullOrEmpty<T>(this IEnumerable<T> @this)
         {
             return @this.IsNull() || !@this.Any();
@@ -23,11 +23,11 @@
                 throw new ArgumentOutOfRangeException($"Enumerable must have at least one element.");
 
             if (selector.IsNull())
-                selector = new Func<double, double> (x => x);
+                selector = new Func<double, double>(x => x);
 
             double mean = 0;
             int count = 0;
-            foreach(double element in @this)
+            foreach (double element in @this)
             {
                 mean += selector(element);
                 count++;
@@ -46,7 +46,7 @@
             double stddev = 0;
             double mean = 0;
             int count = 0;
-            foreach(double element in @this)
+            foreach (double element in @this)
             {
                 double stepElement = selector(element);
                 stddev += stepElement * stepElement;
@@ -114,7 +114,7 @@
 
             bool isSizeChecked = false;
             if (@thisSelector.IsNull())
-                @thisSelector = new Func<double, double> (x => x);
+                @thisSelector = new Func<double, double>(x => x);
             else
             {
                 if (@this.Count() != @other.Count())
@@ -126,7 +126,7 @@
                 @otherSelector = @thisSelector;
             else
                 if (!isSizeChecked && @this.Count() != @other.Count())
-                    throw new ArgumentOutOfRangeException($"Enumerables must have the same number of elements.");
+                throw new ArgumentOutOfRangeException($"Enumerables must have the same number of elements.");
 
             double meanThis = 0;
             double meanOther = 0;
@@ -153,7 +153,7 @@
             if (@thisEnumerator.MoveNext() || @otherEnumerator.MoveNext())
                 throw new ArgumentOutOfRangeException($"Enumerables must have the same number of elements.");
 
-            return (crossedTerm - meanThis * meanOther) 
+            return (crossedTerm - meanThis * meanOther)
                 / Math.Sqrt((stdDevThis - meanThis * meanThis) * (stdDevOther - meanOther * meanOther));
         }
 

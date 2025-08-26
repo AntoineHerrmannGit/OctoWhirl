@@ -4,7 +4,7 @@
     {
         public override HttpRequestMethod Method => HttpRequestMethod.POST;
 
-        public HttpPOSTRequest(string url, string route) : base(url, route) 
+        public HttpPOSTRequest(string url, string route) : base(url, route)
         {
         }
 

@@ -1,5 +1,4 @@
 using OctoWhirl.Core.Tools.Maths.Generators.Interfaces;
-using OctoWhirl.Core.Tools.Technicals.Extensions;
 
 namespace OctoWhirl.Core.Tools.Maths.Generators
 {
@@ -41,7 +40,7 @@ namespace OctoWhirl.Core.Tools.Maths.Generators
                 y = 2 * _random.NextDouble() - 1;
                 r = x * x + y * y;
             }
-            while(r >= 1 || r == 0);
+            while (r >= 1 || r == 0);
 
             double factor = Math.Sqrt(-2 * Math.Log(r) / r);
             result = _mean + _sigma * x * factor;

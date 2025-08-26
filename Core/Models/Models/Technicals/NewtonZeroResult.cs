@@ -2,7 +2,7 @@
 {
     public class NewtonZeroResult
     {
-        public double Value { get; set; }   
+        public double Value { get; set; }
         public int Iterations { get; set; }
         public bool HasConverged { get; set; }
         public double Distance { get; set; }

@@ -16,7 +16,7 @@ namespace OctoWhirl.Core.Pricing.Dynamics
         private readonly double _rate;
         private readonly double _volatility;
 
-        public BlackSholesDynamics(DateTime startDate, DateTime endDate, double rate=0.04, double volatility=0.2, ResolutionInterval interval = ResolutionInterval.Day, double initialState = 100, double step = 0.01)
+        public BlackSholesDynamics(DateTime startDate, DateTime endDate, double rate = 0.04, double volatility = 0.2, ResolutionInterval interval = ResolutionInterval.Day, double initialState = 100, double step = 0.01)
         {
             _initialState = initialState;
             _step = step;
@@ -24,7 +24,7 @@ namespace OctoWhirl.Core.Pricing.Dynamics
             _startDate = startDate;
             _endDate = endDate;
             _interval = interval;
-            
+
             _rate = rate;
             _volatility = volatility;
 

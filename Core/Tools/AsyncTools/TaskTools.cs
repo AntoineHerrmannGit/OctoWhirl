@@ -12,7 +12,7 @@ namespace OctoWhirl.Core.Tools.AsyncTools
         /// <exception cref="TaskFailedException"></exception>
         public static async Task<T> Retry<T>(Func<Task<T>> task, int attempts = 1, int delay = 0)
         {
-            if (task == null) 
+            if (task == null)
                 throw new ArgumentNullException(nameof(task));
 
             int retryLimit = attempts > 0 ? 0 : _maxRecursionDepth;

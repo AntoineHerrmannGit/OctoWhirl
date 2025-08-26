@@ -3,7 +3,7 @@
     public enum GreekEnum
     {
         Price,
-        Delta, 
+        Delta,
         Gamma,
         Vega,
         Theta,

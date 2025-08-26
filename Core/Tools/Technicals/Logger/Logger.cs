@@ -14,7 +14,7 @@ namespace OctoWhirl.Core.Tools.Technicals.Logger
             _logFile = logFile ?? Path.Combine(GetRootPath(), "log.log");
             if (!File.Exists(_logFile))
                 File.Create(_logFile);
-            
+
             _writer = new StreamWriter(_logFile, true);
         }
 
@@ -36,11 +36,11 @@ namespace OctoWhirl.Core.Tools.Technicals.Logger
                 Write($"[ERROR] : {DateTime.Now} : {message}");
         }
         #endregion ILogger Methods
-        
+
         #region Private Methods
         private void Write(string message)
         {
-            lock(_writer)
+            lock (_writer)
             {
                 _writer.WriteLine(message);
             }
