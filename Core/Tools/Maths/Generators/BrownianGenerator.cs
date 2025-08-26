@@ -5,7 +5,7 @@ namespace OctoWhirl.Core.Tools.Maths.Generators
     public class BrownianGenerator : ISimpleGenerator<double>
     {
         protected readonly ISimpleGenerator<double> _random;
-        
+
         protected readonly double _mean;
         protected readonly double _sigma;
 

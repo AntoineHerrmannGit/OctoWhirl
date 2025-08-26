@@ -15,7 +15,7 @@ namespace OctoWhirl.Core.Models.Models.Technicals
         {
         }
 
-        public TimeSerie(IEnumerable<KeyValuePair<DateTime, T>> enumerable) : 
+        public TimeSerie(IEnumerable<KeyValuePair<DateTime, T>> enumerable) :
             base(enumerable.ToDictionary())
         {
         }

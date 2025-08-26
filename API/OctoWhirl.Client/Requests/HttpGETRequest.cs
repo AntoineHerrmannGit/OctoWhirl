@@ -12,7 +12,7 @@
         {
             var uriBuilder = new UriBuilder(new Uri(new Uri(BaseUrl), Route));
 
-            if (QueryParameters.Any()) 
+            if (QueryParameters.Any())
                 uriBuilder.Query = string.Join("&", QueryParameters.Select(kvp =>
                     $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value?.ToString() ?? string.Empty)}")
                 );

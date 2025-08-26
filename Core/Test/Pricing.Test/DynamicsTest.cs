@@ -1,13 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using OctoWhirl.Core.Models.Models.Technicals;
-using OctoWhirl.Core.Pricing.BlackSholes;
+﻿using OctoWhirl.Core.Models.Models.Technicals;
 using OctoWhirl.Core.Pricing.Dynamics;
 using OctoWhirl.Core.Tools.Technicals.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OctoWhirl.Core.Test.Pricing
 {

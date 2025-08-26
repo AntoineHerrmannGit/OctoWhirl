@@ -18,11 +18,11 @@ namespace OctoWhirl.Core.Pricing.BlackSholes
             Greek theta = Theta(option);
             Greek rho = Rho(option);
 
-            return new BlackSholesPricingResponse 
-            { 
-                Option = option, 
-                Price = price, 
-                Greeks = new List<Greek> { delta, gamma, vega, theta, rho } 
+            return new BlackSholesPricingResponse
+            {
+                Option = option,
+                Price = price,
+                Greeks = new List<Greek> { delta, gamma, vega, theta, rho }
             };
         }
 
@@ -108,8 +108,8 @@ namespace OctoWhirl.Core.Pricing.BlackSholes
 
             double value = option.OptionType switch
             {
-                OptionType.Call => - normalizedSpotRisk - discountedStrikeCoupon * Functions.Cerf(d2),
-                OptionType.Put => - normalizedSpotRisk + discountedStrikeCoupon * Functions.Cerf(-d2),
+                OptionType.Call => -normalizedSpotRisk - discountedStrikeCoupon * Functions.Cerf(d2),
+                OptionType.Put => -normalizedSpotRisk + discountedStrikeCoupon * Functions.Cerf(-d2),
                 _ => throw new ArgumentOutOfRangeException(nameof(option.OptionType)),
             };
 

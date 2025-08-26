@@ -9,7 +9,7 @@ namespace OctoWhirl.BusinessServices.Data.Core
     {
         private readonly FinancialServiceFactory _dataServiceFactory;
 
-        public BusinessDataService(FinancialServiceFactory dataServiceFactory) 
+        public BusinessDataService(FinancialServiceFactory dataServiceFactory)
         {
             _dataServiceFactory = dataServiceFactory;
         }

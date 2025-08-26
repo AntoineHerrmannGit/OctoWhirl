@@ -17,7 +17,7 @@ namespace OctoWhirl.Core.Pricing.Dynamics
 
         private readonly double _initialVolatility;
 
-        public HestonDynamics(DateTime startDate, DateTime endDate, ResolutionInterval interval, 
+        public HestonDynamics(DateTime startDate, DateTime endDate, ResolutionInterval interval,
             double rate, double averageVolatility, double volOfVol, double spotVolCorrelation, double volatilityReversionStrength = 1, double initialVolatility = 0.2)
         {
             _startDate = startDate;
@@ -34,10 +34,10 @@ namespace OctoWhirl.Core.Pricing.Dynamics
 
             _generator = new TimeSerieGenerator(
                 new LogHestonGenerator(
-                    drift: _rate, volatilityMean: _averageVolatility, volOfVol: _volOfVol, 
+                    drift: _rate, volatilityMean: _averageVolatility, volOfVol: _volOfVol,
                     spotVolCorrelation: _spotVolCorrelation, reversionStrength: _volatilityReversionStrength,
                     initialVolatility: initialVolatility
-                ), 
+                ),
                 _startDate, _endDate, _interval
             );
         }

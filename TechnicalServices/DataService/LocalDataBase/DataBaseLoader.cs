@@ -31,7 +31,7 @@ namespace OctoWhirl.TechnicalServices.DataService.LocalDataBase
             }).ToList();
 
             var stocks = await Task.WhenAll(tasks).ConfigureAwait(false);
-            return stocks.SelectMany(stock =>  stock).ToList();
+            return stocks.SelectMany(stock => stock).ToList();
         }
 
         public Task<List<Candle>> GetOption(GetOptionRequest request) => throw new NotImplementedException();

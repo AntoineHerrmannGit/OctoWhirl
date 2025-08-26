@@ -24,7 +24,7 @@ namespace OctoWhirl.Core.Tools.Maths.Generators
             _volatility = volatility;
 
             _step = step;
-            _generator = generator ?? new BrownianGenerator(step:step);
+            _generator = generator ?? new BrownianGenerator(step: step);
         }
 
         public double GetNext()

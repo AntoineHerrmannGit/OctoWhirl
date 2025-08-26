@@ -10,7 +10,7 @@ namespace OctoWhirl.Test.Strategy
         public Task Init()
         {
             _events = new List<MarketEvent>();
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 _events.Add(new MarketEvent
                 {

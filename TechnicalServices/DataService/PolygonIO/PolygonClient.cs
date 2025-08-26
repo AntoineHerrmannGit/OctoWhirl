@@ -154,7 +154,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
             var url = BuildCorporateActionUrl(ticker, startDate, endDate, CorporateActionType.Split);
             var response = await ExecutePolygonRequest<PolygonCorporateActionsResponse>(url).ConfigureAwait(false);
 
-            var splits = response.results.Select(result => 
+            var splits = response.results.Select(result =>
             {
                 var split = MapToSplit(result);
                 split.Reference = ticker;
@@ -187,10 +187,10 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
         #endregion Private Unitary Methods
 
         #region Privat Url Builders
-        private string CreateRequestUrl(string from, string to, string interval, int amplitude, string ticker, int maxNbOfCandles) 
+        private string CreateRequestUrl(string from, string to, string interval, int amplitude, string ticker, int maxNbOfCandles)
             => CreateUrlDescription(ticker, from, to, interval, amplitude) + "?" + CreateUrlParameters(maxNbOfCandles);
 
-        private string CreateUrlParameters(int maxNbOfCandles) 
+        private string CreateUrlParameters(int maxNbOfCandles)
             => $"adjusted=false&sort=asc&limit={maxNbOfCandles}&apiKey={_apiKey}";
 
         private string CreateUrlDescription(string ticker, string from, string to, string interval, int amplitude)
