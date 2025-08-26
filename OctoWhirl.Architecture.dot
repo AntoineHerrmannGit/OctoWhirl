@@ -1,0 +1,77 @@
+digraph OctoWhirl 
+{
+    node [shape=box, style=filled, width=0.5, height=0.5];
+
+    Application [label="Application", fillcolor=mediumorchid, width=0.5, height=0.5, color="#a3a3a3"]
+
+    View1 [label="View 1", fillcolor=orchid, width=0.5, height=0.5, color="#a3a3a3"]
+    View2 [label="View 2", fillcolor=orchid, width=0.5, height=0.5, color="#a3a3a3"]
+    View3 [label="View 3", fillcolor=orchid, width=0.5, height=0.5, color="#a3a3a3"]
+
+    ViewModel1 [label="ViewModel 1", fillcolor=lightpink, width=0.5, height=0.5, color="#a3a3a3"]
+    ViewModel2 [label="ViewModel 2", fillcolor=lightpink, width=0.5, height=0.5, color="#a3a3a3"]
+    ViewModel3 [label="ViewModel 3", fillcolor=lightpink, width=0.5, height=0.5, color="#a3a3a3"]
+
+    Client [label="Client", fillcolor=burlywood, width=0.5, height=0.5, color="#a3a3a3"]
+
+    BusinessController1 [label="Business Controller 1", fillcolor=sandybrown, width=0.5, height=0.5, color="#a3a3a3"]
+    BusinessController2 [label="Business Controller 2", fillcolor=sandybrown, width=0.5, height=0.5, color="#a3a3a3"]
+    BusinessController3 [label="Business Controller 3", fillcolor=sandybrown, width=0.5, height=0.5, color="#a3a3a3"]
+    
+    BusinessService1 [label="Business Service 1", fillcolor=lightgreen, width=0.5, height=0.5, color="#a3a3a3"]
+    BusinessService2 [label="Business Service 2", fillcolor=lightgreen, width=0.5, height=0.5, color="#a3a3a3"]
+    BusinessService3 [label="Business Service 3", fillcolor=lightgreen, width=0.5, height=0.5, color="#a3a3a3"]
+    
+    TechnicalServices1 [label="Technical Services 1", fillcolor=lightblue, width=0.5, height=0.5, color="#a3a3a3"]
+    TechnicalServices2 [label="Technical Services 2", fillcolor=lightblue, width=0.5, height=0.5, color="#a3a3a3"]
+    TechnicalServices3 [label="Technical Services 3", fillcolor=lightblue, width=0.5, height=0.5, color="#a3a3a3"]
+
+    ExternalProvider [label="External Provider", fillcolor=slateblue, width=0.5, height=0.5, color="#a3a3a3"]
+    DataBase [label="Database", fillcolor=steelblue, width=0.5, height=0.5, color="#a3a3a3"]
+
+    Core1 [label="Core 1", fillcolor=darkgrey, width=0.5, height=0.5, color="#a3a3a3"]
+    Core2 [label="Core 2", fillcolor=darkgrey, width=0.5, height=0.5, color="#a3a3a3"]
+    Core3 [label="Core 3", fillcolor=darkgrey, width=0.5, height=0.5, color="#a3a3a3"]
+    Core4 [label="Core 4", fillcolor=darkgrey, width=0.5, height=0.5, color="#a3a3a3"]
+    Core5 [label="Core 5", fillcolor=darkgrey, width=0.5, height=0.5, color="#a3a3a3"]
+    Core6 [label="Core 6", fillcolor=darkgrey, width=0.5, height=0.5, color="#a3a3a3"]
+
+    Application -> View1
+    Application -> View2
+    Application -> View3
+
+    View1 -> ViewModel1
+    View2 -> ViewModel2
+    View3 -> ViewModel3
+
+    ViewModel1 -> Client
+    ViewModel2 -> Client
+    ViewModel3 -> Client
+
+    Client -> BusinessController1
+    Client -> BusinessController2
+    Client -> BusinessController3
+
+    BusinessController1 -> BusinessService1
+    BusinessController2 -> BusinessService2
+    BusinessController3 -> BusinessService3
+
+    BusinessService1 -> TechnicalServices1
+    BusinessService2 -> TechnicalServices2
+    BusinessService3 -> TechnicalServices3
+
+    TechnicalServices1 -> ExternalProvider
+
+    TechnicalServices1 -> Core1
+    TechnicalServices1 -> Core2
+    TechnicalServices1 -> Core3
+    TechnicalServices1 -> Core4
+    TechnicalServices2 -> Core3
+    TechnicalServices2 -> Core4
+    TechnicalServices2 -> Core5
+    TechnicalServices2 -> Core6
+    TechnicalServices3 -> Core5
+    TechnicalServices3 -> Core6
+
+    TechnicalServices3 -> DataBase
+}
