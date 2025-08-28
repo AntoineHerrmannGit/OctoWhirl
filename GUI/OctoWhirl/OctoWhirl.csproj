@@ -9,12 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Ressources\Images\LightTheme\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Ressources\Images\DarkTheme\home.png">
+    <None Update="Ressources\Images\home.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Ressources\Images\OctoWhirl.Logo.png">
