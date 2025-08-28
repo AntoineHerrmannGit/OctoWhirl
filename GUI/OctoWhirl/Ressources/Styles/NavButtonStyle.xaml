@@ -1,39 +1,59 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:conv="clr-namespace:OctoWhirl.GUI.Converters">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- Colors -->
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Colors/DarkThemeColors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    
-    <!-- Converter : Fusionner les deux converters en un seul-->
-    <conv:PackUriConverter x:Key="PackUriConverter"/>
-    <conv:ThemeIconConverter x:Key="ThemeIconConverter"/>
 
-    <!-- Style Definition -->
+    <!-- Style NavButton avec image toujours visible et texte au survol -->
     <Style x:Key="NavButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource NavButtonBackGroundColorBrush}"/>
+        <Setter Property="Background" Value="{StaticResource NavButtonBackGroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NavButtonBackBorderBrush}"/>
         <Setter Property="Foreground" Value="Transparent"/>
         <Setter Property="Padding" Value="10"/>
-        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Height" Value="60"/>
+        <Setter Property="Width" Value="60"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Width="70" Height="70" Margin="0,0,10,0" 
-                                   Source="{Binding RelativeSource={RelativeSource TemplatedParent}, 
-                                   Path=Tag, 
-                                   Converter={StaticResource PackUriConverter}}"/>
-                            <ContentPresenter VerticalAlignment="Center" />
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="8"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                            <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}"
+                                   Width="55" Height="55" Margin="5"/>
+                            <TextBlock x:Name="textBlock"
+                                   Text="{TemplateBinding Content}"
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   Opacity="0"
+                                   RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <TranslateTransform X="10"/>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
                         </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#3A3A4D"/>
-                            <Setter Property="Foreground" Value="White"/>
+                            <Setter TargetName="textBlock" Property="Opacity" Value="1"/>
+                            <Setter TargetName="textBlock" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform X="0"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource NavButtonBackMouseOverBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource NavButtonBackPressedBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

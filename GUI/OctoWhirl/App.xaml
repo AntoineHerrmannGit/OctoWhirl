@@ -6,10 +6,10 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!-- Colors -->
-                <ResourceDictionary Source="Ressources/Colors/DarkThemeColors.xaml" />
+                <ResourceDictionary Source="/Ressources/Colors/DarkThemeColors.xaml" />
                 
                 <!-- Styles -->
-                <ResourceDictionary Source="Ressources/Styles/NavButtonStyle.xaml"/>
+                <ResourceDictionary Source="/Ressources/Styles/NavButtonStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

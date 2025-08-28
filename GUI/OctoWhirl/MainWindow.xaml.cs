@@ -26,7 +26,7 @@ namespace OctoWhirl.GUI
         #region Private Navigation within views
         private void NavButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.Tag is string viewName)
+            if (sender is Button btn && btn.Content is string viewName)
             {
                 NavigateTo(viewName);
             }

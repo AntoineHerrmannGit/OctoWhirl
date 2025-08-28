@@ -13,10 +13,29 @@
         <!-- Sidebar -->
         <StackPanel Grid.Column="0" Background="#2B2B3C" VerticalAlignment="Stretch">
             <!-- Logo -->
-            <Image Source="Ressources/Images/OctoWhirl.Logo.png" Height="80" Margin="10"/>
+            <Image Source="pack://application:,,,/Ressources/Images/OctoWhirl.Logo.png" Height="80" Margin="10"/>
             <!-- Navigation Icons -->
-            <StackPanel Margin="20" VerticalAlignment="Top" >
-                <Button Style="{StaticResource NavButtonStyle}" Content="Home" Tag="Ressources/Images/DarkTheme/home.png" Click="NavButton_Click"/>
+            <StackPanel Margin="20" VerticalAlignment="Top" Cursor="" >
+                <Button Style="{StaticResource NavButtonStyle}" 
+                        Margin="0,0,0,10"
+                        Content="Home" 
+                        Tag="pack://application:,,,/Ressources/Images/home.png" 
+                        Click="NavButton_Click"/>
+                <Button Style="{StaticResource NavButtonStyle}" 
+                        Margin="0,0,0,10"
+                        Content="Risk" 
+                        Tag="pack://application:,,,/Ressources/Images/risk.png" 
+                        Click="NavButton_Click"/>
+                <Button Style="{StaticResource NavButtonStyle}" 
+                        Margin="0,0,0,10"
+                        Content="Market" 
+                        Tag="pack://application:,,,/Ressources/Images/DarkTheme/market.png" 
+                        Click="NavButton_Click"/>
+                <Button Style="{StaticResource NavButtonStyle}" 
+                        Margin="0,0,0,10"
+                        Content="Product" 
+                        Tag="pack://application:,,,/Ressources/Images/DarkTheme/home.png" 
+                        Click="NavButton_Click" BorderBrush="#FFD2CECA"/>
             </StackPanel>
         </StackPanel>
 
