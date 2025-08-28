@@ -5,11 +5,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- Styles -->
-                <ResourceDictionary Source="Ressources/Styles/NavButtonStyle.xaml"/>
-                
                 <!-- Colors -->
                 <ResourceDictionary Source="Ressources/Colors/DarkThemeColors.xaml" />
+                
+                <!-- Styles -->
+                <ResourceDictionary Source="Ressources/Styles/NavButtonStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
