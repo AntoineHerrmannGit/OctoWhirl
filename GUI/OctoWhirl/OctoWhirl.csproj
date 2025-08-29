@@ -9,16 +9,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Ressources\Images\home.png" />
+    <None Remove="Ressources\Images\market.png" />
+    <None Remove="Ressources\Images\OctoWhirl.Logo.png" />
+    <None Remove="Ressources\Images\risk.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Ressources\Styles\CardButtonStyle.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Ressources\Images\home.png">
+    <Resource Include="Ressources\Images\home.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Ressources\Images\OctoWhirl.Logo.png">
+    </Resource>
+    <Resource Include="Ressources\Images\market.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Resource>
+    <Resource Include="Ressources\Images\OctoWhirl.Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Ressources\Images\risk.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Ressources\Styles\CardButtonStyle.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

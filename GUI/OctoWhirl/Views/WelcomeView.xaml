@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OctoWhirl.GUI.Views"
+             xmlns:localCustomStyles="clr-namespace:OctoWhirl.GUI.Ressources.Styles.Custom"
              mc:Ignorable="d" >
     <!-- Main Content -->
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -36,6 +37,12 @@
 
             <!-- Cards -->
             <UniformGrid Columns="2" Margin="0,30,0,0" HorizontalAlignment="Stretch">
+                <localCustomStyles:CardButton Style="{StaticResource CardButtonStyle}"
+                       CardTitle="Trading"
+                       CardDescription="Access trading tools and charts"
+                       IconSource="pack://application:,,,/Ressources/Images/trading.png"
+                       Click="Card_Click"/>
+
                 <Border Background="#3A3A4D" CornerRadius="8" Margin="10" Padding="20">
                     <StackPanel>
                         <TextBlock Text="📊 Trading" FontSize="18" Foreground="White" FontWeight="Bold"/>

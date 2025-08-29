@@ -11,31 +11,30 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar -->
-        <StackPanel Grid.Column="0" Background="#2B2B3C" VerticalAlignment="Stretch">
+        <StackPanel Grid.Column="0" Background="{StaticResource MainWindowMenuPannelDarkThemeBrush}" VerticalAlignment="Stretch">
             <!-- Logo -->
-            <Image Source="pack://application:,,,/Ressources/Images/OctoWhirl.Logo.png" Height="80" Margin="10"/>
+            <Image Source="pack://application:,,,/Ressources/Images/OctoWhirl.Logo.png" Margin="10,10,10,10"/>
+            
+            <!-- Séparateur discret -->
+            <Border Height="1" Margin="10,0,10,10" Background="#40FFFFFF"/>
+
             <!-- Navigation Icons -->
-            <StackPanel Margin="20" VerticalAlignment="Top" Cursor="" >
+            <StackPanel Margin="5" VerticalAlignment="Top" Cursor="" >
                 <Button Style="{StaticResource NavButtonStyle}" 
                         Margin="0,0,0,10"
                         Content="Home" 
-                        Tag="pack://application:,,,/Ressources/Images/home.png" 
+                        Tag="/Ressources/Images/home.png" 
                         Click="NavButton_Click"/>
                 <Button Style="{StaticResource NavButtonStyle}" 
                         Margin="0,0,0,10"
                         Content="Risk" 
-                        Tag="pack://application:,,,/Ressources/Images/risk.png" 
+                        Tag="/Ressources/Images/risk.png" 
                         Click="NavButton_Click"/>
                 <Button Style="{StaticResource NavButtonStyle}" 
                         Margin="0,0,0,10"
                         Content="Market" 
-                        Tag="pack://application:,,,/Ressources/Images/DarkTheme/market.png" 
-                        Click="NavButton_Click"/>
-                <Button Style="{StaticResource NavButtonStyle}" 
-                        Margin="0,0,0,10"
-                        Content="Product" 
-                        Tag="pack://application:,,,/Ressources/Images/DarkTheme/home.png" 
-                        Click="NavButton_Click" BorderBrush="#FFD2CECA"/>
+                        Tag="/Ressources/Images/market.png" 
+                        Click="NavButton_Click" Cursor="Hand"/>
             </StackPanel>
         </StackPanel>
 

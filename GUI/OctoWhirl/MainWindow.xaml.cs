@@ -17,10 +17,14 @@ namespace OctoWhirl.GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Take into account already loaded views and remembers when lost focus
+        private Dictionary<string, UserControl> _activeViews;
+
         public MainWindow()
         {
             InitializeComponent();
-            MainContent.Content = new WelcomeView(); // Charge la vue au démarrage
+            _activeViews = new Dictionary<string, UserControl>() { { "Home", new WelcomeView() } };
+            MainContent.Content = _activeViews["Home"];
         }
 
         #region Private Navigation within views
@@ -32,12 +36,33 @@ namespace OctoWhirl.GUI
             }
         }
 
-        private void NavigateTo(string viewName)
+        public void NavigateTo(string viewName)
         {
             switch (viewName)
             {
                 case "Home":
-                    MainContent.Content = new WelcomeView();
+                    if (_activeViews.ContainsKey(viewName))
+                        MainContent.Content = _activeViews["Home"];
+                    else
+                        MainContent.Content = new WelcomeView();
+                    break;
+                case "Risk":
+                    if (_activeViews.ContainsKey(viewName))
+                        MainContent.Content = _activeViews["Risk"];
+                    else
+                        MainContent.Content = new RiskView();
+                    break;
+                case "Trading":
+                    if (_activeViews.ContainsKey(viewName))
+                        MainContent.Content = _activeViews["Trading"];
+                    else
+                        MainContent.Content = new TradingView();
+                    break;
+                case "Settings":
+                    if (_activeViews.ContainsKey(viewName))
+                        MainContent.Content = _activeViews["Settings"];
+                    else
+                        MainContent.Content = new SettingsView();
                     break;
             }
         }
