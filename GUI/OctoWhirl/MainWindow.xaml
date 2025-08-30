@@ -29,13 +29,19 @@
                 <Button Style="{StaticResource NavButtonStyle}" 
                         Margin="0,0,0,10"
                         Content="Trading" 
-                        Tag="/Ressources/Images/market.png" 
-                        Click="NavButton_Click"/>
+                        Tag="/Ressources/Images/trading.png" 
+                        Click="NavButton_Click" Cursor="Hand"/>
 
                 <Button Style="{StaticResource NavButtonStyle}" 
                         Margin="0,0,0,10"
                         Content="Risk Analysis" 
                         Tag="/Ressources/Images/risk.png" 
+                        Click="NavButton_Click"/>
+
+                <Button Style="{StaticResource NavButtonStyle}" 
+                        Margin="0,0,0,10"
+                        Content="Market Overview" 
+                        Tag="/Ressources/Images/market.png" 
                         Click="NavButton_Click"/>
                 
                 <Button Style="{StaticResource NavButtonStyle}" 
