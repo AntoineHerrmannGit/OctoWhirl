@@ -7,7 +7,9 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="CardButtonStyle" TargetType="{x:Type localCustomStyles:CardButton}">
-        <Setter Property="Background" Value="#3A3A4D"/>
+        <Setter Property="Background" Value="{StaticResource CardButtonBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource CardButtonBorderBrush}"/>
+        <Setter Property="Foreground" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="20"/>
         <Setter Property="Margin" Value="10"/>
@@ -17,7 +19,7 @@
                 <ControlTemplate TargetType="{x:Type localCustomStyles:CardButton}">
                     <Border Background="{TemplateBinding Background}" CornerRadius="8">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Image Width="70" Height="70" Margin="0,0,20,0"
+                            <Image Width="30" Height="30" Margin="10,0,20,0"
                                    Source="{TemplateBinding IconSource}"/>
                             <StackPanel VerticalAlignment="Center">
                                 <TextBlock Text="{TemplateBinding CardTitle}" FontSize="18" Foreground="White" FontWeight="Bold"/>

@@ -18,7 +18,7 @@ namespace OctoWhirl.GUI.Ressources.Styles.Custom
             DependencyProperty.Register("CardDescription", typeof(string), typeof(CardButton), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty IconSourceProperty =
-            DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(CardButton), new PropertyMetadata(null));
+            DependencyProperty.Register("IconSource", typeof(ImageSource), typeof(CardButton), new PropertyMetadata(null));
 
         public string CardTitle
         {
@@ -32,7 +32,7 @@ namespace OctoWhirl.GUI.Ressources.Styles.Custom
             set => SetValue(CardDescriptionProperty, value);
         }
 
-        public ImageSource ImageSource
+        public ImageSource IconSource
         {
             get => (ImageSource)GetValue(IconSourceProperty);
             set => SetValue(IconSourceProperty, value);

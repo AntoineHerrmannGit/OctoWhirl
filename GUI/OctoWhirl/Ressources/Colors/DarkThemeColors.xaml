@@ -1,22 +1,35 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!-- Main Window Dark Theme-->
+    <!-- MainWindow Dark Theme-->
     <Color x:Key="MainWindowDarkThemeColor">#1E1E2F</Color>
     <Color x:Key="MainWindowMenuPannelDarkThemeColor">#2B2B3C</Color>
+    
+    <!-- MainWindow LeftPannel Buttons -->
+    <Color x:Key="MainWindowLeftPannnelButtonBackGroundColor">#FFDBAD</Color>
+
+    <!-- MainWindow DarkTheme Background -->
+    <SolidColorBrush x:Key="MainWindowDarkThemeBrush" Color="{StaticResource MainWindowDarkThemeColor}"/>
+    <SolidColorBrush x:Key="MainWindowMenuPannelDarkThemeBrush" Color="{StaticResource MainWindowMenuPannelDarkThemeColor}"/>
+    
+    <!-- NavButton Dark Theme-->
     <Color x:Key="NavButtonBackGroundColor">#FFD6BA</Color>
     <Color x:Key="NavButtonBackBorderColor">#E6E4E3</Color>
     <Color x:Key="NavButtonBackMouseOverColor">#FAEDE3</Color>
     <Color x:Key="NavButtonBackPressedColor">#E8D2C1</Color>
-    
-    <!-- MainWindow LeftPannel Buttons -->
-    <Color x:Key="MainWindowLeftPannnelButtonBackGroundColor">#FFDBAD</Color>
-    
-    <!-- MainWindow DarkTheme Background -->
-    <SolidColorBrush x:Key="MainWindowDarkThemeBrush" Color="{StaticResource MainWindowDarkThemeColor}"/>
-    <SolidColorBrush x:Key="MainWindowMenuPannelDarkThemeBrush" Color="{StaticResource MainWindowMenuPannelDarkThemeColor}"/>
+
+    <!-- NavButton Dark Theme Background -->
     <SolidColorBrush x:Key="NavButtonBackGroundBrush" Color="{StaticResource NavButtonBackGroundColor}"/>
     <SolidColorBrush x:Key="NavButtonBackBorderBrush" Color="{StaticResource NavButtonBackBorderColor}"/>
     <SolidColorBrush x:Key="NavButtonBackMouseOverBrush" Color="{StaticResource NavButtonBackMouseOverColor}"/>
     <SolidColorBrush x:Key="NavButtonBackPressedBrush" Color="{StaticResource NavButtonBackPressedColor}"/>
+
+    
+    <!-- CardButton DarkTheme -->
+    <Color x:Key="CardButtonBackgroundColor">#3A3A4D</Color>
+    <Color x:Key="CardButtonBorderColor">#47475C</Color>
+
+    <!-- CardButton DarkTheme Background -->
+    <SolidColorBrush x:Key="CardButtonBackgroundBrush" Color="{StaticResource CardButtonBackgroundColor}"/>
+    <SolidColorBrush x:Key="CardButtonBorderBrush" Color="{StaticResource CardButtonBorderColor}"/>
 
 </ResourceDictionary>

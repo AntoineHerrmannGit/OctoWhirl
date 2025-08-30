@@ -10,6 +10,7 @@
                 
                 <!-- Styles -->
                 <ResourceDictionary Source="/Ressources/Styles/NavButtonStyle.xaml"/>
+                <ResourceDictionary Source="/Ressources/Styles/CardButtonStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

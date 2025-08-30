@@ -46,7 +46,7 @@ namespace OctoWhirl.GUI
                     else
                         MainContent.Content = new WelcomeView();
                     break;
-                case "Risk":
+                case "Risk Analysis":
                     if (_activeViews.ContainsKey(viewName))
                         MainContent.Content = _activeViews["Risk"];
                     else

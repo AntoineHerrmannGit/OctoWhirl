@@ -40,31 +40,26 @@
                 <localCustomStyles:CardButton Style="{StaticResource CardButtonStyle}"
                        CardTitle="Trading"
                        CardDescription="Access trading tools and charts"
-                       IconSource="pack://application:,,,/Ressources/Images/trading.png"
-                       Click="Card_Click"/>
+                       IconSource="/Ressources/Images/market.png"
+                       Click="Card_Click" Cursor="Hand"/>
 
-                <Border Background="#3A3A4D" CornerRadius="8" Margin="10" Padding="20">
-                    <StackPanel>
-                        <TextBlock Text="📊 Trading" FontSize="18" Foreground="White" FontWeight="Bold"/>
-                        <TextBlock Text="Access trading tools and charts" Foreground="LightGray"/>
-                    </StackPanel>
-                </Border>
+                <localCustomStyles:CardButton Style="{StaticResource CardButtonStyle}"
+                       CardTitle="Risk Analysis"
+                       CardDescription="Evaluate portfolio risk"
+                       IconSource="/Ressources/Images/risk.png"
+                       Click="Card_Click" Cursor="Hand"/>
+
+                <localCustomStyles:CardButton Style="{StaticResource CardButtonStyle}"
+                       CardTitle="Settings"
+                       CardDescription="Customize your experience"
+                       IconSource="/Ressources/Images/settings.png"
+                       Click="Card_Click" Cursor="Hand"/>
+
+
                 <Border Background="#3A3A4D" CornerRadius="8" Margin="10" Padding="20">
                     <StackPanel>
                         <TextBlock Text="📉 Market Overview" FontSize="18" Foreground="White" FontWeight="Bold"/>
                         <TextBlock Text="See global market trends" Foreground="LightGray"/>
-                    </StackPanel>
-                </Border>
-                <Border Background="#3A3A4D" CornerRadius="8" Margin="10" Padding="20">
-                    <StackPanel>
-                        <TextBlock Text="📐 Risk Analysis" FontSize="18" Foreground="White" FontWeight="Bold"/>
-                        <TextBlock Text="Evaluate portfolio risk" Foreground="LightGray"/>
-                    </StackPanel>
-                </Border>
-                <Border Background="#3A3A4D" CornerRadius="8" Margin="10" Padding="20">
-                    <StackPanel>
-                        <TextBlock Text="⚙️ Settings" FontSize="18" Foreground="White" FontWeight="Bold"/>
-                        <TextBlock Text="Customize your experience" Foreground="LightGray"/>
                     </StackPanel>
                 </Border>
             </UniformGrid>
