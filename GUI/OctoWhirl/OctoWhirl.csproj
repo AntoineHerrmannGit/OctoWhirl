@@ -13,6 +13,7 @@
     <None Remove="Ressources\Images\market.png" />
     <None Remove="Ressources\Images\OctoWhirl.Logo.png" />
     <None Remove="Ressources\Images\risk.png" />
+    <None Remove="Ressources\Images\settings.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +37,9 @@
     <Resource Include="Ressources\Images\risk.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Ressources\Images\settings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Ressources\Styles\CardButtonStyle.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -45,12 +49,6 @@
     <Compile Update="Ressources\Styles\Custom\CardButton.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Ressources\Images\settings.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

@@ -24,5 +24,10 @@ namespace OctoWhirl.GUI.Views
         {
             InitializeComponent();
         }
+
+        public void Card_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
