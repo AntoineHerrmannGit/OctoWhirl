@@ -40,8 +40,8 @@
                 
                 <Button Style="{StaticResource NavButtonStyle}" 
                         Margin="0,0,0,10"
-                        Content="Market" 
-                        Tag="/Ressources/Images/market.png" 
+                        Content="Settings" 
+                        Tag="/Ressources/Images/settings.png" 
                         Click="NavButton_Click" Cursor="Hand"/>
             </StackPanel>
         </StackPanel>
