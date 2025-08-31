@@ -10,9 +10,12 @@
 
   <ItemGroup>
     <None Remove="Ressources\Images\home.png" />
+    <None Remove="Ressources\Images\market.png" />
     <None Remove="Ressources\Images\OctoWhirl.Logo.png" />
     <None Remove="Ressources\Images\risk.png" />
+    <None Remove="Ressources\Images\scripting.png" />
     <None Remove="Ressources\Images\settings.png" />
+    <None Remove="Ressources\Images\strategy.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,11 +23,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Ressources\Images\home.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Ressources\Images\market.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Ressources\Images\scripting.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Ressources\Images\strategy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Ressources\Images\trading.png">
@@ -46,6 +54,9 @@
 
   <ItemGroup>
     <Compile Update="Ressources\Styles\Custom\CardButton.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="ViewModels\WelcomeViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>

@@ -58,6 +58,24 @@ namespace OctoWhirl.GUI
                     else
                         MainContent.Content = new TradingView();
                     break;
+                case "Market Overview":
+                    if (_activeViews.ContainsKey(viewName))
+                        MainContent.Content = _activeViews["Trading"];
+                    else
+                        MainContent.Content = new MarketView();
+                    break;
+                case "Backtest":
+                    if (_activeViews.ContainsKey(viewName))
+                        MainContent.Content = _activeViews["Trading"];
+                    else
+                        MainContent.Content = new StrategyView();
+                    break;
+                case "Scripting":
+                    if (_activeViews.ContainsKey(viewName))
+                        MainContent.Content = _activeViews["Trading"];
+                    else
+                        MainContent.Content = new ScriptiongView();
+                    break;
                 case "Settings":
                     if (_activeViews.ContainsKey(viewName))
                         MainContent.Content = _activeViews["Settings"];

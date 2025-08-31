@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,18 +16,13 @@ using System.Windows.Shapes;
 namespace OctoWhirl.GUI.Views
 {
     /// <summary>
-    /// Logique d'interaction pour WelcomeView.xaml
+    /// Logique d'interaction pour MarketView.xaml
     /// </summary>
-    public partial class WelcomeView : UserControl
+    public partial class MarketView : UserControl
     {
-        public WelcomeView()
+        public MarketView()
         {
             InitializeComponent();
-        }
-
-        public void Card_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

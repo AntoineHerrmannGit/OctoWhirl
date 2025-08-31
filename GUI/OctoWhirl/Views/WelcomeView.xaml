@@ -4,14 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OctoWhirl.GUI.Views"
+             xmlns:localContext="clr-namespace:OctoWhirl.GUI.ViewModels"
              xmlns:localCustomStyles="clr-namespace:OctoWhirl.GUI.Ressources.Styles.Custom"
              mc:Ignorable="d" >
+    <UserControl.DataContext>
+        <localContext:WelcomeViewModel/>
+    </UserControl.DataContext>
+
     <!-- Main Content -->
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="30" Orientation="Vertical" >
 
             <!-- Welcome -->
-            <TextBlock Text="Welcome Back, !" FontSize="28" Foreground="White" FontWeight="Bold"/>
+            <TextBlock Text="{Binding WelcomeMessage}" FontSize="28" Foreground="White" FontWeight="Bold"/>
 
             <!-- Portfolio Summary -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,10">
@@ -53,6 +58,18 @@
                        CardTitle="Market Overview"
                        CardDescription="See global market trends"
                        IconSource="/Ressources/Images/market.png"
+                       Click="Card_Click" Cursor="Hand"/>
+
+                <localCustomStyles:CardButton Style="{StaticResource CardButtonStyle}"
+                       CardTitle="BackTest"
+                       CardDescription="Test your strategies"
+                       IconSource="/Ressources/Images/strategy.png"
+                       Click="Card_Click" Cursor="Hand"/>
+
+                <localCustomStyles:CardButton Style="{StaticResource CardButtonStyle}"
+                       CardTitle="Scripting"
+                       CardDescription="Create your own rules"
+                       IconSource="/Ressources/Images/scripting.png"
                        Click="Card_Click" Cursor="Hand"/>
 
                 <localCustomStyles:CardButton Style="{StaticResource CardButtonStyle}"
