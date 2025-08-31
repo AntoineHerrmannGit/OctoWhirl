@@ -43,12 +43,24 @@
                         Content="Market Overview" 
                         Tag="/Ressources/Images/market.png" 
                         Click="NavButton_Click"/>
+
+                <Button Style="{StaticResource NavButtonStyle}" 
+                        Margin="0,0,0,10"
+                        Content="Backtest" 
+                        Tag="/Ressources/Images/strategy.png" 
+                        Click="NavButton_Click"/>
+
+                <Button Style="{StaticResource NavButtonStyle}" 
+                        Margin="0,0,0,10"
+                        Content="Scripting" 
+                        Tag="/Ressources/Images/scripting.png" 
+                        Click="NavButton_Click"/>
                 
                 <Button Style="{StaticResource NavButtonStyle}" 
                         Margin="0,0,0,10"
                         Content="Settings" 
                         Tag="/Ressources/Images/settings.png" 
-                        Click="NavButton_Click" Cursor="Hand"/>
+                        Click="NavButton_Click"/>
             </StackPanel>
         </StackPanel>
 
