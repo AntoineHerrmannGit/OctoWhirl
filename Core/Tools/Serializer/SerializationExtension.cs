@@ -7,17 +7,19 @@ namespace OctoWhirl.Core.Tools.Serializer
 {
     public static class SerializationExtension
     {
+        private static readonly Encoding _encode = Encoding.UTF8;
+
         #region Serialization
         public static string SerializeToJson(this object obj) => JsonConvert.SerializeObject(obj);
         public static byte[] SerializeToJsonAndCompress(this object obj)
         {
             string jsonString = obj.SerializeToJson();
-            byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonString);
+            byte[] jsonBytes = _encode.GetBytes(jsonString);
 
             using (var outputStream = new MemoryStream())
-            using (var gzipStream = new GZipStream(outputStream, CompressionLevel.Optimal, leaveOpen: true))
             {
-                gzipStream.Write(jsonBytes, 0, jsonBytes.Length);
+                using (var gzipStream = new GZipStream(outputStream, CompressionMode.Compress))
+                    gzipStream.Write(jsonBytes, 0, jsonBytes.Length);
                 return outputStream.ToArray();
             }
         }
@@ -29,7 +31,7 @@ namespace OctoWhirl.Core.Tools.Serializer
         {
             using (var inputStream = new MemoryStream(compressedData))
             using (var gzipStream = new GZipStream(inputStream, CompressionMode.Decompress))
-            using (var reader = new StreamReader(gzipStream, Encoding.UTF8))
+            using (var reader = new StreamReader(gzipStream, _encode))
                 return reader.ReadToEnd().DeserializeFromJson<T>();
         }
 

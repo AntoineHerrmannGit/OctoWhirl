@@ -8,6 +8,7 @@ namespace OctoWhirl.Core.Cache.CacheInMemory
         
         public CacheInMemory()
         {
+            _container = new Dictionary<string, byte[]>();
         }
 
         #region Get
