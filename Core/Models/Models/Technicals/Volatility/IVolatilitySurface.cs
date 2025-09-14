@@ -1,9 +1,9 @@
-﻿namespace OctoWhirl.Core.Models.Models.Technicals.Volatility
+﻿using OctoWhirl.Core.Models.Models.Common.Interfaces;
+
+namespace OctoWhirl.Core.Models.Models.Technicals.Volatility
 {
-    public interface IVolatilitySurface
+    public interface IVolatilitySurface : IMarketData
     {
-        string Reference { get; set; }
-        DateTime TimeStamp { get; set; }
         string Currency { get; set; }
         List<VolatilityPoint> Surface { get; set; }
 

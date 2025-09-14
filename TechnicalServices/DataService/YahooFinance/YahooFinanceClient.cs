@@ -112,7 +112,7 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
                     quotes.Add(new Candle
                     {
                         Timestamp = DateTimeOffset.FromUnixTimeSeconds(timestamps[i]).DateTime,
-                        Reference = ticker,
+                        Instrument = ticker,
                         Open = indicators.Open?[i] ?? 0,
                         High = indicators.High?[i] ?? 0,
                         Low = indicators.Low?[i] ?? 0,
@@ -140,8 +140,8 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
                 var yahooSplits = result?.Chart?.Result?.FirstOrDefault()?.Events?.Splits;
                 return yahooSplits.Values.Select(split => new Split
                 {
-                    Reference = ticker,
-                    TimeStamp = DateTimeOffset.FromUnixTimeSeconds(split.Date).DateTime,
+                    Instrument = ticker,
+                    Timestamp = DateTimeOffset.FromUnixTimeSeconds(split.Date).DateTime,
                     SplitRatio = split.Numerator / split.Denominator
                 }).ToList();
             }
@@ -163,8 +163,8 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
 
                 return yahooDividends.Values.Select(div => new Dividend
                 {
-                    Reference = ticker,
-                    TimeStamp = DateTimeOffset.FromUnixTimeSeconds(div.Date).DateTime,
+                    Instrument = ticker,
+                    Timestamp = DateTimeOffset.FromUnixTimeSeconds(div.Date).DateTime,
                     DividendAmount = div.Amount,
                 }).ToList();
             }

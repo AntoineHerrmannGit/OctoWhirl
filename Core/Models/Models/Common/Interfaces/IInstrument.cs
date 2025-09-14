@@ -1,7 +1,6 @@
 ﻿namespace OctoWhirl.Core.Models.Models.Common.Interfaces
 {
-    public interface IInstrument
+    public interface IInstrument : IMarketData
     {
-        string Reference { get; set; }
     }
 }
