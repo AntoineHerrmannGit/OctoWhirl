@@ -28,7 +28,7 @@ namespace OctoWhirl.Core.Pricing.BlackSholes
 
         private static double PriceValue(IBlackSholesOption option)
         {
-            double timeToMaturity = option.TimeStamp.GetYearFraction(option.Maturity);
+            double timeToMaturity = option.Timestamp.GetYearFraction(option.Maturity);
             double discountedStrike = option.Strike * Math.Exp(-option.Rate * timeToMaturity);
 
             double squaredVolatility = option.Volatility * option.Volatility;
@@ -47,7 +47,7 @@ namespace OctoWhirl.Core.Pricing.BlackSholes
 
         private static Greek Delta(IBlackSholesOption option)
         {
-            double timeToMaturity = option.TimeStamp.GetYearFraction(option.Maturity);
+            double timeToMaturity = option.Timestamp.GetYearFraction(option.Maturity);
 
             double squaredVolatility = option.Volatility * option.Volatility;
             double normalizedVolatility = option.Volatility * Math.Sqrt(timeToMaturity);
@@ -66,7 +66,7 @@ namespace OctoWhirl.Core.Pricing.BlackSholes
 
         private static Greek Gamma(IBlackSholesOption option)
         {
-            double timeToMaturity = option.TimeStamp.GetYearFraction(option.Maturity);
+            double timeToMaturity = option.Timestamp.GetYearFraction(option.Maturity);
 
             double squaredVolatility = option.Volatility * option.Volatility;
             double normalizedVolatility = option.Volatility * Math.Sqrt(timeToMaturity);
@@ -80,7 +80,7 @@ namespace OctoWhirl.Core.Pricing.BlackSholes
 
         private static Greek Vega(IBlackSholesOption option)
         {
-            double timeToMaturity = option.TimeStamp.GetYearFraction(option.Maturity);
+            double timeToMaturity = option.Timestamp.GetYearFraction(option.Maturity);
 
             double squaredVolatility = option.Volatility * option.Volatility;
             double normalizedVolatility = option.Volatility * Math.Sqrt(timeToMaturity);
@@ -94,7 +94,7 @@ namespace OctoWhirl.Core.Pricing.BlackSholes
 
         private static Greek Theta(IBlackSholesOption option)
         {
-            double timeToMaturity = option.TimeStamp.GetYearFraction(option.Maturity);
+            double timeToMaturity = option.Timestamp.GetYearFraction(option.Maturity);
             double discountedStrike = option.Strike * Math.Exp(-option.Rate * timeToMaturity);
 
             double squaredVolatility = option.Volatility * option.Volatility;
@@ -118,7 +118,7 @@ namespace OctoWhirl.Core.Pricing.BlackSholes
 
         private static Greek Rho(IBlackSholesOption option)
         {
-            double timeToMaturity = option.TimeStamp.GetYearFraction(option.Maturity);
+            double timeToMaturity = option.Timestamp.GetYearFraction(option.Maturity);
             double discountedStrike = option.Strike * Math.Exp(-option.Rate * timeToMaturity);
 
             double squaredVolatility = option.Volatility * option.Volatility;

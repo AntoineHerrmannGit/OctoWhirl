@@ -1,4 +1,5 @@
 ﻿using OctoWhirl.Core.Models.Models.Common;
+using OctoWhirl.Core.Models.Models.Enums;
 using OctoWhirl.Core.Pricing.Models.Interfaces;
 
 namespace OctoWhirl.Core.Pricing.Models
@@ -6,7 +7,9 @@ namespace OctoWhirl.Core.Pricing.Models
     public class BlackSholesVanillaOption : IBlackSholesOption
     {
         #region IInstrument Properties
-        public string Reference { get; set; }
+        public string Instrument { get; set; }
+        public DateTime Timestamp { get; set; }
+        public DataSource Source { get; set; }
         #endregion IInstrument Properties
 
         #region IOption Properties
@@ -18,7 +21,6 @@ namespace OctoWhirl.Core.Pricing.Models
 
         #region IBlackSholesOption Properties
         public double Spot { get; set; }
-        public DateTime TimeStamp { get; set; }
         public double Volatility { get; set; }
         public double Rate { get; set; }
         #endregion IBlackSholesOption Properties

@@ -1,9 +1,13 @@
-﻿namespace OctoWhirl.Core.Models.Models.Common
+﻿using OctoWhirl.Core.Models.Models.Common.Interfaces;
+using OctoWhirl.Core.Models.Models.Enums;
+
+namespace OctoWhirl.Core.Models.Models.Common
 {
-    public abstract class CorporateAction
+    public abstract class CorporateAction : IMarketData
     {
         public abstract CorporateActionType ActionType { get; }
-        public DateTime TimeStamp { get; set; }
-        public string Reference { get; set; }
+        public string Instrument { get; set; }
+        public DataSource Source { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }

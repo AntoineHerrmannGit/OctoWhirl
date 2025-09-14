@@ -157,7 +157,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
             var splits = response.results.Select(result =>
             {
                 var split = MapToSplit(result);
-                split.Reference = ticker;
+                split.Instrument = ticker;
                 return split;
             }).ToList();
 
@@ -172,7 +172,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
             var dividends = response.results.Select(result =>
             {
                 var dividend = MapToDividend(result);
-                dividend.Reference = ticker;
+                dividend.Instrument = ticker;
                 return dividend;
             }).ToList();
 
@@ -224,7 +224,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
                 Low = result.l,
                 Close = result.c,
                 Volume = (int)result.v,
-                Reference = ticker,
+                Instrument = ticker,
                 Currency = null
             });
 
@@ -233,7 +233,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
             {
                 Underlying = result.underlying_ticker.Replace("O:", String.Empty),
                 Strike = result.strike_price,
-                Reference = result.ticker,
+                Instrument = result.ticker,
                 OptionType = result.contract_type == "call" ? OptionType.Call : OptionType.Put,
                 Maturity = DateTime.TryParse(result.expiration_date, out DateTime date) ? date : default,
             });
@@ -242,7 +242,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
         {
             return new Split
             {
-                TimeStamp = polygonCorporateAction.ex_dividend_date.Value,
+                Timestamp = polygonCorporateAction.ex_dividend_date.Value,
                 SplitRatio = polygonCorporateAction.split_from.Value / polygonCorporateAction.split_to.Value,
             };
         }
@@ -251,7 +251,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
         {
             return new Dividend
             {
-                TimeStamp = polygonCorporateAction.ex_dividend_date.Value,
+                Timestamp = polygonCorporateAction.ex_dividend_date.Value,
                 DividendAmount = polygonCorporateAction.cash_amount.Value,
             };
         }

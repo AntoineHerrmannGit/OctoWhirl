@@ -28,13 +28,13 @@ namespace OctoWhirl.Core.Test.Pricing
         {
             var option = new BlackSholesVanillaOption
             {
-                Reference = "VanillaTest",
+                Instrument = "VanillaTest",
                 Strike = 100,
                 Maturity = DateTime.Now.AddYears(1),
                 OptionType = OptionType.Call,
                 Underlying = "UnderlyingTest",
                 Spot = 100,
-                TimeStamp = DateTime.Now,
+                Timestamp = DateTime.Now,
                 Rate = 0.04,
                 Volatility = 0.25
             };
