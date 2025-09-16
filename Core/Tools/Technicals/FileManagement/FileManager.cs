@@ -65,9 +65,8 @@ namespace OctoWhirl.Core.Tools.Technicals.FileManagement
         public static string GetSolutionRoot()
         {
             var root = Directory.GetCurrentDirectory();
-            while (!root.EndsWith("OctoWhirl"))
+            while (!Directory.GetFiles(root).Any(file => file.EndsWith(".sln")))
                 root = Directory.GetParent(root)?.FullName ?? throw new FileNotFoundException("Impossible to find the root of the solution");
-
             return root;
         }
     }
