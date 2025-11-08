@@ -28,7 +28,7 @@ namespace OctoWhirl.Core.Test.Pricing
 
             var generatedPath = await dynamics.GeneratePath().ConfigureAwait(false);
 
-            int expectedPoints = 260;
+            int expectedPoints = (endDate - startDate).BusinessDays(startDate);
 
             Assert.IsNotNull(generatedPath, "Generation failed : path is null");
             Assert.IsTrue(generatedPath.IsNotEmpty(), "Generation failed : path is empty");
@@ -67,7 +67,7 @@ namespace OctoWhirl.Core.Test.Pricing
 
             var generatedPath = await dynamics.GeneratePath().ConfigureAwait(false);
 
-            int expectedPoints = 260;
+            int expectedPoints = (endDate - startDate).BusinessDays(startDate);
 
             Assert.IsNotNull(generatedPath, "Generation failed : path is null");
             Assert.IsTrue(generatedPath.IsNotEmpty(), "Generation failed : path is empty");

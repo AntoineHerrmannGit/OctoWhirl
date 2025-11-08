@@ -1,27 +1,45 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OctoWhirl.Core.Cache;
-using OctoWhirl.Core.Cache.CacheInMemory;
-using System.Runtime.InteropServices.Marshalling;
+using OctoWhirl.Core.Cache.Redis;
+using OctoWhirl.Core.Tools.Technicals.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Cache.Test
+namespace OctoWhirl
 {
     [TestClass]
-    public sealed class CacheInMemoryTest
+    public class RedisCacheTest
     {
         private IServiceProvider _provider;
 
         [TestInitialize]
         public void Setup()
         {
-            _provider = new ServiceCollection().AddKeyedSingleton<ICache, InMemoryCache>(CacheType.InMemory)
+            _provider = new ServiceCollection().AddTransient<RedisLauncher>()
+                                               .AddConfiguration<RedisConfiguration>("redis_settings.json", "redis")
+                                               .AddRedisCache()
                                                .AddLogging()
                                                .BuildServiceProvider();
         }
 
         [TestMethod]
-        public async Task TestCacheInMemory()
+        public async Task TestRedisLauncher()
         {
-            var cache = _provider.GetKeyedService<ICache>(CacheType.InMemory);
+            var launcher = _provider.GetService<RedisLauncher>();
+            Assert.IsTrue(launcher.StartRedisServer());
+            Assert.IsTrue(launcher.StopRedisServer());
+        }
+
+        [TestMethod]
+        public async Task TestRedisCache()
+        {
+            var launcher = _provider.GetService<RedisLauncher>();
+            Assert.IsTrue(launcher.StartRedisServer());
+
+            var cache = _provider.GetKeyedService<ICache>(CacheType.Redis);
             Assert.IsNotNull(cache);
 
             int value = 1;
@@ -56,6 +74,8 @@ namespace Cache.Test
 
             // Flush
             Assert.IsTrue(await cache.Flush().ConfigureAwait(false));
+
+            Assert.IsTrue(launcher.StopRedisServer());
         }
     }
 }
