@@ -44,7 +44,7 @@ namespace OctoWhirl.Test.Data
 
             var request = new GetCandlesRequest
             {
-                References = new List<string> { "AAPL" },
+                Instruments = new List<string> { "AAPL" },
                 StartDate = DateTime.Now.AddDays(-5),
                 EndDate = DateTime.Now,
                 Interval = ResolutionInterval.Day,
@@ -62,7 +62,7 @@ namespace OctoWhirl.Test.Data
 
             var request = new GetCorporateActionsRequest
             {
-                Tickers = new List<string> { "AAPL" },
+                Instruments = new List<string> { "AAPL" },
                 StartDate = DateTime.Now.AddMonths(-6),
                 EndDate = DateTime.Now,
                 CorporateActionType = CorporateActionType.Split,
@@ -79,7 +79,7 @@ namespace OctoWhirl.Test.Data
 
             var request = new GetCorporateActionsRequest
             {
-                Tickers = new List<string> { "AAPL" },
+                Instruments = new List<string> { "AAPL" },
                 StartDate = DateTime.Now.AddMonths(-6),
                 EndDate = DateTime.Now,
                 CorporateActionType = CorporateActionType.Dividend,
@@ -100,7 +100,7 @@ namespace OctoWhirl.Test.Data
 
             var request = new GetCandlesRequest
             {
-                References = new List<string> { "AAPL" },
+                Instruments = new List<string> { "AAPL" },
                 StartDate = DateTime.Now.AddDays(-5),
                 EndDate = DateTime.Now,
                 Interval = ResolutionInterval.Day,
@@ -119,7 +119,7 @@ namespace OctoWhirl.Test.Data
 
             var optionListRequest = new GetListedOptionRequest
             {
-                References = new List<string> { "AAPL" },
+                Instruments = new List<string> { "AAPL" },
                 AsOfDate = new DateTime(2025, 06, 09)
             };
             var options = await polygonClient.GetListedOptions(optionListRequest).ConfigureAwait(false);
@@ -127,7 +127,7 @@ namespace OctoWhirl.Test.Data
 
             var optionRequest = new GetOptionRequest
             {
-                References = new List<string> { option.Underlying },
+                Instruments = new List<string> { option.Underlying },
                 Maturity = option.Maturity,
                 Strike = option.Strike,
                 StartDate = new DateTime(2025, 05, 09),
@@ -149,7 +149,7 @@ namespace OctoWhirl.Test.Data
 
             var request = new GetListedOptionRequest
             {
-                References = new List<string> { "AAPL" },
+                Instruments = new List<string> { "AAPL" },
                 AsOfDate = new DateTime(2025, 06, 09)
             };
 
@@ -166,7 +166,7 @@ namespace OctoWhirl.Test.Data
 
             var request = new GetCorporateActionsRequest
             {
-                Tickers = new List<string> { "AAPL" },
+                Instruments = new List<string> { "AAPL" },
                 StartDate = DateTime.Now.AddMonths(-6),
                 EndDate = DateTime.Now,
                 CorporateActionType = CorporateActionType.Split,
@@ -183,7 +183,7 @@ namespace OctoWhirl.Test.Data
 
             var request = new GetCorporateActionsRequest
             {
-                Tickers = new List<string> { "AAPL" },
+                Instruments = new List<string> { "AAPL" },
                 StartDate = DateTime.Now.AddMonths(-6),
                 EndDate = DateTime.Now,
                 CorporateActionType = CorporateActionType.Dividend,

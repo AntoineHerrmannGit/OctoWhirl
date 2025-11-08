@@ -23,7 +23,7 @@ namespace OctoWhirl.TechnicalServices.DataService.LocalDataBase
         public async Task<List<Candle>> GetCandles(GetCandlesRequest request)
         {
             var historizedMarketDataType = request.Interval == ResolutionInterval.Minute1 ? HistorizedMarketDataType.StockIntraday : HistorizedMarketDataType.StockDaily;
-            var tasks = request.References.Distinct().Select(async ticker =>
+            var tasks = request.Instruments.Distinct().Select(async ticker =>
             {
                 var filename = GetFileName(ticker, historizedMarketDataType, request.Source);
                 var candles = await File.ReadAllTextAsync(filename).ConfigureAwait(false);
