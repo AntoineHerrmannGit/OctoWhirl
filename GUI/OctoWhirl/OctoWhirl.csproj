@@ -23,6 +23,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="RoslynPad.Editor.Windows" Version="4.12.1" />
+    <PackageReference Include="RoslynPad.Roslyn" Version="4.12.1" />
+    <PackageReference Include="RoslynPad.Roslyn.Windows" Version="4.12.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\TechnicalServices\Scripting\Scripting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Ressources\Images\home.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

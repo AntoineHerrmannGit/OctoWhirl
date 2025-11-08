@@ -3,9 +3,9 @@ using OctoWhirl.Core.Models.Models.Technicals;
 
 namespace OctoWhirl.Core.Models.Models.Requests
 {
-    public class GetCandlesRequest
+    public class GetCandlesRequest : IMarketDataRequest
     {
-        public List<string> References { get; set; }
+        public IEnumerable<string> Instruments { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DataSource Source { get; set; }

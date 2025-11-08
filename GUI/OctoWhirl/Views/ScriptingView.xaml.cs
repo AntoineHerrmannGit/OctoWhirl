@@ -18,9 +18,9 @@ namespace OctoWhirl.GUI.Views
     /// <summary>
     /// Logique d'interaction pour ScriptiongView.xaml
     /// </summary>
-    public partial class ScriptiongView : UserControl
+    public partial class ScriptingView : UserControl
     {
-        public ScriptiongView()
+        public ScriptingView()
         {
             InitializeComponent();
         }

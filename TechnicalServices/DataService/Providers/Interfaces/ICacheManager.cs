@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OctoWhirl.GUI.ViewModels
+namespace OctoWhirl.TechnicalServices.DataService.Providers.Interfaces
 {
-    class ScriptinViewModel : BaseViewModel
+    internal interface ICacheManager
     {
     }
 }

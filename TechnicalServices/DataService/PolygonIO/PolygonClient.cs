@@ -38,7 +38,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
             string interval = request.Interval.GetInterval();
             int amplitude = request.Interval.GetAmplitude();
 
-            var tasks = request.References.Select(ticker => GetSingleStock(ticker, startDate, endDate, interval, amplitude));
+            var tasks = request.Instruments.Select(ticker => GetSingleStock(ticker, startDate, endDate, interval, amplitude));
 
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
             var candles = results.SelectMany(result => result).ToList();
@@ -54,7 +54,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
             string interval = request.Interval.GetInterval();
             int amplitude = request.Interval.GetAmplitude();
 
-            var tasks = request.References.Select(ticker => GetSingleOption(
+            var tasks = request.Instruments.Select(ticker => GetSingleOption(
                 ticker, from, to, interval, amplitude, request.Strike, request.Maturity, request.OptionType
             ));
 
@@ -66,7 +66,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
 
         public async Task<List<Option>> GetListedOptions(GetListedOptionRequest request)
         {
-            var tasks = request.References.Select(reference => GetListedOptionForSingleReference(reference, request.AsOfDate));
+            var tasks = request.Instruments.Select(reference => GetListedOptionForSingleReference(reference, request.AsOfDate));
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
 
             var options = results.SelectMany(result => result).ToList();
@@ -78,7 +78,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
             var startDate = request.StartDate.ToDateString();
             var endDate = request.EndDate.ToDateString();
 
-            var tasks = request.Tickers.Select(ticker => GetSingleSplit(ticker, startDate, endDate)).ToList();
+            var tasks = request.Instruments.Select(ticker => GetSingleSplit(ticker, startDate, endDate)).ToList();
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
 
             var splits = results.SelectMany(result => result).ToList();
@@ -91,7 +91,7 @@ namespace OctoWhirl.TechnicalServices.DataService.PolygonIO
             var startDate = request.StartDate.ToDateString();
             var endDate = request.EndDate.ToDateString();
 
-            var tasks = request.Tickers.Select(ticker => GetSingleDividend(ticker, startDate, endDate)).ToList();
+            var tasks = request.Instruments.Select(ticker => GetSingleDividend(ticker, startDate, endDate)).ToList();
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
 
             var dividends = results.SelectMany(result => result).ToList();

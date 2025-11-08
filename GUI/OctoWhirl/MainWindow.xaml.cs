@@ -74,7 +74,7 @@ namespace OctoWhirl.GUI
                     if (_activeViews.ContainsKey(viewName))
                         MainContent.Content = _activeViews["Trading"];
                     else
-                        MainContent.Content = new ScriptiongView();
+                        MainContent.Content = new ScriptingView();
                     break;
                 case "Settings":
                     if (_activeViews.ContainsKey(viewName))

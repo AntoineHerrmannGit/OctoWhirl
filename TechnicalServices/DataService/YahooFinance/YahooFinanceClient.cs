@@ -35,7 +35,7 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
 
             string resolution = YahooFinanceIntervalResolutionParser.ToString(request.Interval);
 
-            var tasks = request.References.Select(ticker => GetSingleStock(ticker, period1, period2, resolution)).ToList();
+            var tasks = request.Instruments.Select(ticker => GetSingleStock(ticker, period1, period2, resolution)).ToList();
 
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
             var candles = results.SelectMany(result => result).ToList();
@@ -45,10 +45,10 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
         public Task<List<Candle>> GetOption(GetOptionRequest request)
         {
             var type = request.OptionType == OptionType.Call ? "C" : request.OptionType == OptionType.Put ? "P" : throw new NotSupportedException(request.OptionType.ToString());
-            var options = request.References.Select(reference => $"{reference}{request.Maturity.ToString("YYmmdd")}{type}{(request.Strike * 1000).ToString().PadLeft(14, '0')}").ToList();
+            var options = request.Instruments.Select(reference => $"{reference}{request.Maturity.ToString("YYmmdd")}{type}{(request.Strike * 1000).ToString().PadLeft(14, '0')}").ToList();
             var stocksRequest = new GetCandlesRequest
             {
-                References = options,
+                Instruments = options,
                 EndDate = request.EndDate,
                 Interval = request.Interval,
                 Source = request.Source,
@@ -68,7 +68,7 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
             var endDate = new DateTimeOffset(request.EndDate).ToUnixTimeSeconds();
             var interval = YahooFinanceIntervalResolutionParser.ToString(ResolutionInterval.Day);
 
-            var tasks = request.Tickers.Select(ticker => GetSingleSplit(ticker, startDate, endDate, interval));
+            var tasks = request.Instruments.Select(ticker => GetSingleSplit(ticker, startDate, endDate, interval));
 
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
             var splits = results.SelectMany(result => result).ToList();
@@ -82,7 +82,7 @@ namespace OctoWhirl.TechnicalServices.DataService.YahooFinance
             var endDate = new DateTimeOffset(request.EndDate).ToUnixTimeSeconds();
             var interval = YahooFinanceIntervalResolutionParser.ToString(ResolutionInterval.Day);
 
-            var tasks = request.Tickers.Select(ticker => GetSingleDividend(ticker, startDate, endDate, interval));
+            var tasks = request.Instruments.Select(ticker => GetSingleDividend(ticker, startDate, endDate, interval));
 
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
             var dividends = results.SelectMany(result => result).ToList();
