@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="OctoWhirl.GUI.Views.ScriptingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:rp="clr-namespace:RoslynPad.Editor;assembly=RoslynPad.Editor.Windows"
+             xmlns:localContext="clr-namespace:OctoWhirl.GUI.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="#1E1E1E">
+
+    <UserControl.DataContext>
+        <localContext:ScriptingViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!-- Sidebar -->
+            <ColumnDefinition Width="220" MinWidth="150"/>
+            <!-- Splitter -->
+            <ColumnDefinition Width="5"/>
+            <!-- Zone principale -->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="#252526">
+            <ListBox ItemsSource="{Binding Scripts}"
+                     SelectedItem="{Binding SelectedScript}"
+                     DisplayMemberPath="Name"
+                     Foreground="White"
+                     Background="#252526"
+                     BorderThickness="0"
+                     Margin="5"/>
+        </Border>
+
+        <!-- GridSplitter -->
+        <GridSplitter Grid.Column="1"
+                      Width="5"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      Background="#2D2D30"
+                      ResizeBehavior="PreviousAndNext"
+                      ResizeDirection="Columns"/>
+
+        <!-- Zone principale -->
+        <DockPanel Grid.Column="2" Background="#1E1E1E">
+            <!-- Toolbar -->
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="#2D2D30">
+                <Button Content="Compile"
+                        Command="{Binding CompileCommand}"
+                        Margin="0,0,8,0"
+                        Foreground="White"
+                        Background="#0E639C"
+                        BorderThickness="0"
+                        Padding="8,4"/>
+                <Button Content="Run"
+                        Command="{Binding RunCommand}"
+                        Foreground="White"
+                        Background="#007ACC"
+                        BorderThickness="0"
+                        Padding="8,4"/>
+            </StackPanel>
+
+            <!-- Tabs + Editor -->
+            <TabControl ItemsSource="{Binding OpenedScripts}"
+                        SelectedItem="{Binding ActiveScript}"
+                        Background="#1E1E1E"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Margin="5">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <Border Background="#1E1E1E" Padding="5">
+                            <rp:RoslynCodeEditor x:Name="Editor"
+                                                 Document="{Binding DocumentId}"
+                                                 FontFamily="Consolas"
+                                                 FontSize="14"
+                                                 SyntaxHighlighting="C#"
+                                                 ShowLineNumbers="True"
+                                                 HorizontalScrollBarVisibility="Auto"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 Foreground="White"
+                                                 Background="#1E1E1E"/>
+                        </Border>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+        </DockPanel>
+    </Grid>
+</UserControl>

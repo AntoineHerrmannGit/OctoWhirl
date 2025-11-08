@@ -19,5 +19,16 @@ namespace OctoWhirl.Core.Tools.Technicals.Extensions
             double secondsInAYear = (date - date.AddYears(-1)).TotalSeconds;
             return secondsToMaturity / secondsInAYear;
         }
+
+        public static bool IsWeekend(this DateTime date) => date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday;
+
+        public static int BusinessDays(this TimeSpan timeSpan, DateTime startDate)
+        {
+            int businessDays = 0;
+            for(DateTime date = startDate; date <= startDate + timeSpan; date = date.AddDays(1))
+                if(!date.IsWeekend())
+                    businessDays++;
+            return businessDays;
+        }
     }
 }

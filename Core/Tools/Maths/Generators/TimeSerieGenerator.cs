@@ -22,8 +22,8 @@ namespace OctoWhirl.Core.Tools.Maths.Generators
         public TimeSerie<double> GetNext()
         {
             var result = new TimeSerie<double>();
-            var intervalAsSeconds = _interval.AsTimeSpan().TotalSeconds;
-            for (var date = _startDate; date <= _endDate; date = date.AddSeconds(intervalAsSeconds))
+            var intervalAsMinutes = _interval.AsTimeSpan().TotalMinutes;
+            for (var date = _startDate; date <= _endDate; date = date.AddMinutes(intervalAsMinutes))
                 if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
                     result[date] = _generator.GetNext();
 
