@@ -2,7 +2,7 @@
 {
     public class GetListedOptionRequest
     {
-        public List<string> References { get; set; }
+        public IEnumerable<string> Instruments { get; set; }
         public DateTime AsOfDate { get; set; }
     }
 }
