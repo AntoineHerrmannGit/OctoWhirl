@@ -48,7 +48,7 @@ namespace OctoWhirl.GUI
                     break;
                 case "Risk Analysis":
                     if (_activeViews.ContainsKey(viewName))
-                        MainContent.Content = _activeViews["Risk"];
+                        MainContent.Content = _activeViews["Risk Analysis"];
                     else
                         MainContent.Content = new RiskView();
                     break;
@@ -60,19 +60,19 @@ namespace OctoWhirl.GUI
                     break;
                 case "Market Overview":
                     if (_activeViews.ContainsKey(viewName))
-                        MainContent.Content = _activeViews["Trading"];
+                        MainContent.Content = _activeViews["Market Overview"];
                     else
                         MainContent.Content = new MarketView();
                     break;
                 case "Backtest":
                     if (_activeViews.ContainsKey(viewName))
-                        MainContent.Content = _activeViews["Trading"];
+                        MainContent.Content = _activeViews["Backtest"];
                     else
                         MainContent.Content = new StrategyView();
                     break;
                 case "Scripting":
                     if (_activeViews.ContainsKey(viewName))
-                        MainContent.Content = _activeViews["Trading"];
+                        MainContent.Content = _activeViews["Scripting"];
                     else
                         MainContent.Content = new ScriptingView();
                     break;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OctoWhirl.GUI.Ressources.Styles.Custom;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -27,9 +28,31 @@ namespace OctoWhirl.GUI.Views
             InitializeComponent();
         }
 
-        public void Card_Click(object sender, RoutedEventArgs e)
+        private void Card_Click(object sender, RoutedEventArgs e)
         {
+            if (sender is CardButton element && element.CardTitle is string cardTitle)
+            {
+                UserControl? targetView = cardTitle switch
+                {
+                    "Trading" => new TradingView(),
+                    "Risk Analysis" => new RiskView(),
+                    "Market Overview" => new MarketView(),
+                    "BackTest" => new StrategyView(),
+                    "Scripting" => new ScriptingView(),
+                    "Settings" => new SettingsView(),
+                    _ => null
+                };
 
+                if (targetView != null)
+                {
+                    var mainWindow = Window.GetWindow(this) as MainWindow;
+                    if (mainWindow != null)
+                    {
+                        mainWindow.MainContent.Content = targetView;
+                    }
+                }
+            }
         }
+
     }
 }
