@@ -1,0 +1,8 @@
+{
+  "PolygonIO": {
+    "ApiKey": "72u25s5oyclL8QBF1sXBe0zbtVPX6L5A",
+    "ChartUrl": "https://api.polygon.io/v2/aggs/ticker",
+    "OptionsUrl": "https://api.polygon.io/v3/reference/options/contracts",
+    "CorporateActionsUrl": "https://api.polygon.io/v3/reference"
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "redis": {
-    "Host": "localhost",
-    "Port": 6379,
-    "Expiry": "0.00:10:00",
-    "Password": ""
-  }
-}

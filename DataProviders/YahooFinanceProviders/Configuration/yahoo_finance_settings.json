@@ -1,0 +1,21 @@
+{
+  "Yahoo": {
+    "ChartUrl": "https://query2.finance.yahoo.com/v8/finance/chart",
+    "CorporateActionUrl": "https://query1.finance.yahoo.com/v8/finance/chart",
+    "Timeout": "0.00:02:00",
+    "IndexMap": {
+      "CAC": "^FCHI",
+      "SPX": "^GSPC",
+      "NDX": "^IXIC",
+      "HSI": "^HSI",
+      "STOXX": "^STOXX",
+      "SX5E": "stoxx50e",
+      "SX7E": "^SX7E.Z",
+      "SX3P": "^SX3P.Z",
+      "VIX": "^VIX",
+      "DAX": "^GDAXI",
+      "UKX": "^FTSE",
+      "RUT": "^RUT"
+    }
+  }
+}

@@ -1,8 +1,0 @@
-﻿namespace OctoWhirl.Core.Tools.Maths.Models
-{
-    public class Point
-    {
-        public double Axis { get; set; }
-        public double Value { get; set; }
-    }
-}

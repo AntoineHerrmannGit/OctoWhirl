@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<RootNamespace>Strategies</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Maths\MathModels\MathModels.csproj" />
+		<ProjectReference Include="..\Backtester\Backtester.csproj" />
+		<ProjectReference Include="..\MarketEvents\MarketEvents.csproj" />
+  </ItemGroup>
+
+</Project>
