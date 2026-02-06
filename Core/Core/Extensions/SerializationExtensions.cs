@@ -10,6 +10,7 @@ namespace Core.Technicals.Extensions
         private static JsonSerializerSettings _options = new JsonSerializerSettings
         {
             Formatting = Formatting.Indented,
+            TypeNameHandling = TypeNameHandling.All,
             Converters = new List<JsonConverter>()
                 {
                     new StringEnumConverter()
