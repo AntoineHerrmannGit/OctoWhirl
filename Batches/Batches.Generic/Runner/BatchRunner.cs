@@ -19,7 +19,7 @@ namespace Batches.Generic.Runner
         private readonly IBatchFactory Factory;
         private readonly Tracker Tracker;
 
-        private List<IBatch> ChildBatches;
+        private List<IBatch> Batches;
         private RunnerConfiguration? Configuration;
         private Report Report;
         private BatchState State;
@@ -29,7 +29,7 @@ namespace Batches.Generic.Runner
         {
             Factory = factory;
             Tracker = tracker;
-            ChildBatches = new List<IBatch>();
+            Batches = new List<IBatch>();
             Report = new Report();
             State = BatchState.NotStarted;
             Configuration = null;
@@ -48,7 +48,7 @@ namespace Batches.Generic.Runner
                 State = BatchState.Running;
                 Report.State = State;
 
-                var tasks = ChildBatches.Select(async batch =>
+                var tasks = Batches.Select(async batch =>
                 {
                     await batch.Initialize(token).ConfigureAwait(false);
                     await batch.Run(token).ConfigureAwait(false);
@@ -84,14 +84,14 @@ namespace Batches.Generic.Runner
         }
 
         private void LoadConfiguration(string configPath)
-            => Configuration = File.ReadAllText(configPath).Deserialize<RunnerConfiguration>();
+            => Configuration = File.ReadAllText(FileManager.FindFilePath(configPath)).Deserialize<RunnerConfiguration>();
 
         private void CreateChildBatches()
         {
-            ChildBatches = Configuration!.Batches?.Select(batch =>
+            Batches = Configuration!.Batches?.Select(batch =>
             {
                 var childBatch = Factory.Create(batch.Key);
-                childBatch.SetConfiguration(FileManager.FindFilePath(batch.Value));
+                childBatch.SetConfiguration(batch.Value);
                 return childBatch;
             }).ToList() ?? new List<IBatch>();
         }
@@ -108,7 +108,7 @@ namespace Batches.Generic.Runner
         {
             Report.Trace.Add(Tracker.Track(Name, "Generating Report..."));
 
-            var childReports = await Task.WhenAll(ChildBatches.Select(batch => batch.GenerateReport(token)));
+            var childReports = await Task.WhenAll(Batches.Select(batch => batch.GenerateReport(token)));
             Report.InnerReports = childReports.ToList();
 
             var globalTrace = Report.Trace;
