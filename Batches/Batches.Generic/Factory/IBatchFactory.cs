@@ -2,7 +2,7 @@
 
 namespace Batches.Generic.Factory
 {
-    internal interface IBatchFactory
+    public interface IBatchFactory
     {
         IBatch Create(string name);
     }

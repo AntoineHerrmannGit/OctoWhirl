@@ -3,7 +3,7 @@ using Batches.Generic.Reporting;
 
 namespace Batches.Generic.Interfaces
 {
-    internal interface IBatch
+    public interface IBatch
     {
         string Name { get; }
         BatchState State { get; set; }

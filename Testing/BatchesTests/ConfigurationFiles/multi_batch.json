@@ -1,0 +1,6 @@
+{
+  "Batches": {
+    "SimpleBatch": "simple_batch.json",
+    "LonelyBatch": "lonely_batch.json"
+  }
+}

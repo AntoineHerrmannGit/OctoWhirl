@@ -8,15 +8,13 @@ using Models.Models.Requests.Options;
 using Models.Models.Requests.Spots;
 using PolygonIOProviders.Registration;
 
-namespace Tests.DataProviders.PolygonIOProviders
+namespace DataProvidersTests.PolygonIOProviders
 {
-    [TestClass]
     public class PolygonIOProvidersTests
     {
         private static IServiceProvider _provider;
 
-        [ClassInitialize]
-        public static void Setup(TestContext context)
+        public PolygonIOProvidersTests()
         {
             _provider = new ServiceCollection()
                         .AddLogging()
@@ -25,16 +23,11 @@ namespace Tests.DataProviders.PolygonIOProviders
                         .BuildServiceProvider();
         }
 
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-        }
-
-        [TestMethod]
+        [Fact]
         public async Task GetOptionsTest()
         {
             var dataGetter = _provider.GetRequiredService<IDataGetter>();
-            Assert.IsNotNull(dataGetter);
+            Assert.NotNull(dataGetter);
 
             var request = new PolygonIOOptionsRequest
             {
@@ -44,15 +37,15 @@ namespace Tests.DataProviders.PolygonIOProviders
                 IncludeExpired = false,
             };
 
-            var options = await dataGetter.Get(request).ConfigureAwait(false);
-            Assert.IsFalse(options.IsNullOrEmpty());
+            var options = await dataGetter.Get(request);
+            Assert.False(options.IsNullOrEmpty());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetSpotsTest()
         {
             var dataGetter = _provider.GetRequiredService<IDataGetter>();
-            Assert.IsNotNull(dataGetter);
+            Assert.NotNull(dataGetter);
 
             var request = new PolygonIOSpotRequest
             {
@@ -63,17 +56,17 @@ namespace Tests.DataProviders.PolygonIOProviders
                 AdjustSpots = false,
             };
 
-            var spots = await dataGetter.Get(request).ConfigureAwait(false);
-            Assert.IsFalse(spots.IsNullOrEmpty());
-            Assert.IsTrue(spots.None(spot => spot.Instrument.IsNullOrEmpty()));
-            Assert.IsTrue(spots.None(spot => !spot.Value.HasValue));
+            var spots = await dataGetter.Get(request);
+            Assert.False(spots.IsNullOrEmpty());
+            Assert.True(spots.None(spot => spot.Instrument.IsNullOrEmpty()));
+            Assert.True(spots.None(spot => !spot.Value.HasValue));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetDividendsTest()
         {
             var dataGetter = _provider.GetRequiredService<IDataGetter>();
-            Assert.IsNotNull(dataGetter);
+            Assert.NotNull(dataGetter);
 
             var request = new PolygonIODividendRequest
             {
@@ -82,17 +75,17 @@ namespace Tests.DataProviders.PolygonIOProviders
                 EndDate = new DateTime(2025, 12, 31),
             };
 
-            var dividends = await dataGetter.Get(request).ConfigureAwait(false);
-            Assert.IsFalse(dividends.IsNullOrEmpty());
-            Assert.IsTrue(dividends.None(dividend => dividend.Instrument.IsNullOrEmpty()));
-            Assert.IsTrue(dividends.None(dividend => !dividend.Value.HasValue));
+            var dividends = await dataGetter.Get(request);
+            Assert.False(dividends.IsNullOrEmpty());
+            Assert.True(dividends.None(dividend => dividend.Instrument.IsNullOrEmpty()));
+            Assert.True(dividends.None(dividend => !dividend.Value.HasValue));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetSplitsTest()
         {
             var dataGetter = _provider.GetRequiredService<IDataGetter>();
-            Assert.IsNotNull(dataGetter);
+            Assert.NotNull(dataGetter);
 
             var request = new PolygonIOSplitRequest
             {
@@ -101,10 +94,10 @@ namespace Tests.DataProviders.PolygonIOProviders
                 EndDate = new DateTime(2025, 12, 31),
             };
 
-            var splits = await dataGetter.Get(request).ConfigureAwait(false);
-            Assert.IsFalse(splits.IsNullOrEmpty());
-            Assert.IsTrue(splits.None(split => split.Instrument.IsNullOrEmpty()));
-            Assert.IsTrue(splits.None(split => !split.SplitRatio.HasValue));
+            var splits = await dataGetter.Get(request);
+            Assert.False(splits.IsNullOrEmpty());
+            Assert.True(splits.None(split => split.Instrument.IsNullOrEmpty()));
+            Assert.True(splits.None(split => !split.SplitRatio.HasValue));
         }
     }
 }

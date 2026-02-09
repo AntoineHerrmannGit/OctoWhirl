@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Batches.Generic.Enums
+﻿namespace Batches.Generic.Enums
 {
-    internal enum BatchState
+    public enum BatchState
     {
         NotStarted,
+        Started,
         Initialized,
         Running,
+        Cancelled,
         Terminated,
         Failed,
-        Cancelled,
-        Succeeded
+        Succeeded,
     }
 }

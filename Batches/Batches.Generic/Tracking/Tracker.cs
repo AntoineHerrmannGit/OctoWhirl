@@ -1,17 +1,27 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Microsoft.Extensions.Logging;
+using System.Runtime.CompilerServices;
 
 namespace Batches.Generic.Tracking
 {
-    internal static class Tracker
+    public class Tracker
     {
-        public static TraceElement Track(
+        private readonly ILogger<Tracker> _logger;
+
+        public Tracker(ILogger<Tracker> logger)
+        {
+            _logger = logger;
+        }
+
+        public TraceElement Track(
             string batchName,
             string message,
             [CallerFilePath] string? file = null,
             [CallerLineNumber] int line = 0,
             [CallerMemberName] string? method = null
         )
-            => new TraceElement
+        {
+            _logger.LogInformation(message);
+            return new TraceElement
             {
                 File = file,
                 Message = message,
@@ -20,5 +30,6 @@ namespace Batches.Generic.Tracking
                 Timestamp = DateTime.Now,
                 BatchName = batchName,
             };
+        }
     }
 }

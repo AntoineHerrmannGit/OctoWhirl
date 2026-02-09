@@ -1,6 +1,6 @@
 ﻿namespace Batches.Generic.Tracking
 {
-    internal class TraceElement
+    public class TraceElement
     {
         public DateTime Timestamp { get; set; }
         public string BatchName { get; set; }

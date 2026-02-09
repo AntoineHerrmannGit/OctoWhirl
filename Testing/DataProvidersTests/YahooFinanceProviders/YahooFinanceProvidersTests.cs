@@ -1,4 +1,4 @@
-using DataProviders.GenericProvider.DataGetters;
+﻿using DataProviders.GenericProvider.DataGetters;
 using DataProviders.GenericProvider.Registration;
 using DataProviders.YahooFinanceProviders.Registration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,15 +7,14 @@ using Models.Models.Requests.CorporateActions;
 using Models.Models.Requests.Dividends;
 using Models.Models.Requests.Spots;
 
-namespace Tests.DataProviders.YahooFinanceProviders;
+namespace DataProvidersTests.YahooFinanceProviders;
 
-[TestClass]
 public class YahooFinanceProvidersTests
 {
-    private static IServiceProvider _provider;  
+    private static IServiceProvider _provider;
 
-    [ClassInitialize]
-    public static void Setup(TestContext context)
+
+    public YahooFinanceProvidersTests()
     {
         _provider = new ServiceCollection()
                        .RegisterGenericServices()
@@ -23,12 +22,7 @@ public class YahooFinanceProvidersTests
                        .BuildServiceProvider();
     }
 
-    [ClassCleanup]
-    public static void Cleanup()
-    {
-    }
-
-    [TestMethod]
+    [Fact]
     public async Task GetSpotsTest()
     {
         var dataGetter = _provider.GetRequiredService<IDataGetter>();
@@ -41,14 +35,14 @@ public class YahooFinanceProvidersTests
             Resolution = ResolutionInterval.Day,
         };
 
-        var result = await dataGetter.Get(request).ConfigureAwait(false);
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Any());
-        Assert.IsTrue(result.All(s => s.Instrument is not null && s.Value is not null && s.Value != 0));
-        Assert.IsTrue(result.Count() == result.Select(s => s.Timestamp).Distinct().Count());
+        var result = await dataGetter.Get(request);
+        Assert.NotNull(result);
+        Assert.True(result.Any());
+        Assert.True(result.All(s => s.Instrument is not null && s.Value is not null && s.Value != 0));
+        Assert.True(result.Count() == result.Select(s => s.Timestamp).Distinct().Count());
     }
 
-    [TestMethod]
+    [Fact]
     public async Task GetAdjustedSpotsTest()
     {
         var dataGetter = _provider.GetRequiredService<IDataGetter>();
@@ -62,14 +56,14 @@ public class YahooFinanceProvidersTests
             AdjustClose = true,
         };
 
-        var result = await dataGetter.Get(request).ConfigureAwait(false);
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Any());
-        Assert.IsTrue(result.All(s => s.Instrument is not null && s.Value is not null && s.Value != 0));
-        Assert.IsTrue(result.Count() == result.Select(s => s.Timestamp).Distinct().Count());
+        var result = await dataGetter.Get(request);
+        Assert.NotNull(result);
+        Assert.True(result.Any());
+        Assert.True(result.All(s => s.Instrument is not null && s.Value is not null && s.Value != 0));
+        Assert.True(result.Count() == result.Select(s => s.Timestamp).Distinct().Count());
     }
 
-    [TestMethod]
+    [Fact]
     public async Task GetDividendsTest()
     {
         var dataGetter = _provider.GetRequiredService<IDataGetter>();
@@ -82,13 +76,13 @@ public class YahooFinanceProvidersTests
             Resolution = ResolutionInterval.Day,
         };
 
-        var result = await dataGetter.Get(request).ConfigureAwait(false);
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Any());
-        Assert.IsTrue(result.All(s => s.Instrument is not null && s.Value is not null && s.Value != 0));
+        var result = await dataGetter.Get(request);
+        Assert.NotNull(result);
+        Assert.True(result.Any());
+        Assert.True(result.All(s => s.Instrument is not null && s.Value is not null && s.Value != 0));
     }
 
-    [TestMethod]
+    [Fact]
     public async Task GetSplitsTest()
     {
         var dataGetter = _provider.GetRequiredService<IDataGetter>();
@@ -101,9 +95,9 @@ public class YahooFinanceProvidersTests
             Resolution = ResolutionInterval.Day,
         };
 
-        var result = await dataGetter.Get(request).ConfigureAwait(false);
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Any());
-        Assert.IsTrue(result.All(s => s.Instrument is not null && s.SplitRatio is not null && s.SplitRatio != 0));
+        var result = await dataGetter.Get(request);
+        Assert.NotNull(result);
+        Assert.True(result.Any());
+        Assert.True(result.All(s => s.Instrument is not null && s.SplitRatio is not null && s.SplitRatio != 0));
     }
 }
