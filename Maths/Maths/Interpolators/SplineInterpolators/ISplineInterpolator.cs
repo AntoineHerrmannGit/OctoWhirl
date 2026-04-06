@@ -1,5 +1,4 @@
-﻿using MathModels.Enums;
-using MathModels.Interfaces;
+﻿using MathModels.Interfaces;
 
 namespace Maths.Interpolators.SplineInterpolators
 {

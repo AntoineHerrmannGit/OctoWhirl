@@ -2,7 +2,7 @@
 
 namespace Models.Models.Interfaces
 {
-    internal interface IOption : IMarketData
+    public interface IOption : IMarketData
     {
         double RelativeStrike { get; set; }
         double AbsoluteStrike { get; set; }

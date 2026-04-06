@@ -1,14 +1,11 @@
-﻿using Batches.Generic.Abstractions;
-using Batches.Generic.Configuration;
+﻿using Batches.Generic.Configuration;
 using Batches.Generic.Enums;
 using Batches.Generic.Factory;
 using Batches.Generic.Interfaces;
 using Batches.Generic.Reporting;
 using Batches.Generic.Tracking;
 using Core.Technicals.Extensions;
-using Microsoft.Extensions.Logging;
 using OctoWhirl.Core.Tools.Technicals.FileManagement;
-using System.Xml.Linq;
 
 namespace Batches.Generic.Runner
 {

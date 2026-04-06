@@ -8,6 +8,9 @@
         public static string ToDateString(this DateTime dateTime)
             => dateTime.ToString("yyyy-MM-dd");
 
+        public static string ToDateTimeString(this DateTime dateTime)
+            => dateTime.ToString("yyyy-MM-dd|HH:mm:dd");
+
         public static IEnumerable<DateTime> ForEachDateUntil(this DateTime startDate, DateTime endDate, bool includeWeekends = false, TimeSpan? increment = null)
         {
             var step = increment ?? TimeSpan.FromDays(1);
@@ -23,5 +26,11 @@
                 date += step;
             }
         }
+
+        public static int DaysUntil(this DateTime date, DateTime other, bool includeWeekends = false)
+            => date.ForEachDateUntil(other, includeWeekends).Count();
+
+        public static double ToRelativeMaturity(this DateTime date, DateTime other)
+            => date.DaysUntil(other) / date.DaysUntil(date.AddYears(1));
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Batches.Generic.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Runtime.CompilerServices;
 
 namespace Batches.Generic.Factory
 {

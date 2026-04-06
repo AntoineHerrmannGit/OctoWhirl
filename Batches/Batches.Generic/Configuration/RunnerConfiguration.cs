@@ -1,6 +1,4 @@
-﻿using Batches.Generic.Configuration.Abstractions;
-
-namespace Batches.Generic.Configuration
+﻿namespace Batches.Generic.Configuration
 {
     internal class RunnerConfiguration
     {
